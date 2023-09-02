@@ -19,7 +19,7 @@ Follow the steps below to get started with the boilerplate. After the quick tuto
 1. Clone this repo
 
 ```bash
-git clone https://github.com/Marc-Lou-Org/ship-fast.git [YOUR_APP_NAME]
+git clone https://github.com/Marc-Lou-Org/ship-fast-ts.git [YOUR_APP_NAME]
 ```
 
 2. Get in the repo
