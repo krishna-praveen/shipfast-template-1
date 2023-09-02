@@ -40,7 +40,7 @@ export default function Home() {
         </p>
 
         <h2 className="font-bold text-xl">Defining types</h2>
-        <p className="text-base-content/80">
+        <div className="text-base-content/80">
           You can define types in the{" "}
           <code className="text-primary">types/</code> folder. For example{" "}
           <code>types/FAQ.ts</code> with:
@@ -62,7 +62,7 @@ export interface FAQItem {
           <pre className="whitespace-pre-wrap select-all p-4 rounded-lg bg-base-300 text-sm text-base-content my-2">
             {`import type { FAQItem } from '@/types';`}
           </pre>
-        </p>
+        </div>
       </section>
     </main>
   );
