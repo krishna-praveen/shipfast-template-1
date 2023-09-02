@@ -1,4 +1,4 @@
-# ShipFast
+# ShipFast - TypeScript
 
 Hey, it's Marc from [ShipFast](https://shipfa.st) 👋
 
