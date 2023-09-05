@@ -1,16 +1,21 @@
-import { useRef, useState } from 'react';
-import { FAQItem } from '@/types';
+import { useRef, useState } from "react";
+import type { JSX } from "react";
 
 // <FAQ> component is a lsit of <Item> component
-// Just import the FAQ & add your FAQ content to the const faqList
+// Just import the FAQ & add your FAQ content to the const faqList arrayy below.
 
-const faqList: FAQItem[] = [
+interface FAQItemProps {
+  question: string;
+  answer: JSX.Element;
+}
+
+const faqList: FAQItemProps[] = [
   {
-    question: 'What do I get exactly?',
-    answer: <div className='space-y-2 leading-relaxed'>Loreum Ipseum</div>,
+    question: "What do I get exactly?",
+    answer: <div className="space-y-2 leading-relaxed">Loreum Ipseum</div>,
   },
   {
-    question: 'Can I get a refund?',
+    question: "Can I get a refund?",
     answer: (
       <p>
         Yes! You can request a refund within 7 days of your purchase. Reach out
@@ -19,21 +24,21 @@ const faqList: FAQItem[] = [
     ),
   },
   {
-    question: 'I have another question',
+    question: "I have another question",
     answer: (
-      <div className='space-y-2 leading-relaxed'>Cool, contact us by email</div>
+      <div className="space-y-2 leading-relaxed">Cool, contact us by email</div>
     ),
   },
 ];
 
-const Item = ({ item }: { item: FAQItem }) => {
+const FaqItem = ({ item }: { item: FAQItemProps }) => {
   const accordion = useRef(null);
   const [isOpen, setIsOpen] = useState(false);
 
   return (
     <li>
       <button
-        className='relative flex gap-2 items-center w-full py-5 text-base font-semibold text-left border-t md:text-lg border-base-content/10'
+        className="relative flex gap-2 items-center w-full py-5 text-base font-semibold text-left border-t md:text-lg border-base-content/10"
         onClick={(e) => {
           e.preventDefault();
           setIsOpen(!isOpen);
@@ -41,31 +46,31 @@ const Item = ({ item }: { item: FAQItem }) => {
         aria-expanded={isOpen}
       >
         <span
-          className={`flex-1 text-base-content ${isOpen ? 'text-primary' : ''}`}
+          className={`flex-1 text-base-content ${isOpen ? "text-primary" : ""}`}
         >
           {item?.question}
         </span>
         <svg
           className={`flex-shrink-0 w-4 h-4 ml-auto fill-current`}
-          viewBox='0 0 16 16'
-          xmlns='http://www.w3.org/2000/svg'
+          viewBox="0 0 16 16"
+          xmlns="http://www.w3.org/2000/svg"
         >
           <rect
-            y='7'
-            width='16'
-            height='2'
-            rx='1'
+            y="7"
+            width="16"
+            height="2"
+            rx="1"
             className={`transform origin-center transition duration-200 ease-out ${
-              isOpen && 'rotate-180'
+              isOpen && "rotate-180"
             }`}
           />
           <rect
-            y='7'
-            width='16'
-            height='2'
-            rx='1'
+            y="7"
+            width="16"
+            height="2"
+            rx="1"
             className={`transform origin-center rotate-90 transition duration-200 ease-out ${
-              isOpen && 'rotate-180 hidden'
+              isOpen && "rotate-180 hidden"
             }`}
           />
         </svg>
@@ -80,7 +85,7 @@ const Item = ({ item }: { item: FAQItem }) => {
             : { maxHeight: 0, opacity: 0 }
         }
       >
-        <div className='pb-5 leading-relaxed'>{item?.answer}</div>
+        <div className="pb-5 leading-relaxed">{item?.answer}</div>
       </div>
     </li>
   );
@@ -88,18 +93,18 @@ const Item = ({ item }: { item: FAQItem }) => {
 
 const FAQ = () => {
   return (
-    <section className='bg-base-200' id='faq'>
-      <div className='py-24 px-8 max-w-7xl mx-auto flex flex-col md:flex-row gap-12'>
-        <div className='flex flex-col text-left basis-1/2'>
-          <p className='inline-block font-semibold text-primary mb-4'>FAQ</p>
-          <p className='sm:text-4xl text-3xl font-extrabold text-base-content'>
+    <section className="bg-base-200" id="faq">
+      <div className="py-24 px-8 max-w-7xl mx-auto flex flex-col md:flex-row gap-12">
+        <div className="flex flex-col text-left basis-1/2">
+          <p className="inline-block font-semibold text-primary mb-4">FAQ</p>
+          <p className="sm:text-4xl text-3xl font-extrabold text-base-content">
             Frequently Asked Questions
           </p>
         </div>
 
-        <ul className='basis-1/2'>
+        <ul className="basis-1/2">
           {faqList.map((item, i) => (
-            <Item key={i} item={item} />
+            <FaqItem key={i} item={item} />
           ))}
         </ul>
       </div>

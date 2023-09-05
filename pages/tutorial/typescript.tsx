@@ -43,24 +43,26 @@ export default function Home() {
         <div className="text-base-content/80">
           You can define types in the{" "}
           <code className="text-primary">types/</code> folder. For example{" "}
-          <code>types/FAQ.ts</code> with:
+          <code>types/config.ts</code> with:
           <pre className="whitespace-pre-wrap select-all p-4 rounded-lg bg-base-300 text-sm text-base-content my-2">
-            {`import type { JSX } from 'react';
-
-export interface FAQItem {
-  question: string;
-  answer: JSX.Element;
+            {`export interface ConfigProps {
+  appName: string;
+  domainName: string;
+  crisp: {
+    id?: string;
+    onlyShowOnRoutes?: string[];
+  };
 }
 `}
           </pre>
           Then import it at <code className="text-primary">type/index.ts</code>{" "}
           as:
           <pre className="whitespace-pre-wrap select-all p-4 rounded-lg bg-base-300 text-sm text-base-content my-2">
-            {`export * from './FAQ';`}
+            {`export * from './config';`}
           </pre>
           And use it in your components as:
           <pre className="whitespace-pre-wrap select-all p-4 rounded-lg bg-base-300 text-sm text-base-content my-2">
-            {`import type { FAQItem } from '@/types';`}
+            {`import type { ConfigProps } from '@/types';`}
           </pre>
         </div>
       </section>
