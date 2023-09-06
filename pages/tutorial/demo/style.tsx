@@ -4,6 +4,7 @@ import ButtonGradient from "@/components/ButtonGradient";
 import Modal from "@/components/Modal";
 import ButtonPopover from "@/components/ButtonPopover";
 import TestimonialSmall from "@/components/TestimonialSmall";
+import Testimonials11 from "@/components/Testimonials11";
 import BetterIcon from "@/components/BetterIcon";
 import Pricing from "@/components/Pricing";
 import FAQ from "@/components/FAQ";
@@ -116,6 +117,11 @@ export default function Home() {
                 component: <TestimonialSmall />,
                 show: true,
                 name: "<TestimonialSmall />",
+              },
+              {
+                component: <Testimonials11 />,
+                show: false,
+                name: "<Testimonials11 />",
               },
               { component: <BetterIcon />, show: true, name: "<BetterIcon />" },
               { component: <Pricing />, show: false, name: "<Pricing />" },
