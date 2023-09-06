@@ -154,7 +154,7 @@ const Testimonial = ({ i }: { i: number }) => {
         <blockquote className="relative">
           <p className="text-sm text-base-content/80">{testimonial.text}</p>
         </blockquote>
-        <figcaption className="relative flex items-center justify-start gap-4 pt-4 mt-4 border-t border-base-content/10">
+        <figcaption className="relative flex items-center justify-start gap-4 pt-4 mt-4 border-t border-base-content/5">
           <div className="overflow-hidden rounded-full bg-base-300 shrink-0">
             {testimonial.img ? (
               <Image
@@ -199,7 +199,7 @@ const Testimonial = ({ i }: { i: number }) => {
   );
 };
 
-const Testimonials = () => {
+const Testimonials11 = () => {
   return (
     <section className="bg-base-200" id="testimonials">
       <div className="py-24 px-4 max-w-7xl mx-auto">
@@ -237,7 +237,7 @@ const Testimonials = () => {
                       {list[list.length - 1].text}
                     </p>
                   </blockquote>
-                  <figcaption className="relative flex items-center justify-start gap-4 pt-4 mt-4 border-t border-base-content/10">
+                  <figcaption className="relative flex items-center justify-start gap-4 pt-4 mt-4 border-t border-base-content/5">
                     <div className="overflow-hidden rounded-full bg-base-300 shrink-0">
                       {list[list.length - 1].img ? (
                         <Image
@@ -293,4 +293,4 @@ const Testimonials = () => {
   );
 };
 
-export default Testimonials;
+export default Testimonials11;
