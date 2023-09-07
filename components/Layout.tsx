@@ -1,16 +1,16 @@
-import 'react-tooltip/dist/react-tooltip.css';
-import { ReactNode, useEffect, useState } from 'react';
-import { Inter } from 'next/font/google';
-import { useSession } from 'next-auth/react';
-import { useRouter } from 'next/router';
-import NextNProgress from 'nextjs-progressbar';
-import { Toaster } from 'react-hot-toast';
-import { Crisp } from 'crisp-sdk-web';
-import { Tooltip } from 'react-tooltip';
-import ErrorBoundary from './ErrorBoundary';
-import config from '@/config';
+import "react-tooltip/dist/react-tooltip.css";
+import { ReactNode, useEffect, useState } from "react";
+import { Inter } from "next/font/google";
+import { useSession } from "next-auth/react";
+import { useRouter } from "next/router";
+import NextNProgress from "nextjs-progressbar";
+import { Toaster } from "react-hot-toast";
+import { Crisp } from "crisp-sdk-web";
+import { Tooltip } from "react-tooltip";
+import ErrorBoundary from "./ErrorBoundary";
+import config from "@/config";
 
-const font = Inter({ subsets: ['latin'] });
+const font = Inter({ subsets: ["latin"] });
 
 export default function Layout({ children }: { children: ReactNode }) {
   const router = useRouter();
@@ -68,7 +68,10 @@ export default function Layout({ children }: { children: ReactNode }) {
         />
       )}
       {/* Show tooltips if any JSX elements has these 2 attributes: data-tooltip-id="tooltip" data-tooltip-content="" */}
-      <Tooltip id='tooltip' className='z-[60] !opacity-100 max-w-sm' />
+      <Tooltip
+        id="tooltip"
+        className="z-[60] !opacity-100 max-w-sm shadow-lg"
+      />
     </ErrorBoundary>
   );
 }
