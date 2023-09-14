@@ -6,7 +6,7 @@ import apiClient from "@/libs/api";
 // You'd use this if your product isn't ready yet or you want to collect leads
 // For instance: A popup to send a freebie, joining a waitlist, etc.
 // It calls the /api/lead route and store a Lead document in MongoDB
-const ButtonLead = () => {
+const ButtonLead = ({ extraStyle }: { extraStyle?: string }) => {
   const inputRef = useRef(null);
   const [email, setEmail] = useState<string>("");
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -32,7 +32,10 @@ const ButtonLead = () => {
     }
   };
   return (
-    <form className="w-full max-w-xs space-y-3" onSubmit={handleSubmit}>
+    <form
+      className={`w-full max-w-xs space-y-3 ${extraStyle ? extraStyle : ""}`}
+      onSubmit={handleSubmit}
+    >
       <input
         required
         type="email"
