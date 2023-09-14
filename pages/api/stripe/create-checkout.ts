@@ -5,6 +5,9 @@ import { createCheckout } from "@/libs/stripe";
 import connectMongo from "@/libs/mongoose";
 import User from "@/models/User";
 
+// This function is used to create a Stripe Checkout Session
+// It's called by the <ButtonCheckout /> component
+// It forces user to be authenticated but you can remove all the auth logic if you want (if (session) {} | if (!user) {}, etc...)
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
