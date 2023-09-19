@@ -15,11 +15,14 @@ const ButtonCheckout = ({ priceId }: ButtonCheckoutProps) => {
     setIsLoading(true);
 
     try {
-      const { url } = await apiClient.post("/stripe/create-checkout", {
-        priceId,
-        successUrl: window.location.href,
-        cancelUrl: window.location.href,
-      });
+      const { url }: { url: string } = await apiClient.post(
+        "/stripe/create-checkout",
+        {
+          priceId,
+          successUrl: window.location.href,
+          cancelUrl: window.location.href,
+        }
+      );
 
       window.location.href = url;
     } catch (e) {
