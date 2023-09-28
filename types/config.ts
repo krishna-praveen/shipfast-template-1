@@ -23,6 +23,7 @@ export type Theme =
 
 export interface ConfigProps {
   appName: string;
+  appDescription: string;
   domainName: string;
   crisp: {
     id?: string;
@@ -57,5 +58,8 @@ export interface ConfigProps {
     theme: Theme;
     main: string;
   };
-  callbackUrl: string;
+  auth: {
+    loginUrl: string;
+    callbackUrl: string;
+  };
 }

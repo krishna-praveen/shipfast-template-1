@@ -1,14 +1,12 @@
+"use client";
+
 import { useState } from "react";
 import apiClient from "@/libs/api";
 
-interface ButtonCheckoutProps {
-  priceId: string;
-}
-
 // This component is used to create Stripe Checkout Sessions
 // It calls the /api/stripe/create-checkout route with the priceId, successUrl and cancelUrl
-// It assumes the user is logged in but you can remove this logic on the API route
-const ButtonCheckout = ({ priceId }: ButtonCheckoutProps) => {
+// By default, user doesn't habe to be logged in. You can change that in the API route
+const ButtonCheckout = ({ priceId }: { priceId: string }) => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const handlePayment = async () => {

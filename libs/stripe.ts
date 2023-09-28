@@ -1,17 +1,15 @@
 import Stripe from "stripe";
 
-// This is the code for the createCheckout function for one-time payments (and save data for later of needed)
-
 interface CreateCheckoutParams {
-  user: {
+  priceId: string;
+  successUrl: string;
+  cancelUrl: string;
+  couponId?: string | null;
+  clientReferenceId?: string;
+  user?: {
     customerId?: string;
     email?: string;
   };
-  clientReferenceID: string;
-  successUrl: string;
-  cancelUrl: string;
-  priceId: string;
-  couponId?: string | null;
 }
 
 interface CreateCustomerPortalParams {
@@ -19,9 +17,10 @@ interface CreateCustomerPortalParams {
   returnUrl: string;
 }
 
+// This is used to create a Stripe Checkout for one-time payments. It's usually triggered with the <ButtonCheckout /> component. Webhooks are used to update the user's state in the database.
 export const createCheckout = async ({
   user,
-  clientReferenceID,
+  clientReferenceId,
   successUrl,
   cancelUrl,
   priceId,
@@ -55,7 +54,7 @@ export const createCheckout = async ({
       allow_promotion_codes: true,
       invoice_creation: { enabled: true },
       tax_id_collection: { enabled: true },
-      client_reference_id: clientReferenceID,
+      client_reference_id: clientReferenceId,
       payment_intent_data: { setup_future_usage: "on_session" },
       line_items: [
         {

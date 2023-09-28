@@ -1,9 +1,11 @@
+"use client";
+
 import { useState, useEffect } from "react";
 import type { JSX } from "react";
-import { useRouter } from "next/router";
+import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
-import logo from "@/public/logo.png";
+import logo from "@/app/icon.png";
 import config from "@/config";
 
 const links: {
@@ -31,13 +33,13 @@ const cta: JSX.Element = (
 // A header with a logo on the left, links in the center (like Pricing, etc...), and a CTA (like Get Started or Login) on the right.
 // The header is responsive, and on mobile, the links are hidden behind a burger button.
 const Header = () => {
-  const router = useRouter();
+  const searchParams = useSearchParams();
   const [isOpen, setIsOpen] = useState<boolean>(false);
 
   // setIsOpen(false) when the route changes (i.e: when the user clicks on a link on mobile)
   useEffect(() => {
     setIsOpen(false);
-  }, [router.asPath]);
+  }, [searchParams]);
 
   return (
     <header className="bg-base-200">
