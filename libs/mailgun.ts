@@ -1,11 +1,11 @@
-import config from '@/config';
-const formData = require('form-data');
-const Mailgun = require('mailgun.js');
+import config from "@/config";
+const formData = require("form-data");
+const Mailgun = require("mailgun.js");
 const mailgun = new Mailgun(formData);
 
 const mg = mailgun.client({
-  username: 'api',
-  key: process.env.MAILGUN_API_KEY,
+  username: "api",
+  key: process.env.MAILGUN_API_KEY || "dummy",
 });
 
 /**
@@ -38,11 +38,11 @@ export const sendEmail = async ({
     subject,
     text,
     html,
-    ...(replyTo && { 'h:Reply-To': replyTo }),
+    ...(replyTo && { "h:Reply-To": replyTo }),
   };
 
   await mg.messages.create(
-    (config.mailgun.subdomain ? `${config.mailgun.subdomain}.` : '') +
+    (config.mailgun.subdomain ? `${config.mailgun.subdomain}.` : "") +
       config.domainName,
     data
   );
