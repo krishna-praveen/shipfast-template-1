@@ -35,9 +35,9 @@ export const sendEmail = async ({
 }: {
   to: string;
   subject: string;
-  text: string;
-  html: string;
-  replyTo: string;
+  text?: string;
+  html?: string;
+  replyTo?: string;
 }): Promise<any> => {
   const data = {
     from: config.mailgun.fromAdmin,
