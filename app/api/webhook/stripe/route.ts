@@ -23,7 +23,6 @@ export async function POST(req: NextRequest) {
 
   const signature = headers().get("stripe-signature");
 
-  let data;
   let eventType;
   let event;
 
@@ -35,19 +34,20 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: err.message }, { status: 400 });
   }
 
-  data = event.data;
   eventType = event.type;
 
   try {
     switch (eventType) {
       case "checkout.session.completed": {
         // First payment is successful and the subscription is created | or the subscription was canceled so create new one
+        const stripeObject: Stripe.Checkout.Session = event.data
+          .object as Stripe.Checkout.Session;
 
-        const session = await findCheckoutSession(data.object.id);
+        const session = await findCheckoutSession(stripeObject.id);
 
         const customerId = session?.customer;
         const priceId = session?.line_items?.data[0]?.price.id;
-        const userId = data.object.client_reference_id;
+        const userId = stripeObject.client_reference_id;
         const plan = configFile.stripe.plans.find((p) => p.priceId === priceId);
 
         if (!plan) break;
@@ -99,9 +99,11 @@ export async function POST(req: NextRequest) {
       }
 
       case "customer.subscription.updated": {
+        const stripeObject: Stripe.Subscription = event.data
+          .object as Stripe.Subscription;
         // The customer might have changed the plan (higher or lower plan, cancel soon etc...)
         const subscription = await stripe.subscriptions.retrieve(
-          data.object.id
+          stripeObject.id
         );
         const planId = subscription?.items?.data[0]?.price?.id;
         // Do any operation here
