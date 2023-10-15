@@ -19,7 +19,8 @@ export type Theme =
   | "wireframe"
   | "black"
   | "luxury"
-  | "dracula";
+  | "dracula"
+  | "";
 
 export interface ConfigProps {
   appName: string;
