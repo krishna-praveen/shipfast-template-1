@@ -1,3 +1,4 @@
+import ButtonSignin from "@/components/ButtonSignin";
 export default function Page() {
   return (
     <>
@@ -27,6 +28,7 @@ export default function Page() {
             />
           </svg>
         </a>
+        <ButtonSignin />
       </main>
     </>
   );
