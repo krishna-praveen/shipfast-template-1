@@ -1,9 +1,9 @@
 /* eslint-disable @next/next/no-img-element */
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Popover, Transition } from "@headlessui/react";
-import { useSession, signOut } from "next-auth/react";
+import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import apiClient from "@/libs/api";
 
 // A button to show user some account actions
@@ -13,12 +13,25 @@ import apiClient from "@/libs/api";
 //  2. Logout: sign out and go back to homepage
 // See more at https://shipfa.st/docs/components/buttonAccount
 const ButtonAccount = () => {
-  const { data: session, status } = useSession();
+  const supabase = createClientComponentClient();
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [user, setUser] = useState<any>(null);
+
+  useEffect(() => {
+    const getUser = async () => {
+      const { data } = await supabase.auth.getUser();
+
+      setUser(data.user);
+    };
+
+    getUser();
+  }, [supabase]);
 
   const handleSignOut = () => {
-    signOut({ callbackUrl: "/" });
+    supabase.auth.signOut();
+    window.location.href = "/";
   };
+
   const handleBilling = async () => {
     setIsLoading(true);
 
@@ -38,29 +51,27 @@ const ButtonAccount = () => {
     setIsLoading(false);
   };
 
-  // Don't show anything if not authenticated (we don't have any info about the user)
-  if (status === "unauthenticated") return null;
-
   return (
     <Popover className="relative z-10">
       {({ open }) => (
         <>
           <Popover.Button className="btn">
-            {session?.user?.image ? (
+            {user?.user_metadata?.avatar_url ? (
               <img
-                src={session?.user?.image}
-                alt={session?.user?.name || "Account"}
+                src={user?.user_metadata?.avatar_url}
+                alt={"Profile picture"}
                 className="w-6 h-6 rounded-full shrink-0"
                 referrerPolicy="no-referrer"
               />
             ) : (
-              <span className="w-6 h-6 bg-base-300 flex justify-center items-center rounded-full shrink-0">
-                {session?.user?.name?.charAt(0) ||
-                  session?.user?.email?.charAt(0)}
+              <span className="w-8 h-8 bg-base-100 flex justify-center items-center rounded-full shrink-0 capitalize">
+                {user?.email?.charAt(0)}
               </span>
             )}
 
-            {session?.user?.name || "Account"}
+            {user?.user_metadata?.name ||
+              user?.email?.split("@")[0] ||
+              "Account"}
 
             {isLoading ? (
               <span className="loading loading-spinner loading-xs"></span>

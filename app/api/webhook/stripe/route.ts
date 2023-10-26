@@ -1,9 +1,8 @@
 import { NextResponse, NextRequest } from "next/server";
 import { headers } from "next/headers";
 import Stripe from "stripe";
-import connectMongo from "@/libs/mongoose";
+import { SupabaseClient } from "@supabase/supabase-js";
 import configFile from "@/config";
-import User from "@/models/User";
 import { findCheckoutSession } from "@/libs/stripe";
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY, {
@@ -17,8 +16,6 @@ const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET;
 // By default, it'll store the user in the database
 // See more: https://shipfa.st/docs/features/payments
 export async function POST(req: NextRequest) {
-  await connectMongo();
-
   const body = await req.text();
 
   const signature = headers().get("stripe-signature");
@@ -52,35 +49,21 @@ export async function POST(req: NextRequest) {
 
         if (!plan) break;
 
-        const customer = (await stripe.customers.retrieve(
-          customerId as string
-        )) as Stripe.Customer;
+        // Create a private supabase client using the secret service_role API key
+        const supabase = new SupabaseClient(
+          process.env.NEXT_PUBLIC_SUPABASE_URL,
+          process.env.SUPABASE_SERVICE_ROLE_KEY
+        );
 
-        let user;
-
-        // Get or create the user. userId is normally pass in the checkout session (clientReferenceID) to identify the user when we get the webhook event
-        if (userId) {
-          user = await User.findById(userId);
-        } else if (customer.email) {
-          user = await User.findOne({ email: customer.email });
-
-          if (!user) {
-            user = await User.create({
-              email: customer.email,
-              name: customer.name,
-            });
-
-            await user.save();
-          }
-        } else {
-          console.error("No user found");
-          throw new Error("No user found");
-        }
-
-        // update user data (for instance add credits)
-        user.priceId = priceId;
-        user.customerId = customerId;
-        await user.save();
+        // Update the profile where id equals the userId (in table called 'profiles') and update the customerId and priceId
+        await supabase
+          .from("profiles")
+          .update({
+            customer_id: customerId,
+            price_id: priceId,
+            has_access: true,
+          })
+          .eq("id", userId);
 
         // Extra: send email with user link, product page, etc...
         // try {
@@ -106,7 +89,7 @@ export async function POST(req: NextRequest) {
           stripeObject.id
         );
         const planId = subscription?.items?.data[0]?.price?.id;
-        // Do any operation here
+        // Do any operation here (ShipFast update coming soon...)
         break;
       }
 

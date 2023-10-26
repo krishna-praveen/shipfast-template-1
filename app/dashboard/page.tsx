@@ -1,5 +1,4 @@
-import { cookies } from "next/headers";
-import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
+import ButtonAccount from "@/components/ButtonAccount";
 
 export const dynamic = "force-dynamic";
 
@@ -7,16 +6,11 @@ export const dynamic = "force-dynamic";
 // It's a server compoment which means you can fetch data (like the user profile) before the page is rendered.
 // See https://shipfa.st/docs/tutorials/private-page
 export default async function Dashboard() {
-  const supabase = createServerComponentClient({ cookies });
-  const { data } = await supabase.from("todos").select();
-
   return (
     <main className="min-h-screen p-8 pb-24">
       <section className="max-w-xl mx-auto space-y-8">
+        <ButtonAccount />
         <h1 className="text-3xl md:text-4xl font-extrabold">Private Page</h1>
-
-        {/* You will only see something if you create an SQL table called todos with at least 1 row */}
-        <pre>{JSON.stringify(data, null, 2)}</pre>
       </section>
     </main>
   );
