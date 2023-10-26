@@ -3,9 +3,9 @@ import { createRouteHandlerClient } from "@supabase/auth-helpers-nextjs";
 import { cookies } from "next/headers";
 import { createCheckout } from "@/libs/stripe";
 
-// This function is used to create a Stripe Checkout Session
+// This function is used to create a Stripe Checkout Session (one-time payment or subscription)
 // It's called by the <ButtonCheckout /> component
-// By default, it doesn't require user to be authenticated. If you want to auth users, check this page: https://shipfa.st/docs/tutorials/api-call
+// Users must be authenticated. It will prefill the Checkout data with their email and/or credit card (if any)
 export async function POST(req: NextRequest) {
   try {
     const cookieStore = cookies();
@@ -25,7 +25,7 @@ export async function POST(req: NextRequest) {
 
     const body = await req.json();
 
-    const { priceId, successUrl, cancelUrl } = body;
+    const { priceId, mode, successUrl, cancelUrl } = body;
 
     if (!priceId) {
       return NextResponse.json(
@@ -35,6 +35,14 @@ export async function POST(req: NextRequest) {
     } else if (!successUrl || !cancelUrl) {
       return NextResponse.json(
         { error: "Success and cancel URLs are required" },
+        { status: 400 }
+      );
+    } else if (!body.mode) {
+      return NextResponse.json(
+        {
+          error:
+            "Mode is required (either 'payment' for one-time payments or 'subscription' for recurring subscription)",
+        },
         { status: 400 }
       );
     }
@@ -59,6 +67,7 @@ export async function POST(req: NextRequest) {
 
     const stripeSessionURL = await createCheckout({
       priceId,
+      mode,
       successUrl,
       cancelUrl,
       clientReferenceId: session.user.id,

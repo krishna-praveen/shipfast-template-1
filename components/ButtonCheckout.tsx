@@ -5,8 +5,15 @@ import apiClient from "@/libs/api";
 
 // This component is used to create Stripe Checkout Sessions
 // It calls the /api/stripe/create-checkout route with the priceId, successUrl and cancelUrl
-// It creates a profile for the user if they don't have one yet (PostGres table 'profiles') which stores information like Stripe customerId, priceId, etc.
-const ButtonCheckout = ({ priceId }: { priceId: string }) => {
+// Users must be authenticated. It will prefill the Checkout data with their email and/or credit card (if any)
+// You can also change the mode to "subscription" if you want to create a subscription instead of a one-time payment
+const ButtonCheckout = ({
+  priceId,
+  mode = "payment",
+}: {
+  priceId: string;
+  mode: "payment" | "subscription";
+}) => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const handlePayment = async () => {
@@ -19,6 +26,7 @@ const ButtonCheckout = ({ priceId }: { priceId: string }) => {
           priceId,
           successUrl: window.location.href,
           cancelUrl: window.location.href,
+          mode,
         }
       );
 

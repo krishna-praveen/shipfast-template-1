@@ -2,6 +2,7 @@ import Stripe from "stripe";
 
 interface CreateCheckoutParams {
   priceId: string;
+  mode: "payment" | "subscription";
   successUrl: string;
   cancelUrl: string;
   couponId?: string | null;
@@ -20,6 +21,7 @@ interface CreateCustomerPortalParams {
 // This is used to create a Stripe Checkout for one-time payments. It's usually triggered with the <ButtonCheckout /> component. Webhooks are used to update the user's state in the database.
 export const createCheckout = async ({
   user,
+  mode,
   clientReferenceId,
   successUrl,
   cancelUrl,
@@ -32,31 +34,33 @@ export const createCheckout = async ({
       typescript: true,
     });
 
-    const userParam: {
+    const extraParams: {
       customer?: string;
       customer_creation?: "always";
       customer_email?: string;
+      invoice_creation?: { enabled: boolean };
+      payment_intent_data?: { setup_future_usage: "on_session" };
+      tax_id_collection?: { enabled: boolean };
     } = {};
 
     if (user?.customerId) {
-      userParam.customer = user.customerId;
+      extraParams.customer = user.customerId;
     } else {
-      userParam.customer_creation = "always";
-
-      if (user?.email) {
-        userParam.customer_email = user.email;
+      if (mode === "payment") {
+        extraParams.customer_creation = "always";
+        extraParams.invoice_creation = { enabled: true };
+        extraParams.payment_intent_data = { setup_future_usage: "on_session" };
       }
+      if (user?.email) {
+        extraParams.customer_email = user.email;
+      }
+      extraParams.tax_id_collection = { enabled: true };
     }
 
     const stripeSession = await stripe.checkout.sessions.create({
-      mode: "payment",
-      ...userParam,
+      mode,
       allow_promotion_codes: true,
-      invoice_creation: { enabled: true },
-      // Uncomment this if you want to collect taxes information (like VAT)
-      // tax_id_collection: { enabled: true },
       client_reference_id: clientReferenceId,
-      payment_intent_data: { setup_future_usage: "on_session" },
       line_items: [
         {
           price: priceId,
@@ -72,6 +76,7 @@ export const createCheckout = async ({
         : [],
       success_url: successUrl,
       cancel_url: cancelUrl,
+      ...extraParams,
     });
 
     return stripeSession.url;
