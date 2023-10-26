@@ -20,8 +20,6 @@ const ButtonSignin = ({
   const supabase = createClientComponentClient();
   const [user, setUser] = useState<any>(null);
 
-  console.log(user?.user_metadata);
-
   useEffect(() => {
     const getUser = async () => {
       const { data } = await supabase.auth.getUser();
