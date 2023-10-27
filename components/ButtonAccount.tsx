@@ -62,6 +62,8 @@ const ButtonAccount = () => {
                 alt={"Profile picture"}
                 className="w-6 h-6 rounded-full shrink-0"
                 referrerPolicy="no-referrer"
+                width={24}
+                height={24}
               />
             ) : (
               <span className="w-8 h-8 bg-base-100 flex justify-center items-center rounded-full shrink-0 capitalize">

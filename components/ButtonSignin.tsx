@@ -51,6 +51,8 @@ const ButtonSignin = ({
               alt={user?.user_metadata?.name || "Account"}
               className="w-6 h-6 rounded-full shrink-0"
               referrerPolicy="no-referrer"
+              width={24}
+              height={24}
             />
           ) : (
             <span className="w-6 h-6 bg-base-300 flex justify-center items-center rounded-full shrink-0">
