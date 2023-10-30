@@ -22,7 +22,7 @@
     "eslint-config-next": "13.4.19",
     "form-data": "^4.0.0",
     "mailgun.js": "^9.2.1",
-    "next": "^13.4.12",
+    "next": "^14.0.0",
     "next-sitemap": "^4.2.2",
     "nextjs-toploader": "^1.4.2",
     "nodemailer": "^6.9.4",
