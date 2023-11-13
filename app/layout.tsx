@@ -1,6 +1,7 @@
 import { ReactNode } from "react";
 import { Inter } from "next/font/google";
 import { Viewport } from "next";
+import PlausibleProvider from "next-plausible";
 import { getSEOTags } from "@/libs/seo";
 import ClientLayout from "@/components/LayoutClient";
 import config from "@/config";
@@ -24,11 +25,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
     <html lang="en" data-theme={config.colors.theme} className={font.className}>
       {config.domainName && (
         <head>
-          <script
-            defer
-            data-domain={config.domainName}
-            src="https://plausible.io/js/script.js"
-          ></script>
+          <PlausibleProvider domain={config.domainName} />
         </head>
       )}
       <body>
