@@ -13,7 +13,7 @@ const ButtonCheckout = ({
   mode = "payment",
 }: {
   priceId: string;
-  mode: "payment" | "subscription";
+  mode?: "payment" | "subscription";
 }) => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
