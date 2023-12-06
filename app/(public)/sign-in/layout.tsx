@@ -4,7 +4,7 @@ import { getSEOTags } from "@/libs/seo";
 
 export const metadata = getSEOTags({
   title: `Sign-in to ${config.appName}`,
-  canonicalUrlRelative: "/auth/signin",
+  canonicalUrlRelative: "/auth/sign-in",
 });
 
 export default function Layout({ children }: { children: ReactNode }) {

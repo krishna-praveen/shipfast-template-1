@@ -3,12 +3,12 @@ import { ConfigProps } from "./types/config";
 
 const config = {
   // REQUIRED
-  appName: "ShipFast",
+  appName: "Pump",
   // REQUIRED: a short description of your app for SEO tags (can be overwritten)
   appDescription:
-    "The NextJS boilerplate with all you need to build your SaaS, AI tool, or any other web app.",
+    "Responsável por trazer soluções para o mundo de exercício físico auxiliando Personal Trainers.",
   // REQUIRED (no https://, not trialing slash at the end, just the naked domain)
-  domainName: "shipfa.st",
+  domainName: "pump",
   crisp: {
     // Crisp website ID. IF YOU DON'T USE CRISP: just remove this => Then add a support email in this config file (mailgun.supportEmail) otherwise customer support won't work.
     id: "",
@@ -25,20 +25,17 @@ const config = {
             ? "price_1Niyy5AxyNprDp7iZIqEyD2h"
             : "price_456",
         //  REQUIRED - Name of the plan, displayed on the pricing page
-        name: "Starter",
+        name: "Plano Básico",
         // A friendly description of the plan, displayed on the pricing page. Tip: explain why this plan and not others
-        description: "Perfect for small projects",
+        description: "Perfeito para quem está começando",
         // The price you want to display, the one user will be charged on Stripe.
-        price: 99,
+        price: 19,
         // If you have an anchor price (i.e. $29) that you want to display crossed out, put it here. Otherwise, leave it empty
-        priceAnchor: 149,
+        priceAnchor: 29,
         features: [
-          {
-            name: "NextJS boilerplate",
-          },
-          { name: "User oauth" },
-          { name: "Database" },
-          { name: "Emails" },
+          { name: "10 alunos registrados" },
+          { name: "10 avaliações registradas" },
+          { name: "10 treinos registrados" },
         ],
       },
       {
@@ -48,19 +45,34 @@ const config = {
             : "price_456",
         // This plan will look different on the pricing page, it will be highlighted. You can only have one plan with isFeatured: true
         isFeatured: true,
-        name: "Advanced",
-        description: "You need more power",
-        price: 149,
-        priceAnchor: 299,
+        name: "Plano Avançado",
+        description: "Você precisa de mais recurso",
+        price: 39,
+        priceAnchor: 49,
         features: [
-          {
-            name: "NextJS boilerplate",
-          },
-          { name: "User oauth" },
-          { name: "Database" },
-          { name: "Emails" },
-          { name: "1 year of updates" },
-          { name: "24/7 support" },
+          { name: "30 alunos registrados" },
+          { name: "30 avaliações registradas" },
+          { name: "30 treinos registrados" },
+          { name: "Envio de treino/avaliação via email" },
+          { name: "24/7 suporte" },
+        ],
+      },
+      {
+        priceId:
+          process.env.NODE_ENV === "development"
+            ? "price_1O5KtcAxyNprDp7iftKnrrpw"
+            : "price_456",
+        // This plan will look different on the pricing page, it will be highlighted. You can only have one plan with isFeatured: true
+        name: "Plano Premium",
+        description: "Outro patamar",
+        price: 59,
+        features: [
+          { name: "50 alunos registrados" },
+          { name: "50 avaliações registradas" },
+          { name: "50 treinos registrados" },
+          { name: "Envio de treino/avaliação via email" },
+          { name: "Treino compartilhável com os alunos" },
+          { name: "24/7 suporte" },
         ],
       },
     ],
@@ -85,16 +97,16 @@ const config = {
   },
   colors: {
     // REQUIRED — The DaisyUI theme to use (added to the main layout.js). Leave blank for default (light & dark mode). If you any other theme than light/dark, you need to add it in config.tailwind.js in daisyui.themes.
-    theme: "light",
+    theme: "dark",
     // REQUIRED — This color will be reflected on the whole app outside of the document (loading bar, Chrome tabs, etc..). By default it takes the primary color from your DaisyUI theme (make sure to update your the theme name after "data-theme=")
     // OR you can just do this to use a custom color: main: "#f37055". HEX only.
-    main: themes[`[data-theme=light]`]["primary"],
+    main: themes[`[data-theme=dark]`]["primary"],
   },
   auth: {
     // REQUIRED — the path to log in users. It's use to protect private routes (like /dashboard). It's used in apiClient (/libs/api.js) upon 401 errors from our API
-    loginUrl: "/signin",
+    loginUrl: "/sign-in",
     // REQUIRED — the path you want to redirect users after successfull login (i.e. /dashboard, /private). This is normally a private page for users to manage their accounts. It's used in apiClient (/libs/api.js) upon 401 errors from our API & in ButtonSignin.js
-    callbackUrl: "/dashboard",
+    callbackUrl: "/home",
   },
 } as ConfigProps;
 

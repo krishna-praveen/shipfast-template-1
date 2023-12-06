@@ -13,22 +13,21 @@ interface FAQItemProps {
 
 const faqList: FAQItemProps[] = [
   {
-    question: "What do I get exactly?",
-    answer: <div className="space-y-2 leading-relaxed">Loreum Ipseum</div>,
+    question: "Como eu posso adquirir o Pump?",
+    answer: <div className="space-y-2 leading-relaxed">Você pode adquirir o Pump através de planos, e cada plano terá um valor. Só existe uma única forma de pagamento: cartão de crédito.</div>,
   },
   {
-    question: "Can I get a refund?",
+    question: "Posso obter um reembolso?",
     answer: (
       <p>
-        Yes! You can request a refund within 7 days of your purchase. Reach out
-        by email.
+        Sim! Você pode solicitar um reembolso no prazo de 7 dias após a compra. Contate-nos por email.
       </p>
     ),
   },
   {
-    question: "I have another question",
+    question: "Eu tenho outra pergunta",
     answer: (
-      <div className="space-y-2 leading-relaxed">Cool, contact us by email</div>
+      <div className="space-y-2 leading-relaxed">Legal, contate-nos pelo email.</div>
     ),
   },
 ];
@@ -62,18 +61,16 @@ const FaqItem = ({ item }: { item: FAQItemProps }) => {
             width="16"
             height="2"
             rx="1"
-            className={`transform origin-center transition duration-200 ease-out ${
-              isOpen && "rotate-180"
-            }`}
+            className={`transform origin-center transition duration-200 ease-out ${isOpen && "rotate-180"
+              }`}
           />
           <rect
             y="7"
             width="16"
             height="2"
             rx="1"
-            className={`transform origin-center rotate-90 transition duration-200 ease-out ${
-              isOpen && "rotate-180 hidden"
-            }`}
+            className={`transform origin-center rotate-90 transition duration-200 ease-out ${isOpen && "rotate-180 hidden"
+              }`}
           />
         </svg>
       </button>
@@ -100,7 +97,7 @@ const FAQ = () => {
         <div className="flex flex-col text-left basis-1/2">
           <p className="inline-block font-semibold text-primary mb-4">FAQ</p>
           <p className="sm:text-4xl text-3xl font-extrabold text-base-content">
-            Frequently Asked Questions
+            Perguntas frequentes
           </p>
         </div>
 

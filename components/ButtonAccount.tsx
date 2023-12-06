@@ -27,8 +27,8 @@ const ButtonAccount = () => {
     getUser();
   }, [supabase]);
 
-  const handleSignOut = () => {
-    supabase.auth.signOut();
+  const handleSignOut = async () => {
+    await supabase.auth.signOut({ scope: "global" });
     window.location.href = "/";
   };
 
@@ -73,7 +73,7 @@ const ButtonAccount = () => {
 
             {user?.user_metadata?.name ||
               user?.email?.split("@")[0] ||
-              "Account"}
+              "Conta"}
 
             {isLoading ? (
               <span className="loading loading-spinner loading-xs"></span>
@@ -82,9 +82,8 @@ const ButtonAccount = () => {
                 xmlns="http://www.w3.org/2000/svg"
                 viewBox="0 0 20 20"
                 fill="currentColor"
-                className={`w-5 h-5 duration-200 opacity-50 ${
-                  open ? "transform rotate-180 " : ""
-                }`}
+                className={`w-5 h-5 duration-200 opacity-50 ${open ? "transform rotate-180 " : ""
+                  }`}
               >
                 <path
                   fillRule="evenodd"
@@ -121,7 +120,7 @@ const ButtonAccount = () => {
                         clipRule="evenodd"
                       />
                     </svg>
-                    Billing
+                    Plano
                   </button>
                   <button
                     className="flex items-center gap-2 hover:bg-error/20 hover:text-error duration-200 py-1.5 px-4 w-full rounded-lg font-medium"
@@ -144,7 +143,7 @@ const ButtonAccount = () => {
                         clipRule="evenodd"
                       />
                     </svg>
-                    Logout
+                    Sair
                   </button>
                 </div>
               </div>

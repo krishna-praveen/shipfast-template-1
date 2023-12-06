@@ -10,7 +10,7 @@ import config from "@/config";
 // It automatically redirects user to callbackUrl (config.auth.callbackUrl) after login, which is normally a private page for users to manage their accounts.
 // If the user is already logged in, it will show their profile picture & redirect them to callbackUrl immediately.
 const ButtonSignin = ({
-  text = "Get started",
+  text = "Entrar",
   extraStyle,
 }: {
   text?: string;
@@ -27,6 +27,7 @@ const ButtonSignin = ({
     };
 
     getUser();
+
   }, [supabase]);
 
   if (user) {
@@ -38,7 +39,7 @@ const ButtonSignin = ({
         {user?.user_metadata?.avatar_url ? (
           <img
             src={user?.user_metadata?.avatar_url}
-            alt={user?.user_metadata?.name || "Account"}
+            alt={user?.user_metadata?.name || "Conta"}
             className="w-6 h-6 rounded-full shrink-0"
             referrerPolicy="no-referrer"
             width={24}
@@ -49,7 +50,7 @@ const ButtonSignin = ({
             {user?.user_metadata?.name?.charAt(0) || user?.email?.charAt(0)}
           </span>
         )}
-        {user?.user_metadata?.name || user?.email || "Account"}
+        {user?.user_metadata?.name || user?.email || "Conta"}
       </Link>
     );
   }

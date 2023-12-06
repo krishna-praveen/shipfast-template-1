@@ -34,7 +34,7 @@ const Footer = () => {
               {config.appDescription}
             </p>
             <p className="mt-3 text-sm text-base-content/60">
-              Copyright © {new Date().getFullYear()} - All rights reserved
+              Copyright © {new Date().getFullYear()} - Todos os direitos reservados
             </p>
           </div>
           <div className="flex-grow flex flex-wrap justify-center -mb-10 md:mt-0 mt-10 text-center">
@@ -51,15 +51,12 @@ const Footer = () => {
                     className="link link-hover"
                     aria-label="Contact Support"
                   >
-                    Support
+                    Suporte
                   </a>
                 )}
                 <Link href="/#pricing" className="link link-hover">
-                  Pricing
+                  Preços
                 </Link>
-                <a href="/#" target="_blank" className="link link-hover">
-                  Affiliates
-                </a>
               </div>
             </div>
 
@@ -70,10 +67,10 @@ const Footer = () => {
 
               <div className="flex flex-col justify-center items-center md:items-start gap-2 mb-10 text-sm">
                 <Link href="/tos" className="link link-hover">
-                  Terms of services
+                  Termos de Serviços
                 </Link>
                 <Link href="/privacy-policy" className="link link-hover">
-                  Privacy policy
+                  Política de Privacidade
                 </Link>
               </div>
             </div>

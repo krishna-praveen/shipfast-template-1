@@ -1,28 +1,37 @@
 "use client";
 
 import Link from "next/link";
-import { useState } from "react";
+import React, { useState } from "react";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import { Provider } from "@supabase/supabase-js";
 import toast from "react-hot-toast";
 import config from "@/config";
+import { useRouter } from "next/navigation";
 
 // This a login/singup page for Supabase Auth.
 // Successfull login redirects to /api/auth/callback where the Code Exchange is processed (see app/api/auth/callback/route.js).
-export default function Login() {
+export default function SignIn() {
   const supabase = createClientComponentClient();
+
   const [email, setEmail] = useState<string>("");
+  const [password, setPassword] = useState<string>("");
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isDisabled, setIsDisabled] = useState<boolean>(false);
+
+  const router = useRouter()
 
   const handleSignup = async (options: {
     type: string;
     provider?: Provider;
+    event: React.FormEvent<HTMLFormElement> | React.MouseEvent<HTMLButtonElement, MouseEvent>
   }) => {
+    const { type, provider, event } = options;
+
+    event.preventDefault();
+
     setIsLoading(true);
 
     try {
-      const { type, provider } = options;
       const redirectURL = window.location.origin + "/api/auth/callback";
 
       if (type === "oauth") {
@@ -32,17 +41,18 @@ export default function Login() {
             redirectTo: redirectURL,
           },
         });
-      } else if (type === "magic_link") {
-        await supabase.auth.signInWithOtp({
+      } else if (type === "email-password") {
+
+        await supabase.auth.signInWithPassword({
           email,
-          options: {
-            emailRedirectTo: redirectURL,
-          },
+          password,
         });
 
-        toast.success("Check your emails!");
+        toast.success("Login realizado com sucesso!", { position: "top-right" });
 
         setIsDisabled(true);
+
+        router.replace("/home")
       }
     } catch (error) {
       console.log(error);
@@ -53,6 +63,7 @@ export default function Login() {
 
   return (
     <main className="p-8 md:p-24" data-theme={config.colors.theme}>
+
       <div className="text-center mb-4">
         <Link href="/" className="btn btn-ghost btn-sm">
           <svg
@@ -70,14 +81,15 @@ export default function Login() {
           Home
         </Link>
       </div>
+
       <h1 className="text-3xl md:text-4xl font-extrabold tracking-tight text-center mb-12">
-        Sign-in to {config.appName}{" "}
+        Entrar no {config.appName}{" "}
       </h1>
 
       <div className="space-y-8 max-w-xl mx-auto">
         <button
           className="btn btn-block"
-          onClick={(e) => handleSignup({ type: "oauth", provider: "google" })}
+          onClick={(event) => handleSignup({ type: "oauth", provider: "google", event })}
           disabled={isLoading}
         >
           {isLoading ? (
@@ -106,25 +118,34 @@ export default function Login() {
               />
             </svg>
           )}
-          Sign-up with Google
+          Entrar com Google
         </button>
 
         <div className="divider text-xs text-base-content/50 font-medium">
-          OR
+          OU
         </div>
 
         <form
           className="form-control w-full space-y-4"
-          onSubmit={(e) => handleSignup({ type: "magic_link" })}
+          onSubmit={(event) => handleSignup({ type: "email-password", event },)}
         >
           <input
             required
             type="email"
             value={email}
             autoComplete="email"
-            placeholder="tom@cruise.com"
+            placeholder="Seu e-mail"
             className="input input-bordered w-full placeholder:opacity-60"
             onChange={(e) => setEmail(e.target.value)}
+          />
+
+          <input
+            required
+            type="password"
+            value={password}
+            placeholder="Sua senha"
+            className="input input-bordered w-full placeholder:opacity-60"
+            onChange={(e) => setPassword(e.target.value)}
           />
 
           <button
@@ -135,8 +156,14 @@ export default function Login() {
             {isLoading && (
               <span className="loading loading-spinner loading-xs"></span>
             )}
-            Send Magic Link
+            Entrar
           </button>
+
+          <div className="text-left">
+            <Link href="/sign-up" className="link link-hover">
+              Criar conta
+            </Link>
+          </div>
         </form>
       </div>
     </main>
