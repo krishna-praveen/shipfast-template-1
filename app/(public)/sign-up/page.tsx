@@ -29,7 +29,6 @@ export default function Signup() {
     return regex.test(date);
   };
 
-
   const formatBirthDate = (input: string) => {
     let formatted = input.replace(/[^\d]/g, "");
 

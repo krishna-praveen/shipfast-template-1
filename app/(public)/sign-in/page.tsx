@@ -42,13 +42,18 @@ export default function SignIn() {
           },
         });
       } else if (type === "email-password") {
-
-        await supabase.auth.signInWithPassword({
+        const { error, data } = await supabase.auth.signInWithPassword({
           email,
           password,
         });
 
-        toast.success("Login realizado com sucesso!", { position: "top-right" });
+        if (error) {
+          toast.error("Por favor, verifique se seu email e senha estão corretos.", { position: "top-right" })
+        }
+
+        if (data.user && data.session) {
+          toast.success("Login realizado com sucesso!", { position: "top-right" });
+        }
 
         setIsDisabled(true);
 
@@ -158,6 +163,9 @@ export default function SignIn() {
             )}
             Entrar
           </button>
+          <Link href="/request-reset-password" className="link link-hover text-xs hover:text-blue-600">
+            Esqueci a senha
+          </Link>
 
           <div className="text-left">
             <Link href="/sign-up" className="link link-hover">
