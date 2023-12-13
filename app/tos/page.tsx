@@ -47,19 +47,17 @@ const TOS = () => {
               clipRule="evenodd"
             />
           </svg>
-          Back
+          Voltar
         </Link>
         <h1 className="text-3xl font-extrabold pb-6">
-          Terms and Conditions for {config.appName}
+          Termos e Condições de Uso do {config.appName}
         </h1>
 
         <pre
           className="leading-relaxed whitespace-pre-wrap"
           style={{ fontFamily: "sans-serif" }}
         >
-          {`Termos e Condições de Uso do Pump
-
-Última atualização: 12/12/2023
+          {`Última atualização: 12/12/2023
 
 Bem-vindo ao Pump (https://gopump.co). Estes Termos e Condições de Uso ("Termos") regem o uso do nosso aplicativo, que visa ajudar treinadores pessoais e pessoas que frequentam academias a melhorarem seu desempenho. Ao acessar ou usar o Pump, você concorda em cumprir estes Termos.
 

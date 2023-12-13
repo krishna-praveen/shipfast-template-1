@@ -47,19 +47,17 @@ const PrivacyPolicy = () => {
               clipRule="evenodd"
             />
           </svg>{" "}
-          Back
+          Voltar
         </Link>
         <h1 className="text-3xl font-extrabold pb-6">
-          Privacy Policy for {config.appName}
+          Política de Privacidade do {config.appName}
         </h1>
 
         <pre
           className="leading-relaxed whitespace-pre-wrap"
           style={{ fontFamily: "sans-serif" }}
         >
-          {`Política de Privacidade do Pump
-
-Última atualização: 12/12/2023
+          {`Última atualização: 12/12/2023
 
 Bem-vindo ao Pump (https://gopump.co), um aplicativo dedicado a ajudar treinadores pessoais e entusiastas da fitness a melhorarem seu desempenho. Sua privacidade é de extrema importância para nós. Esta Política de Privacidade delineia os tipos de informações que coletamos, como as utilizamos e as medidas que tomamos para protegê-las.
 
