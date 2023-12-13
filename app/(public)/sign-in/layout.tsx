@@ -1,12 +1,29 @@
 import { ReactNode } from "react";
-import config from "@/config";
-import { getSEOTags } from "@/libs/seo";
+import { redirect } from "next/navigation";
+import { cookies } from "next/headers";
+import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
 
-export const metadata = getSEOTags({
-  title: `Sign-in to ${config.appName}`,
-  canonicalUrlRelative: "/auth/sign-in",
-});
+// This is a server-side component to ensure the user is logged in.
+// If not, it will redirect to the login page.
+// It's applied to all subpages of /dashboard in /app/dashboard/*** pages
+// You can also add custom static UI elements like a Navbar, Sidebar, Footer, etc..
+// See https://shipfa.st/docs/tutorials/private-page
+export default async function LayoutPrivate({
+  children,
+}: {
+  children: ReactNode;
+}) {
+  if (process.env.NODE_ENV === 'production') {
+    const supabase = createServerComponentClient({ cookies });
 
-export default function Layout({ children }: { children: ReactNode }) {
+    const {
+      data: { session },
+    } = await supabase.auth.getSession();
+
+    if (!session) {
+      redirect("/");
+    }
+  }
+
   return <>{children}</>;
 }
