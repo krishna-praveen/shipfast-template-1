@@ -41,7 +41,8 @@ const ButtonCheckout = ({
     setIsLoading(false);
   };
 
-  return (
+  return process.env.NODE_ENV === "production" ? null : (
+
     <button
       className="btn btn-primary btn-block group"
       onClick={() => handlePayment()}

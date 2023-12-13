@@ -11,9 +11,14 @@ const Hero = () => {
         <p className="text-lg opacity-80 leading-relaxed">
           Maximize o potencial dos seus alunos com ferramentas inteligentes de planejamento e acompanhamento
         </p>
-        <button className="btn btn-primary btn-wide">
-          Adquirir {config.appName}
-        </button>
+        {
+          process.env.NODE_ENV === "production" ? null : (
+            <button className="btn btn-primary btn-wide">
+              Adquirir {config.appName}
+            </button>
+          )
+        }
+
       </div>
       <div className="lg:w-full">
         <Image
