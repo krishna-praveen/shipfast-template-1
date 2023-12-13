@@ -6,6 +6,8 @@ env:
 
 on:
   push:
+    branches:
+      - staging
     branches-ignore:
       - main
 
