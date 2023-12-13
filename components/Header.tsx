@@ -58,7 +58,7 @@ const Header = () => {
               width={32}
               height={32}
             />
-            <span className="font-extrabold text-lg">{config.appName}</span>
+            <span className="font-extrabold text-lg">{config.appName} |</span>
           </Link>
         </div>
         {/* Burger button to open menu on mobile */}
