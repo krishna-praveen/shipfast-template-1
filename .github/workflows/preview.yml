@@ -6,7 +6,7 @@ env:
 
 on:
   push:
-    branches:
+    branches-ignore:
       - main
 
 jobs:
