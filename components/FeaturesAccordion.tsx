@@ -80,9 +80,8 @@ const Item = ({
           <h3 className="inline">{title}</h3>
         </span>
         <svg
-          className={`flex-shrink-0 w-4 h-4 ml-auto fill-current ${
-            isOpen ? "fill-primary" : ""
-          }`}
+          className={`flex-shrink-0 w-4 h-4 ml-auto fill-current ${isOpen ? "fill-primary" : ""
+            }`}
           viewBox="0 0 16 16"
           xmlns="http://www.w3.org/2000/svg"
         >
@@ -91,18 +90,16 @@ const Item = ({
             width="16"
             height="2"
             rx="1"
-            className={`transform origin-center transition duration-200 ease-out ${
-              isOpen && "rotate-180"
-            }`}
+            className={`transform origin-center transition duration-200 ease-out ${isOpen && "rotate-180"
+              }`}
           />
           <rect
             y="7"
             width="16"
             height="2"
             rx="1"
-            className={`transform origin-center rotate-90 transition duration-200 ease-out ${
-              isOpen && "rotate-180 hidden"
-            }`}
+            className={`transform origin-center rotate-90 transition duration-200 ease-out ${isOpen && "rotate-180 hidden"
+              }`}
           />
         </svg>
       </button>

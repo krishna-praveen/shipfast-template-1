@@ -2,6 +2,7 @@ import { NextResponse, NextRequest } from "next/server";
 import { headers } from "next/headers";
 import Stripe from "stripe";
 import { SupabaseClient } from "@supabase/supabase-js";
+
 import configFile from "@/config";
 import { findCheckoutSession } from "@/libs/stripe";
 

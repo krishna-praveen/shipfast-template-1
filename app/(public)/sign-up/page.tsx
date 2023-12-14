@@ -4,8 +4,11 @@ import Link from "next/link";
 import React, { useState } from "react";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import toast from "react-hot-toast";
-import config from "@/config";
 import { useRouter } from "next/navigation";
+
+import config from "@/config";
+import { formatBirthDate, validateDate } from "@/libs/date";
+import { Input } from "@/components/Input";
 
 // This a login/singup page for Supabase Auth.
 // Successfull login redirects to /api/auth/callback where the Code Exchange is processed (see app/api/auth/callback/route.js).
@@ -17,27 +20,84 @@ export default function Signup() {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isDisabled, setIsDisabled] = useState<boolean>(false);
 
+  const [phone, setPhone] = useState<string>("");
+
   const [name, setName] = useState<string>("");
+  const [nameError, setNameError] = useState<string>("");
+
   const [birthDate, setBirthDate] = useState<string>("");
   const [birthDateError, setBirthDateError] = useState<string>("");
-  const [phone, setPhone] = useState<string>("");
-  const [email, setEmail] = useState<string>("");
-  const [password, setPassword] = useState<string>("");
 
-  const isValidDate = (date: string) => {
-    const regex = /^(0[1-9]|[12][0-9]|3[01])\/(0[1-9]|1[0-2])\/\d{4}$/;
-    return regex.test(date);
+  const [email, setEmail] = useState<string>("");
+  const [emailError, setEmailError] = useState<string>("");
+
+  const [password, setPassword] = useState<string>("");
+  const [passwordError, setPasswordError] = useState<string>("");
+
+  const validateEmail = (inputEmail: string) => {
+    if (!inputEmail || inputEmail.trim().length === 0) {
+      setEmailError("E-mail é obrigatório.");
+      return false;
+    }
+
+    if (!inputEmail.includes("@")) {
+      setEmailError("E-mail deve conter um @.");
+      return false;
+    }
+
+    setEmailError("");
+
+    return true;
   };
 
-  const formatBirthDate = (input: string) => {
-    let formatted = input.replace(/[^\d]/g, "");
-
-    if (formatted.length >= 3 && formatted.length <= 4) {
-      formatted = formatted.slice(0, 2) + "/" + formatted.slice(2);
-    } else if (formatted.length > 4) {
-      formatted = formatted.slice(0, 2) + "/" + formatted.slice(2, 4) + "/" + formatted.slice(4, 8);
+  const validateName = (inputName: string) => {
+    if (!inputName || inputName.trim().length === 0) {
+      setNameError("Nome é obrigatório.");
+      return false;
     }
-    return formatted;
+
+    if (inputName.length < 6) {
+      setNameError("O nome deve ter pelo menos 6 caracteres.");
+      return false;
+    }
+
+    setNameError("");
+
+    return true;
+  };
+
+  const validatePassword = (inputPassword: string) => {
+    if (!inputPassword || inputPassword.trim().length === 0) {
+      setPasswordError("Senha é obrigatória.");
+      return false;
+    }
+
+    if (inputPassword.length < 6) {
+      setPasswordError("A senha deve ter pelo menos 6 caracteres.");
+      return false;
+    }
+
+    setPasswordError("");
+
+    return true;
+  };
+
+  const handleEmailChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const newEmail = event.target.value;
+    setEmail(newEmail);
+    validateEmail(newEmail);
+  };
+
+  const handlePasswordChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const newPassword = event.target.value;
+    setPassword(newPassword);
+    validatePassword(newPassword);
+  };
+
+  const handleNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const newName = event.target.value;
+    setName(newName);
+    validateName(newName);
   };
 
   const handleBirthDateChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -45,12 +105,23 @@ export default function Signup() {
     setBirthDate(formattedDate);
   };
 
-
   const handleSignup = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
-    if (!isValidDate(birthDate)) {
+    if (!validateName(name)) {
+      return;
+    }
+
+    if (!validateDate(birthDate)) {
       setBirthDateError("Formato de data inválido. Use DD/MM/YYYY.");
+      return;
+    }
+
+    if (!validateEmail(email)) {
+      return;
+    }
+
+    if (!validatePassword(password)) {
       return;
     }
 
@@ -111,52 +182,44 @@ export default function Signup() {
         className="form-control w-full space-y-4"
         onSubmit={(e) => handleSignup(e)}
       >
-        <input
-          required
+        <Input
           type="text"
           value={name}
           placeholder="Seu nome"
-          className="input input-bordered w-full placeholder:opacity-60"
-          onChange={(e) => setName(e.target.value)}
+          onChange={handleNameChange}
+          errorName={nameError}
         />
 
-        <input
-          required
+        <Input
           type="text"
           value={birthDate}
           placeholder="Data de nascimento"
-          className={`input input-bordered w-full placeholder:opacity-60 ${birthDateError ? 'input-error' : ''}`}
           onChange={handleBirthDateChange}
+          errorName={birthDateError}
         />
-        {birthDateError && (
-          <p className="text-red-500 text-sm">{birthDateError}</p>
-        )}
 
-        <input
+        <Input
           type="text"
           value={phone}
           placeholder="Seu número (opcional)"
-          className="input input-bordered w-full placeholder:opacity-60"
           onChange={(e) => setPhone(e.target.value)}
         />
 
-        <input
-          required
+        <Input
           type="email"
           value={email}
-          autoComplete="email"
           placeholder="Seu e-mail"
-          className="input input-bordered w-full placeholder:opacity-60"
-          onChange={(e) => setEmail(e.target.value)}
+          onChange={handleEmailChange}
+          errorName={emailError}
+          autoComplete="email"
         />
 
-        <input
-          required
+        <Input
           type="password"
           value={password}
           placeholder="Sua senha"
-          className="input input-bordered w-full placeholder:opacity-60"
-          onChange={(e) => setPassword(e.target.value)}
+          onChange={handlePasswordChange}
+          errorName={passwordError}
         />
 
         <button

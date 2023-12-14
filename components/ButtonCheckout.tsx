@@ -1,10 +1,11 @@
 "use client";
 
 import { useState } from "react";
+import Image from "next/image";
+
 import apiClient from "@/libs/api";
 import config from "@/config";
 import logo from "@/app/icon.png";
-import Image from "next/image";
 
 // This component is used to create Stripe Checkout Sessions
 // It calls the /api/stripe/create-checkout route with the priceId, successUrl and cancelUrl
@@ -41,7 +42,8 @@ const ButtonCheckout = ({
     setIsLoading(false);
   };
 
-  return (
+  return process.env.NODE_ENV === "production" ? null : (
+
     <button
       className="btn btn-primary btn-block group"
       onClick={() => handlePayment()}
@@ -58,7 +60,7 @@ const ButtonCheckout = ({
           height={24}
         />
       )}
-      Get {config?.appName}
+      Adquirir {config?.appName}
     </button>
   );
 };

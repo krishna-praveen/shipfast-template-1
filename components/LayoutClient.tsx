@@ -7,6 +7,7 @@ import { Crisp } from "crisp-sdk-web";
 import NextTopLoader from "nextjs-toploader";
 import { Toaster } from "react-hot-toast";
 import { Tooltip } from "react-tooltip";
+
 import config from "@/config";
 
 // Crisp customer chat support:

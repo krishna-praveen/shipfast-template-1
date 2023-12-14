@@ -18,8 +18,9 @@ const CTA = () => {
           <p className="text-lg opacity-80 mb-12 md:mb-16">
             Diga adeus às planilhas obsoletas e abrace um sistema integrado para avaliação e treinamento
           </p>
-
-          <button className="btn btn-primary btn-wide">Comece agora com Pump</button>
+          {process.env.NODE_ENV === "production" ? null : (
+            <button className="btn btn-primary btn-wide">Comece agora com Pump</button>
+          )}
         </div>
       </div>
     </section>

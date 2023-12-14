@@ -1,5 +1,6 @@
 /* eslint-disable no-unused-vars */
 import { z } from "zod";
+
 import { AssessmentTypeEnum } from "./enums/assessment-type-enum";
 
 export const FormDataSchema = z.object({
@@ -101,4 +102,23 @@ export const FormDataSchema = z.object({
       /^(0[1-9]|[12][0-9]|3[01])\/(0[1-9]|1[0-2])\/\d{4}$/,
       "Por favor, utilize o formato: DD/MM/AAAA"
     ),
+});
+
+export const SignupSchema = z.object({
+  name: z
+    .string({ required_error: "Nome é obrigatório." })
+    .min(1, "Nome é obrigatório."),
+  birthDate: z
+    .string({ required_error: "A data de início é obrigatória" })
+    .regex(
+      /^(0[1-9]|[12][0-9]|3[01])\/(0[1-9]|1[0-2])\/\d{4}$/,
+      "Formato de data inválido. O formato deve ser DD/MM/YYYY"
+    ),
+  phone: z.string().optional(),
+  email: z
+    .string({ required_error: "E-mail é obrigatório." })
+    .email("E-mail de endereço inválido."),
+  password: z
+    .string({ required_error: "Senha é obrigatória." })
+    .min(6, "Password must be at least 6 characters long"),
 });

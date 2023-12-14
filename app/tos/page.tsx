@@ -1,4 +1,5 @@
 import Link from "next/link";
+
 import { getSEOTags } from "@/libs/seo";
 import config from "@/config";
 
@@ -12,14 +13,14 @@ import config from "@/config";
 // You are an excellent lawyer.
 
 // I need your help to write a simple Terms & Services for my website. Here is some context:
-// - Website: https://shipfa.st
-// - Name: ShipFast
-// - Contact information: marc@shipfa.st
-// - Description: A JavaScript code boilerplate to help entrepreneurs launch their startups faster
-// - Ownership: when buying a package, users can download code to create apps. They own the code but they do not have the right to resell it. They can ask for a full refund within 7 day after the purchase.
-// - User data collected: name, email and payment information
+// - Website: https://gopump.co
+// - Name: Pump
+// - Contact information: official@gopump.co
+// - Description: An application responsible for help Personal Trainers and People that like to go to the gym improve their performance.
+// - Ownership: when buying a plan/subscription, users can interact with many features. They can ask for a full refund within 7 day after the purchase.
+// - User data collected: name, email, phone and payment information
 // - Non-personal data collection: web cookies
-// - Link to privacy-policy: https://shipfa.st/privacy-policy
+// - Link to privacy-policy: https://gopump.co/privacy-policy
 // - Governing Law: France
 // - Updates to the Terms: users will be updated by email
 
@@ -47,49 +48,43 @@ const TOS = () => {
               clipRule="evenodd"
             />
           </svg>
-          Back
+          Voltar
         </Link>
         <h1 className="text-3xl font-extrabold pb-6">
-          Terms and Conditions for {config.appName}
+          Termos e Condições de Uso do {config.appName}
         </h1>
 
         <pre
           className="leading-relaxed whitespace-pre-wrap"
           style={{ fontFamily: "sans-serif" }}
         >
-          {`Last Updated: September 26, 2023
+          {`Última atualização: 12/12/2023
 
-Welcome to ShipFast!
+Bem-vindo ao Pump (https://gopump.co). Estes Termos e Condições de Uso ("Termos") regem o uso do nosso aplicativo, que visa ajudar treinadores pessoais e pessoas que frequentam academias a melhorarem seu desempenho. Ao acessar ou usar o Pump, você concorda em cumprir estes Termos.
 
-These Terms of Service ("Terms") govern your use of the ShipFast website at https://shipfa.st ("Website") and the services provided by ShipFast. By using our Website and services, you agree to these Terms.
+1. Informações de Contato
 
-1. Description of ShipFast
+Para quaisquer dúvidas ou informações, entre em contato conosco pelo e-mail official@gopump.co.
 
-ShipFast is a platform that offers a JavaScript code boilerplate to assist entrepreneurs in launching their startups more efficiently.
+2. Propriedade e Uso do Serviço
 
-2. Ownership and Usage Rights
+Ao adquirir um plano ou assinatura no Pump, você tem acesso a diversas funcionalidades. Caso não esteja satisfeito, oferecemos um reembolso integral dentro de 7 dias após a compra.
 
-When you purchase a package from ShipFast, you gain the right to download and use the code provided for creating applications. You own the code you create but do not have the right to resell it. We offer a full refund within 7 days of purchase, as specified in our refund policy.
+3. Coleta de Dados
 
-3. User Data and Privacy
+Coletamos dados pessoais, como nome, e-mail, telefone e informações de pagamento. Também utilizamos cookies da web para coletar dados não pessoais. Mais informações podem ser encontradas em nossa Política de Privacidade: https://gopump.co/privacy-policy.
 
-We collect and store user data, including name, email, and payment information, as necessary to provide our services. For details on how we handle your data, please refer to our Privacy Policy at https://shipfa.st/privacy-policy.
+4. Lei Aplicável
 
-4. Non-Personal Data Collection
+Estes Termos são regidos pelas leis do Brasil.
 
-We use web cookies to collect non-personal data for the purpose of improving our services and user experience.
+5. Alterações nos Termos
 
-5. Governing Law
+Reservamo-nos o direito de modificar estes Termos a qualquer momento. As alterações entrarão em vigor imediatamente após a publicação no site. Informaremos sobre alterações significativas através do e-mail fornecido por você.
 
-These Terms are governed by the laws of France.
+6. Aceitação dos Termos
 
-6. Updates to the Terms
-
-We may update these Terms from time to time. Users will be notified of any changes via email.
-
-For any questions or concerns regarding these Terms of Service, please contact us at marc@shipfa.st.
-
-Thank you for using ShipFast!`}
+Ao usar o Pump, você declara que leu, entendeu e concordou em estar vinculado a estes Termos.`}
         </pre>
       </div>
     </main>

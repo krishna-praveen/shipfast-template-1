@@ -5,9 +5,11 @@ import type { JSX } from "react";
 import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
-import ButtonSignin from "./ButtonSignin";
+
 import logo from "@/app/icon.png";
 import config from "@/config";
+
+import ButtonSignin from "./ButtonSignin";
 
 const links: {
   href: string;
@@ -101,7 +103,7 @@ const Header = () => {
         </div>
 
         {/* CTA on large screens */}
-        <div className="hidden lg:flex lg:justify-end lg:flex-1">{cta}</div>
+        <div className="hidden lg:flex lg:justify-end lg:flex-1">{process.env.NODE_ENV === "production" ? null : cta}</div>
       </nav>
 
       {/* Mobile menu, show/hide based on menu state. */}
@@ -126,7 +128,7 @@ const Header = () => {
                 height={32}
               />
               {/* <LogoIcon /> */}
-              <span className="font-extrabold text-lg">{config.appName} aa</span>
+              <span className="font-extrabold text-lg">{config.appName}</span>
             </Link>
             <button
               type="button"
@@ -169,7 +171,7 @@ const Header = () => {
             </div>
             <div className="divider"></div>
             {/* Your CTA on small screens */}
-            <div className="flex flex-col">{cta}</div>
+            <div className="flex flex-col">{process.env.NODE_ENV === "production" ? null : cta}</div>
           </div>
         </div>
       </div>

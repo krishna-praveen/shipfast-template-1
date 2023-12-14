@@ -1,6 +1,7 @@
 import { NextResponse, NextRequest } from "next/server";
 import { createRouteHandlerClient } from "@supabase/auth-helpers-nextjs";
 import { cookies } from "next/headers";
+
 import { calculateAssessmentResult } from "./functions/calculate-assessment-result";
 
 export async function POST(req: NextRequest) {

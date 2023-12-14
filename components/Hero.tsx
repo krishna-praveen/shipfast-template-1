@@ -1,5 +1,5 @@
 import Image from "next/image";
-import config from "@/config";
+import Link from "next/link";
 
 const Hero = () => {
   return (
@@ -11,9 +11,14 @@ const Hero = () => {
         <p className="text-lg opacity-80 leading-relaxed">
           Maximize o potencial dos seus alunos com ferramentas inteligentes de planejamento e acompanhamento
         </p>
-        <button className="btn btn-primary btn-wide">
-          Adquirir {config.appName}
-        </button>
+        {
+          process.env.NODE_ENV === "production" ? null : (
+            <Link href={`/#pricing`} className="btn btn-primary btn-wide">
+              Planos Disponíveis
+            </Link>
+          )
+        }
+
       </div>
       <div className="lg:w-full">
         <Image
