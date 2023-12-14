@@ -1,4 +1,5 @@
 import Link from "next/link";
+
 import { getSEOTags } from "@/libs/seo";
 import config from "@/config";
 

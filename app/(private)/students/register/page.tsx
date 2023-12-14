@@ -3,11 +3,11 @@
 
 import React, { useState } from "react";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
-
-import Layout from "@/components/Layout";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
 import { ArrowLeft } from "lucide-react";
+
+import Layout from "@/components/Layout";
 
 export const dynamic = "force-dynamic";
 

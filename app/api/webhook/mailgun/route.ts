@@ -1,4 +1,5 @@
 import { NextResponse, NextRequest } from "next/server";
+
 import { sendEmail } from "@/libs/mailgun";
 import config from "@/config";
 

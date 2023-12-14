@@ -1,5 +1,6 @@
 import Image from "next/image";
 import { StaticImageData } from "next/image";
+
 import config from "@/config";
 
 // The list of your testimonials. It needs 3 items to fill the row.
@@ -9,27 +10,27 @@ const list: {
   text: string;
   img?: string | StaticImageData;
 }[] = [
-  {
-    // Optional, use for social media like Twitter. Does not link anywhere but cool to display
-    username: "marclou",
-    // REQUIRED
-    name: "Marc Lou",
-    // REQUIRED
-    text: "Really easy to use. The tutorials are really useful and explains how everything works. Hope to ship my next project really fast!",
-    // Optional, a statically imported image (usually from your public folder—recommended) or a link to the person's avatar. Shows a fallback letter if not provided
-    img: "https://pbs.twimg.com/profile_images/1514863683574599681/9k7PqDTA_400x400.jpg",
-  },
-  {
-    username: "the_mcnaveen",
-    name: "Naveen",
-    text: "Setting up everything from the ground up is a really hard, and time consuming process. What you pay for will save your time for sure.",
-  },
-  {
-    username: "wahab",
-    name: "Wahab Shaikh",
-    text: "Easily saves 15+ hrs for me setting up trivial stuff. Now, I can directly focus on shipping features rather than hours of setting up the same technologies from scratch. Feels like a super power! :D",
-  },
-];
+    {
+      // Optional, use for social media like Twitter. Does not link anywhere but cool to display
+      username: "marclou",
+      // REQUIRED
+      name: "Marc Lou",
+      // REQUIRED
+      text: "Really easy to use. The tutorials are really useful and explains how everything works. Hope to ship my next project really fast!",
+      // Optional, a statically imported image (usually from your public folder—recommended) or a link to the person's avatar. Shows a fallback letter if not provided
+      img: "https://pbs.twimg.com/profile_images/1514863683574599681/9k7PqDTA_400x400.jpg",
+    },
+    {
+      username: "the_mcnaveen",
+      name: "Naveen",
+      text: "Setting up everything from the ground up is a really hard, and time consuming process. What you pay for will save your time for sure.",
+    },
+    {
+      username: "wahab",
+      name: "Wahab Shaikh",
+      text: "Easily saves 15+ hrs for me setting up trivial stuff. Now, I can directly focus on shipping features rather than hours of setting up the same technologies from scratch. Feels like a super power! :D",
+    },
+  ];
 
 // A single testimonial, to be rendered in  a list
 const Testimonial = ({ i }: { i: number }) => {

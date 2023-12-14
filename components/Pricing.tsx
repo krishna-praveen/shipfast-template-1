@@ -1,4 +1,5 @@
 import config from "@/config";
+
 import ButtonCheckout from "./ButtonCheckout";
 
 // <Pricing/> displays the pricing plans for your app
@@ -57,13 +58,16 @@ const Pricing = () => {
                     </div>
                   )}
                   <p className={`text-5xl tracking-tight font-extrabold`}>
-                    ${plan.price}
+                    R$ {plan.price.toFixed(2)}
                   </p>
-                  <div className="flex flex-col justify-end mb-[4px]">
-                    <p className="text-xs text-base-content/60 uppercase font-semibold">
-                      REAL
-                    </p>
-                  </div>
+                  {/* Lets comments this, for now */}
+                  {/* 
+                    <div className="flex flex-col justify-end mb-[4px]">
+                      <p className="text-xs text-base-content/60 uppercase font-semibold">
+                        REAIS
+                      </p>
+                    </div>
+                   */}
                 </div>
                 {plan.features && (
                   <ul className="space-y-2.5 leading-relaxed text-base flex-1">
@@ -88,7 +92,7 @@ const Pricing = () => {
                   </ul>
                 )}
                 <div className="space-y-2">
-                  <ButtonCheckout priceId={plan.priceId} />
+                  <ButtonCheckout priceId={plan.priceId} mode="subscription" />
                 </div>
               </div>
             </div>
