@@ -4,6 +4,7 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
+
 import config from "@/config";
 
 // A simple button to sign in with our providers (Google & Magic Links).

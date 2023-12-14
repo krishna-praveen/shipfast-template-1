@@ -1,11 +1,11 @@
 "use client"
 
 import { useRouter } from "next/navigation";
-
-import Layout from "@/components/Layout";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
+
+import Layout from "@/components/Layout";
 
 export const dynamic = "force-dynamic";
 

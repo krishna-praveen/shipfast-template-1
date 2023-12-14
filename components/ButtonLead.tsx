@@ -2,6 +2,7 @@
 
 import React, { useState, useRef } from "react";
 import { toast } from "react-hot-toast";
+
 import apiClient from "@/libs/api";
 
 // This component is used to collect the emails from the landing page

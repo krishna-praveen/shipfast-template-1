@@ -3,10 +3,10 @@
 import React, { useState } from "react";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import { CreditCard, LogOut } from "lucide-react";
+import toast from "react-hot-toast";
 
 import apiClient from "@/libs/api";
 import Layout from "@/components/Layout";
-import toast from "react-hot-toast";
 
 export const dynamic = "force-dynamic";
 

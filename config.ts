@@ -22,16 +22,16 @@ const config = {
         // REQUIRED — we use this to find the plan in the webhook (for instance if you want to update the user's credits based on the plan)
         priceId:
           process.env.NODE_ENV === "development"
-            ? "price_1Niyy5AxyNprDp7iZIqEyD2h"
-            : "price_456",
+            ? "price_1ODT8IA56A0EdwEkQ6OcAXYf"
+            : "need_to_be_configured",
         //  REQUIRED - Name of the plan, displayed on the pricing page
         name: "Plano Básico",
         // A friendly description of the plan, displayed on the pricing page. Tip: explain why this plan and not others
         description: "Perfeito para quem está começando",
         // The price you want to display, the one user will be charged on Stripe.
-        price: 19,
+        price: 29.9,
         // If you have an anchor price (i.e. $29) that you want to display crossed out, put it here. Otherwise, leave it empty
-        priceAnchor: 29,
+        // priceAnchor: 29,
         features: [
           { name: "10 alunos registrados" },
           { name: "10 avaliações registradas" },
@@ -41,14 +41,14 @@ const config = {
       {
         priceId:
           process.env.NODE_ENV === "development"
-            ? "price_1O5KtcAxyNprDp7iftKnrrpw"
-            : "price_456",
+            ? "price_1ODTDyA56A0EdwEkrGdzHKK9"
+            : "need_to_be_configured",
         // This plan will look different on the pricing page, it will be highlighted. You can only have one plan with isFeatured: true
         isFeatured: true,
         name: "Plano Avançado",
         description: "Você precisa de mais recurso",
-        price: 39,
-        priceAnchor: 49,
+        price: 39.9,
+        // priceAnchor: 49,
         features: [
           { name: "30 alunos registrados" },
           { name: "30 avaliações registradas" },
@@ -60,12 +60,12 @@ const config = {
       {
         priceId:
           process.env.NODE_ENV === "development"
-            ? "price_1O5KtcAxyNprDp7iftKnrrpw"
-            : "price_456",
+            ? "price_1ODTFeA56A0EdwEkebAeZlNy"
+            : "need_to_be_configured",
         // This plan will look different on the pricing page, it will be highlighted. You can only have one plan with isFeatured: true
         name: "Plano Premium",
         description: "Outro patamar",
-        price: 59,
+        price: 59.9,
         features: [
           { name: "50 alunos registrados" },
           { name: "50 avaliações registradas" },

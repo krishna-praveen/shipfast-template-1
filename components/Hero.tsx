@@ -1,5 +1,5 @@
 import Image from "next/image";
-import config from "@/config";
+import Link from "next/link";
 
 const Hero = () => {
   return (
@@ -13,9 +13,9 @@ const Hero = () => {
         </p>
         {
           process.env.NODE_ENV === "production" ? null : (
-            <button className="btn btn-primary btn-wide">
-              Adquirir {config.appName}
-            </button>
+            <Link href={`/#pricing`} className="btn btn-primary btn-wide">
+              Planos Disponíveis
+            </Link>
           )
         }
 

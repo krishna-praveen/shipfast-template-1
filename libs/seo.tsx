@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+
 import config from "@/config";
 
 // These are all the SEO tags you can add to your pages.
