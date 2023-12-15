@@ -5,29 +5,41 @@ import React, { useState } from "react";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
+import { z } from "zod";
+import { SubmitHandler, useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 
 import config from "@/config";
+import { SignInSchema } from "@/libs/schema";
+import { Input } from "@/components/Input";
+
+type Inputs = z.infer<typeof SignInSchema>;
 
 // This a login/singup page for Supabase Auth.
 // Successfull login redirects to /api/auth/callback where the Code Exchange is processed (see app/api/auth/callback/route.js).
 export default function SignIn() {
   const supabase = createClientComponentClient();
 
-  const [email, setEmail] = useState<string>("");
-  const [password, setPassword] = useState<string>("");
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isDisabled, setIsDisabled] = useState<boolean>(false);
 
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<Inputs>({
+    resolver: zodResolver(SignInSchema),
+  });
+
   const router = useRouter()
 
-  const handleSignIn = async (event: React.FormEvent<HTMLFormElement> | React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
-    event.preventDefault();
+  const onSubmit: SubmitHandler<Inputs> = async (event) => {
     setIsLoading(true);
 
     try {
       const { error, data } = await supabase.auth.signInWithPassword({
-        email,
-        password,
+        email: event.email,
+        password: event.password,
       });
 
       if (error) {
@@ -75,26 +87,28 @@ export default function SignIn() {
       <div className="space-y-8 max-w-xl mx-auto">
         <form
           className="form-control w-full space-y-4"
-          onSubmit={(event) => handleSignIn(event)}
+          onSubmit={handleSubmit(onSubmit)}
         >
-          <input
-            required
-            type="email"
-            value={email}
-            autoComplete="email"
-            placeholder="Seu e-mail"
-            className="input input-bordered w-full placeholder:opacity-60"
-            onChange={(e) => setEmail(e.target.value)}
-          />
+          <div>
+            <Input
+              type="email"
+              autoComplete="email"
+              placeholder="Seu e-mail"
+              className="input input-bordered w-full placeholder:opacity-60"
+              {...register('email')}
+              errorName={errors?.email?.message}
+            />
+          </div>
 
-          <input
-            required
-            type="password"
-            value={password}
-            placeholder="Sua senha"
-            className="input input-bordered w-full placeholder:opacity-60"
-            onChange={(e) => setPassword(e.target.value)}
-          />
+          <div>
+            <Input
+              type="password"
+              placeholder="Sua senha"
+              className="input input-bordered w-full placeholder:opacity-60"
+              {...register('password')}
+              errorName={errors?.password?.message}
+            />
+          </div>
 
           <button
             className="btn btn-primary btn-block"

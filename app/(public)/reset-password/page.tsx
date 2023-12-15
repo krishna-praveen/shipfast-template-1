@@ -5,30 +5,41 @@ import React, { useState } from "react";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
+import { z } from "zod";
+import { SubmitHandler, useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 
 import config from "@/config";
+import { ResetPasswordSchema } from "@/libs/schema";
+import { Input } from "@/components/Input";
+
+type Inputs = z.infer<typeof ResetPasswordSchema>;
 
 // This a login/singup page for Supabase Auth.
 // Successfull login redirects to /api/auth/callback where the Code Exchange is processed (see app/api/auth/callback/route.js).
 export default function ResetPassword() {
   const supabase = createClientComponentClient();
 
-  const [password, setPassword] = useState<string>("");
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isDisabled, setIsDisabled] = useState<boolean>(false);
 
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<Inputs>({
+    resolver: zodResolver(ResetPasswordSchema),
+  });
+
   const router = useRouter()
 
-  const handleResetPassword = async (event: any) => {
-    event.preventDefault()
+  const onSubmit: SubmitHandler<Inputs> = async ({ password }) => {
     setIsLoading(true);
 
     try {
-      const { error, data } = await supabase.auth.updateUser({ password });
-      console.log({ data })
+      const { error } = await supabase.auth.updateUser({ password });
 
       if (error) {
-        console.error(error);
         toast.error("Erro ao atualizar senha.", { position: 'top-right' })
       }
 
@@ -71,16 +82,17 @@ export default function ResetPassword() {
       <div className="space-y-8 max-w-xl mx-auto">
         <form
           className="form-control w-full space-y-4"
-          onSubmit={handleResetPassword}
+          onSubmit={handleSubmit(onSubmit)}
         >
-          <input
-            required
-            type="password"
-            value={password}
-            placeholder="Sua nova senha"
-            className="input input-bordered w-full placeholder:opacity-60"
-            onChange={(e) => setPassword(e.target.value)}
-          />
+          <div>
+            <Input
+              type="password"
+              placeholder="Sua nova senha"
+              className="input input-bordered w-full placeholder:opacity-60"
+              {...register('password')}
+              errorName={errors?.password?.message}
+            />
+          </div>
 
           <button
             className="btn btn-primary btn-block"
