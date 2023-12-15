@@ -76,6 +76,7 @@ export const createCheckout = async ({
         : [],
       success_url: successUrl,
       cancel_url: cancelUrl,
+      locale: "pt-BR",
       ...extraParams,
     });
 
@@ -99,6 +100,7 @@ export const createCustomerPortal = async ({
   const portalSession = await stripe.billingPortal.sessions.create({
     customer: customerId,
     return_url: returnUrl,
+    locale: "pt-BR",
   });
 
   return portalSession.url;

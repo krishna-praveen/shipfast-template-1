@@ -38,7 +38,6 @@ const Footer = () => {
               Copyright © {new Date().getFullYear()} - Todos os direitos reservados
             </p>
           </div>
-          {/* {process.env.NODE_ENV === "production" ? null : ( */}
           <div className="flex-grow flex flex-wrap justify-center -mb-10 md:mt-0 mt-10 text-center">
             <div className="lg:w-1/3 md:w-1/2 w-full px-4">
               <div className="footer-title font-semibold text-base-content tracking-widest text-sm md:text-left mb-3">
@@ -77,7 +76,6 @@ const Footer = () => {
               </div>
             </div>
           </div>
-          {/* )} */}
         </div>
       </div>
     </footer>
