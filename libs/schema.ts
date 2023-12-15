@@ -2,6 +2,7 @@
 import { z } from "zod";
 
 import { AssessmentTypeEnum } from "./enums/assessment-type-enum";
+import { validateDate } from "./date";
 
 export const FormDataSchema = z.object({
   studentId: z.string().min(1, "Aluno é obrigatório"),
@@ -104,21 +105,44 @@ export const FormDataSchema = z.object({
     ),
 });
 
+export const SignInSchema = z.object({
+  email: z
+    .string({ required_error: "O email é obrigatório." })
+    .email({ message: "E-mail inválido." }),
+  password: z
+    .string({ required_error: "A senha é obrigatória." })
+    .min(6, { message: "O tamanho da senha deve ser no mínimo 6 caracteres." }),
+});
+
+export const ResetPasswordSchema = z.object({
+  password: z
+    .string({ required_error: "A senha é obrigatória." })
+    .min(6, { message: "O tamanho da senha deve ser no mínimo 6 caracteres." }), // Adjust the validation as needed
+});
+
+export const RequestResetPasswordSchema = z.object({
+  email: z
+    .string({ required_error: "O email é obrigatório." })
+    .email({ message: "E-mail inválido." }),
+});
+
 export const SignupSchema = z.object({
   name: z
-    .string({ required_error: "Nome é obrigatório." })
-    .min(1, "Nome é obrigatório."),
-  birthDate: z
-    .string({ required_error: "A data de início é obrigatória" })
-    .regex(
-      /^(0[1-9]|[12][0-9]|3[01])\/(0[1-9]|1[0-2])\/\d{4}$/,
-      "Formato de data inválido. O formato deve ser DD/MM/YYYY"
-    ),
-  phone: z.string().optional(),
+    .string({ required_error: "O nome é obrigatório." })
+    .min(6, "O nome deve ter pelo menos 6 caracteres."),
   email: z
-    .string({ required_error: "E-mail é obrigatório." })
-    .email("E-mail de endereço inválido."),
+    .string({ required_error: "O email é obrigatório." })
+    .email("E-mail inválido."),
   password: z
-    .string({ required_error: "Senha é obrigatória." })
-    .min(6, "Password must be at least 6 characters long"),
+    .string({ required_error: "A senha é obrigatória." })
+    .min(6, "A senha deve ter pelo menos 6 caracteres."),
+  birthDate: z
+    .string({ required_error: "A data de nascimento é obrigatório." })
+    .refine((data) => validateDate(data), {
+      message: "Formato de data inválido. Use DD/MM/YYYY.",
+    }),
+  phone: z
+    .string()
+    .min(10, "O telefone deve ter pelo menos 11 caracteres.")
+    .optional(),
 });

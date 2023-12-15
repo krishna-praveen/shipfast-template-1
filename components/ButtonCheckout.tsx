@@ -11,6 +11,8 @@ import logo from "@/app/icon.png";
 
 import Modal from "./Modal";
 
+const IS_PRODUCTION = process.env.NODE_ENV === "production"
+
 // This component is used to create Stripe Checkout Sessions
 // It calls the /api/stripe/create-checkout route with the priceId, successUrl and cancelUrl
 // Users must be authenticated. It will prefill the Checkout data with their email and/or credit card (if any)
@@ -55,7 +57,7 @@ const ButtonCheckout = ({
     setIsLoading(false);
   };
 
-  return process.env.NODE_ENV === "production" ? null : (
+  return (
     <>
       <Modal isModalOpen={isModalOpen} setIsModalOpen={setIsModalOpen} title="Vamos nos cadastrar primeiro?">
         <div className="space-y-4">
@@ -66,7 +68,8 @@ const ButtonCheckout = ({
 
       <button
         className="btn btn-primary btn-block group"
-        onClick={() => handlePayment()}
+        onClick={IS_PRODUCTION ? () => null : () => handlePayment()}
+        disabled={IS_PRODUCTION ? true : false}
       >
         {isLoading ? (
           <span className="loading loading-spinner loading-xs"></span>
@@ -80,7 +83,7 @@ const ButtonCheckout = ({
             height={24}
           />
         )}
-        Adquirir {config?.appName}
+        {IS_PRODUCTION ? "WIP 🚧" : "Adquirir " + config?.appName}
       </button>
     </>
   );

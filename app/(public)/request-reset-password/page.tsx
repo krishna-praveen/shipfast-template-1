@@ -5,22 +5,35 @@ import React, { useState } from "react";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
+import { z } from "zod";
+import { SubmitHandler, useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 
+import { RequestResetPasswordSchema } from "@/libs/schema";
 import config from "@/config";
+import { Input } from "@/components/Input";
+
+type Inputs = z.infer<typeof RequestResetPasswordSchema>;
 
 // This a login/singup page for Supabase Auth.
 // Successfull login redirects to /api/auth/callback where the Code Exchange is processed (see app/api/auth/callback/route.js).
 export default function RequestResetPassword() {
   const supabase = createClientComponentClient();
 
-  const [email, setEmail] = useState<string>("");
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isDisabled, setIsDisabled] = useState<boolean>(false);
 
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<Inputs>({
+    resolver: zodResolver(RequestResetPasswordSchema),
+  });
+
   const router = useRouter()
 
-  const handleRequestResetPassword = async (event: any) => {
-    event.preventDefault()
+  const onSubmit: SubmitHandler<Inputs> = async ({ email }) => {
     setIsLoading(true);
 
     try {
@@ -69,17 +82,18 @@ export default function RequestResetPassword() {
       <div className="space-y-8 max-w-xl mx-auto">
         <form
           className="form-control w-full space-y-4"
-          onSubmit={handleRequestResetPassword}
+          onSubmit={handleSubmit(onSubmit)}
         >
-          <input
-            required
-            type="email"
-            value={email}
-            autoComplete="email"
-            placeholder="Seu e-mail"
-            className="input input-bordered w-full placeholder:opacity-60"
-            onChange={(e) => setEmail(e.target.value)}
-          />
+          <div>
+            <Input
+              type="email"
+              autoComplete="email"
+              placeholder="Seu e-mail"
+              className="input input-bordered w-full placeholder:opacity-60"
+              {...register('email')}
+              errorName={errors?.email?.message}
+            />
+          </div>
 
           <button
             className="btn btn-primary btn-block"
