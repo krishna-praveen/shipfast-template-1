@@ -129,6 +129,8 @@ export default function Signup() {
     setIsLoading(true);
 
     try {
+      const emailRedirectTo = window.location.origin + "/#pricing";
+
       await supabase.auth.signUp({
         email,
         password,
@@ -136,16 +138,16 @@ export default function Signup() {
         options: {
           data: {
             name
-          }
+          },
+          emailRedirectTo
         }
       })
 
-      toast.success("Cadastrado com sucesso.");
+      toast.success("Confirme o cadastro no seu e-mail. E finalize a compra.", { position: "top-center", duration: 5000, icon: '✅' })
 
       setIsDisabled(true);
 
-      router.replace("/sign-in")
-
+      router.replace("/")
     } catch (error) {
       console.log(error);
     } finally {

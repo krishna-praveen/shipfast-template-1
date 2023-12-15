@@ -2,10 +2,14 @@
 
 import { useState } from "react";
 import Image from "next/image";
+import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
+import Link from "next/link";
 
 import apiClient from "@/libs/api";
 import config from "@/config";
 import logo from "@/app/icon.png";
+
+import Modal from "./Modal";
 
 // This component is used to create Stripe Checkout Sessions
 // It calls the /api/stripe/create-checkout route with the priceId, successUrl and cancelUrl
@@ -18,23 +22,32 @@ const ButtonCheckout = ({
   priceId: string;
   mode?: "payment" | "subscription";
 }) => {
+  const supabase = createClientComponentClient();
+
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 
   const handlePayment = async () => {
     setIsLoading(true);
 
-    try {
-      const { url }: { url: string } = await apiClient.post(
-        "/stripe/create-checkout",
-        {
-          priceId,
-          successUrl: window.location.href,
-          cancelUrl: window.location.href,
-          mode,
-        }
-      );
+    const { data: { session } } = await supabase.auth.getSession()
 
-      window.location.href = url;
+    try {
+      if (!session) {
+        setIsModalOpen(true)
+      } else {
+        const { url }: { url: string } = await apiClient.post(
+          "/stripe/create-checkout",
+          {
+            priceId,
+            successUrl: window.location.href,
+            cancelUrl: window.location.href,
+            mode,
+          }
+        );
+
+        window.location.href = url;
+      }
     } catch (e) {
       console.error(e);
     }
@@ -43,25 +56,33 @@ const ButtonCheckout = ({
   };
 
   return process.env.NODE_ENV === "production" ? null : (
+    <>
+      <Modal isModalOpen={isModalOpen} setIsModalOpen={setIsModalOpen} title="Vamos nos cadastrar primeiro?">
+        <div className="space-y-4">
+          <p>Antes de iniciarmos, vamos nos cadastrar para assim iniciarmos a compra do plano?</p>
+          <Link href="/sign-up" className="btn btn-primary">Iniciar cadastro</Link>
+        </div>
+      </Modal>
 
-    <button
-      className="btn btn-primary btn-block group"
-      onClick={() => handlePayment()}
-    >
-      {isLoading ? (
-        <span className="loading loading-spinner loading-xs"></span>
-      ) : (
-        <Image
-          src={logo}
-          alt={`${config.appName} logo`}
-          priority={true}
-          className="w-6 h-6"
-          width={24}
-          height={24}
-        />
-      )}
-      Adquirir {config?.appName}
-    </button>
+      <button
+        className="btn btn-primary btn-block group"
+        onClick={() => handlePayment()}
+      >
+        {isLoading ? (
+          <span className="loading loading-spinner loading-xs"></span>
+        ) : (
+          <Image
+            src={logo}
+            alt={`${config.appName} logo`}
+            priority={true}
+            className="w-6 h-6"
+            width={24}
+            height={24}
+          />
+        )}
+        Adquirir {config?.appName}
+      </button>
+    </>
   );
 };
 
