@@ -24,6 +24,16 @@ export default async function LayoutPrivate({
   if (!session) {
     redirect(config.auth.loginUrl);
   }
+  const profile = await supabase
+    .from("profiles")
+    .select("*")
+    .eq("id", session?.user?.id)
+    .filter("has_access", "eq", true)
+    .single();
+
+  if (!profile.data) {
+    redirect("/home")
+  }
 
   return <>{children}</>;
 }
