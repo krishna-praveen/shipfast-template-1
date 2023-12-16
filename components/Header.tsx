@@ -9,7 +9,7 @@ import Image from "next/image";
 import logo from "@/app/icon.png";
 import config from "@/config";
 
-import ButtonSignIn from "./ButtonSignIn";
+import ButtonSignIn from "./ButtonSignin";
 
 const links: {
   href: string;
