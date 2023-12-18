@@ -2,12 +2,12 @@
 "use client"
 
 import React, { useState } from "react";
-import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
 import { ArrowLeft } from "lucide-react";
 
 import Layout from "@/components/Layout";
+import apiClient from "@/libs/api";
 
 export const dynamic = "force-dynamic";
 
@@ -19,8 +19,6 @@ enum NonGender {
 // It's a server component which means you can fetch data (like the user profile) before the page is rendered.
 // See https://shipfa.st/docs/tutorials/private-page
 export default function Register() {
-  const supabase = createClientComponentClient();
-
   const router = useRouter()
 
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -132,23 +130,18 @@ export default function Register() {
 
     setIsLoading(true);
 
+    const birthDateFormatted = birthDate.split('/').reverse().join('-');
     try {
-      const isoFormattedDate = birthDate.split('/').reverse().join('-');
-
-      const session = await supabase.auth.getSession()
-      const userId = session.data.session.user.id
-
-      await supabase.from('students').insert({
-        user_id: userId,
+      await apiClient.post("/students", {
         name,
         surname,
-        birth_date: isoFormattedDate,
+        birthDateFormatted,
         gender,
         state,
         city,
         email,
         phone
-      }).throwOnError()
+      })
 
       toast.success("Cadastrado com sucesso.");
 
@@ -218,7 +211,7 @@ export default function Register() {
 
           <div>
             <select className="select select-bordered w-full" onChange={handleGenderChange}>
-              <option selected defaultValue={NonGender.SEXO}>{NonGender.SEXO}</option>
+              <option value={NonGender.SEXO} defaultValue={NonGender.SEXO}>{NonGender.SEXO}</option>
               <option key="male" value="male">Masculino</option>
               <option key="female" value="female">Feminino</option>
             </select>

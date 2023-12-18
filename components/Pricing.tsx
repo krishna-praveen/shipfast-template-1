@@ -12,7 +12,7 @@ const Pricing = () => {
       <div className="py-24 px-8 max-w-5xl mx-auto">
         <div className="flex flex-col text-center w-full mb-20">
           <h2 className="font-bold text-3xl lg:text-5xl tracking-tight">
-            Escolha o plano ideal e potencialize seus treinamentos com o Pump
+            Encontre o plano perfeito com o Pump
           </h2>
         </div>
 
@@ -57,9 +57,16 @@ const Pricing = () => {
                       </p>
                     </div>
                   )}
-                  <p className={`text-5xl tracking-tight font-extrabold`}>
-                    R$ {plan.price.toFixed(2)}
-                  </p>
+                  <div className="flex flex-col">
+                    <p className={`text-5xl tracking-tight font-extrabold`}>
+                      R$ {plan.price.toFixed(2)}
+                    </p>
+                    <div className="pt-2">
+                      <p>Até <strong>{plan.options.student.quantity} alunos </strong> 💪🏽</p>
+                      <p>Até <strong>{plan.options.assessment.quantity} avaliações</strong> 🧾 por aluno</p>
+                      <p>Até <strong>{plan.options.workouts.quantity} treinos</strong> 🏋🏽 por aluno</p>
+                    </div>
+                  </div>
                   {/* Lets comments this, for now */}
                   {/* 
                     <div className="flex flex-col justify-end mb-[4px]">

@@ -40,6 +40,9 @@ export interface ConfigProps {
       description?: string;
       price: number;
       priceAnchor?: number;
+      options?: {
+        [key: string]: any;
+      };
       features: {
         name: string;
       }[];
@@ -56,6 +59,9 @@ export interface ConfigProps {
     fromAdmin: string;
     supportEmail?: string;
     forwardRepliesTo?: string;
+  };
+  resend: {
+    fromAdmin: string;
   };
   colors: {
     theme: Theme;

@@ -141,6 +141,32 @@ export async function POST(req: NextRequest) {
         //      - We will receive a "customer.subscription.deleted" when all retries were made and the subscription has expired
 
         break;
+      case "customer.subscription.trial_will_end": {
+        const stripeObject: Stripe.Subscription = event.data
+          .object as Stripe.Subscription;
+
+        const { data: profile } = await supabase
+          .from("profiles")
+          .select("*")
+          .eq("customer_id", stripeObject.customer)
+          .single();
+
+        if (!profile) {
+          console.error("No profile found", { profile });
+          break;
+        }
+
+        const priceId = stripeObject.items.data[0].price.id;
+
+        if (profile.price_id !== priceId) {
+          console.error("Price ID doesn't match", { priceId, profile });
+          break;
+        }
+
+        // Here we need to send a e-mail to the user to let him know his trial is about to end
+
+        break;
+      }
 
       default:
       // Unhandled event type

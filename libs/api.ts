@@ -33,7 +33,7 @@ apiClient.interceptors.response.use(
     error.message =
       typeof message === "string" ? message : JSON.stringify(message);
 
-    console.error(error.message);
+    // console.error(error.message);
 
     // Automatically display errors to the user
     if (error.message) {

@@ -13,15 +13,15 @@ export default async function LayoutPrivate({
 }: {
   children: ReactNode;
 }) {
-  const supabase = createServerComponentClient({ cookies });
+  // const supabase = createServerComponentClient({ cookies });
 
-  const {
-    data: { session },
-  } = await supabase.auth.getSession();
+  // const {
+  //   data: { session },
+  // } = await supabase.auth.getSession();
 
-  if (!session) {
-    redirect("/");
-  }
+  // if (!session) {
+  //   redirect("/");
+  // }
 
   return <>{children}</>;
 }
