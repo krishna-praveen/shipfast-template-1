@@ -164,12 +164,12 @@ export default function Register() {
     <Layout>
       <div className="flex flex-row items-center space-x-4">
         <ArrowLeft className="cursor-pointer hover:text-indigo-800" onClick={handleBack} />
-        <h1 className="text-3xl md:text-4xl font-extrabold">Registrar Aluno</h1>
+        <h1 className="text-3xl font-extrabold md:text-4xl">Registrar Aluno</h1>
       </div>
 
       <form className="mt-8 space-y-4" onSubmit={handleRegister}>
 
-        <div className="grid md:grid-cols-2 gap-4">
+        <div className="grid gap-4 md:grid-cols-2">
           <div>
             <input
               type="text"
@@ -179,7 +179,7 @@ export default function Register() {
               onChange={handleNameChange}
             />
             {nameError && (
-              <p className="text-red-500 text-sm">{nameError}</p>
+              <p className="text-sm text-red-500">{nameError}</p>
             )}
           </div>
 
@@ -192,7 +192,7 @@ export default function Register() {
               onChange={handleSurnameChange}
             />
             {surnameError && (
-              <p className="text-red-500 text-sm">{surnameError}</p>
+              <p className="text-sm text-red-500">{surnameError}</p>
             )}
           </div>
 
@@ -205,7 +205,7 @@ export default function Register() {
               onChange={(e) => handleBirthDateChange(e)}
             />
             {birthDateError && (
-              <p className="text-red-500 text-sm">{birthDateError}</p>
+              <p className="text-sm text-red-500">{birthDateError}</p>
             )}
           </div>
 
@@ -216,7 +216,7 @@ export default function Register() {
               <option key="female" value="female">Feminino</option>
             </select>
             {genderError && (
-              <p className="text-red-500 text-sm">{genderError}</p>
+              <p className="text-sm text-red-500">{genderError}</p>
             )}
           </div>
 
@@ -261,7 +261,7 @@ export default function Register() {
           </div>
         </div>
 
-        <button className="btn hover:bg-indigo-600 hover:text-white mt-8" type="submit">
+        <button className="btn mt-8 hover:bg-indigo-600 hover:text-white" type="submit">
           {isLoading && (
             <span className="loading loading-spinner loading-xs"></span>
           )}

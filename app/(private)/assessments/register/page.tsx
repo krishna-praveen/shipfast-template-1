@@ -770,10 +770,10 @@ export default function Register() {
     <Layout>
       <div className="flex flex-row items-center space-x-4">
         <ArrowLeft className="cursor-pointer hover:text-indigo-800" onClick={handleBack} />
-        <h1 className="text-3xl md:text-4xl font-extrabold">Registrar Avaliação</h1>
+        <h1 className="text-3xl font-extrabold md:text-4xl">Registrar Avaliação</h1>
       </div>
 
-      <section className='flex flex-row space-x-32 mt-16 justify-center'>
+      <section className='mt-16 flex flex-row justify-center space-x-32'>
         <nav aria-label='Progress'>
           <ul className="steps steps-vertical">
             {steps.map((step, index) => (
@@ -955,7 +955,7 @@ export default function Register() {
                 Insira as medidas corporais do aluno.
               </p>
               <div className='mt-10 sm:grid-cols-6'>
-                <div className='sm:col-span-3 flex flex-row space-x-4'>
+                <div className='flex flex-row space-x-4 sm:col-span-3'>
                   <div className='mt-2'>
                     <div>
                       <label htmlFor="bodyMeasurement.neck" className="label">Pescoço</label>

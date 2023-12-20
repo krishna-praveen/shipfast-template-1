@@ -40,14 +40,14 @@ const Testimonial = ({ i }: { i: number }) => {
 
   return (
     <li key={i}>
-      <figure className="relative max-w-lg h-full p-6 md:p-10 bg-base-200 rounded-2xl max-md:text-sm flex flex-col">
+      <figure className="relative flex h-full max-w-lg flex-col rounded-2xl bg-base-200 p-6 max-md:text-sm md:p-10">
         <blockquote className="relative flex-1">
-          <p className="text-base-content/80 leading-relaxed">
+          <p className="leading-relaxed text-base-content/80">
             {testimonial.text}
           </p>
         </blockquote>
-        <figcaption className="relative flex items-center justify-start gap-4 pt-4 mt-4 md:gap-8 md:pt-8 md:mt-8 border-t border-base-content/5">
-          <div className="w-full flex items-center justify-between gap-2">
+        <figcaption className="relative mt-4 flex items-center justify-start gap-4 border-t border-base-content/5 pt-4 md:mt-8 md:gap-8 md:pt-8">
+          <div className="flex w-full items-center justify-between gap-2">
             <div>
               <div className="font-medium text-base-content md:mb-0.5">
                 {testimonial.name}
@@ -59,17 +59,17 @@ const Testimonial = ({ i }: { i: number }) => {
               )}
             </div>
 
-            <div className="overflow-hidden rounded-full bg-base-300 shrink-0">
+            <div className="shrink-0 overflow-hidden rounded-full bg-base-300">
               {testimonial.img ? (
                 <Image
-                  className="w-10 h-10 md:w-12 md:h-12 rounded-full object-cover"
+                  className="h-10 w-10 rounded-full object-cover md:h-12 md:w-12"
                   src={list[i].img}
                   alt={`${list[i].name}'s testimonial for ${config.appName}`}
                   width={48}
                   height={48}
                 />
               ) : (
-                <span className="w-10 h-10 md:w-12 md:h-12 rounded-full flex justify-center items-center text-lg font-medium bg-base-300">
+                <span className="flex h-10 w-10 items-center justify-center rounded-full bg-base-300 text-lg font-medium md:h-12 md:w-12">
                   {testimonial.name.charAt(0)}
                 </span>
               )}
@@ -84,14 +84,14 @@ const Testimonial = ({ i }: { i: number }) => {
 const Testimonials3 = () => {
   return (
     <section id="testimonials">
-      <div className="py-24 px-8 max-w-7xl mx-auto">
-        <div className="flex flex-col text-center w-full mb-20">
+      <div className="mx-auto max-w-7xl px-8 py-24">
+        <div className="mb-20 flex w-full flex-col text-center">
           <div className="mb-8">
-            <h2 className="sm:text-5xl text-4xl font-extrabold text-base-content">
+            <h2 className="text-4xl font-extrabold text-base-content sm:text-5xl">
               212 makers are already shipping faster!
             </h2>
           </div>
-          <p className="lg:w-2/3 mx-auto leading-relaxed text-base text-base-content/80">
+          <p className="mx-auto text-base leading-relaxed text-base-content/80 lg:w-2/3">
             Don&apos;t take our word for it. Here&apos;s what they have to say
             about ShipFast.
           </p>
@@ -99,7 +99,7 @@ const Testimonials3 = () => {
 
         <ul
           role="list"
-          className="flex flex-col items-center lg:flex-row lg:items-stretch gap-6 lg:gap-8"
+          className="flex flex-col items-center gap-6 lg:flex-row lg:items-stretch lg:gap-8"
         >
           {[...Array(3)].map((e, i) => (
             <Testimonial key={i} i={i} />

@@ -218,8 +218,8 @@ export default function Assessments() {
 
   return (
     <Layout>
-      <h1 className="text-3xl md:text-4xl font-extrabold">Avaliações</h1>
-      <button className="btn hover:bg-indigo-600 hover:text-white mt-8" onClick={handleRegister}>
+      <h1 className="text-3xl font-extrabold md:text-4xl">Avaliações</h1>
+      <button className="btn mt-8 hover:bg-indigo-600 hover:text-white" onClick={handleRegister}>
         Registrar avaliações
       </button>
 

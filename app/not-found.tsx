@@ -6,11 +6,11 @@ import ButtonSupport from "@/components/ButtonSupport";
 // Show a cute SVG with your primary color
 export default function Custom404() {
   return (
-    <section className="relative bg-base-100 text-base-content h-screen w-full flex flex-col justify-center gap-8 items-center p-10">
-      <div className="p-6 bg-white rounded-xl">
+    <section className="relative flex h-screen w-full flex-col items-center justify-center gap-8 bg-base-100 p-10 text-base-content">
+      <div className="rounded-xl bg-white p-6">
         <svg
           xmlns="http://www.w3.org/2000/svg"
-          className="w-56 h-56"
+          className="h-56 w-56"
           viewBox="0 0 860.13137 571.14799"
         >
           <path
@@ -96,17 +96,17 @@ export default function Custom404() {
           />
         </svg>
       </div>
-      <p className="text-lg md:text-xl font-semibold">
+      <p className="text-lg font-semibold md:text-xl">
         This page doesn&apos;t exist 😅
       </p>
 
-      <div className="flex flex-wrap gap-4 justify-center">
+      <div className="flex flex-wrap justify-center gap-4">
         <Link href="/" className="btn btn-sm">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             viewBox="0 0 20 20"
             fill="currentColor"
-            className="w-5 h-5"
+            className="h-5 w-5"
           >
             <path
               fillRule="evenodd"

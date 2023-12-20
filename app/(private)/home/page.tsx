@@ -44,7 +44,7 @@ export default function Home() {
         </div>
       </Modal>
 
-      <h1 className="text-3xl md:text-4xl font-extrabold">Home</h1>
+      <h1 className="text-3xl font-extrabold md:text-4xl">Home</h1>
     </Layout>
   );
 }

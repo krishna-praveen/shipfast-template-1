@@ -62,6 +62,7 @@ export interface ConfigProps {
   };
   resend: {
     fromAdmin: string;
+    supportEmail?: string;
   };
   colors: {
     theme: Theme;

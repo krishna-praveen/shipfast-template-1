@@ -3,12 +3,12 @@ import Link from "next/link";
 
 const Hero = () => {
   return (
-    <section className="max-w-7xl mx-auto bg-base-100 flex flex-col lg:flex-row items-center justify-center gap-16 lg:gap-20 px-8 py-8 lg:py-20">
-      <div className="flex flex-col gap-10 lg:gap-14 items-center justify-center text-center lg:text-left lg:items-start">
-        <h1 className="font-extrabold text-4xl lg:text-6xl tracking-tight md:-mb-4">
+    <section className="mx-auto flex max-w-7xl flex-col items-center justify-center gap-16 bg-base-100 p-8 lg:flex-row lg:gap-20 lg:py-20">
+      <div className="flex flex-col items-center justify-center gap-10 text-center lg:items-start lg:gap-14 lg:text-left">
+        <h1 className="text-4xl font-extrabold tracking-tight md:-mb-4 lg:text-6xl">
           A revolução no gerenciamento de treino personalizado
         </h1>
-        <p className="text-lg opacity-80 leading-relaxed">
+        <p className="text-lg leading-relaxed opacity-80">
           Maximize o potencial dos seus alunos com ferramentas inteligentes de planejamento e acompanhamento
         </p>
 

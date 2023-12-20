@@ -67,7 +67,7 @@ const ButtonCheckout = ({
       </Modal>
 
       <button
-        className="btn btn-primary btn-block group"
+        className="group btn btn-primary btn-block"
         onClick={IS_PRODUCTION ? () => null : () => handlePayment()}
         disabled={IS_PRODUCTION ? true : false}
       >
@@ -78,7 +78,7 @@ const ButtonCheckout = ({
             src={logo}
             alt={`${config.appName} logo`}
             priority={true}
-            className="w-6 h-6"
+            className="h-6 w-6"
             width={24}
             height={24}
           />

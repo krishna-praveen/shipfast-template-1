@@ -43,13 +43,13 @@ const ButtonSignIn = ({
           <img
             src={user?.user_metadata?.avatar_url}
             alt={user?.user_metadata?.name || "Conta"}
-            className="w-6 h-6 rounded-full shrink-0"
+            className="h-6 w-6 shrink-0 rounded-full"
             referrerPolicy="no-referrer"
             width={24}
             height={24}
           />
         ) : (
-          <span className="w-6 h-6 bg-base-300 flex justify-center items-center rounded-full shrink-0">
+          <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-base-300">
             {user?.user_metadata?.name?.charAt(0) || user?.email?.charAt(0)}
           </span>
         )}

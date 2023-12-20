@@ -66,7 +66,7 @@ const Item = ({
   return (
     <li>
       <button
-        className="relative flex gap-2 items-center w-full py-5 text-base font-medium text-left border-t md:text-lg border-base-content/10"
+        className="relative flex w-full items-center gap-2 border-t border-base-content/10 py-5 text-left text-base font-medium md:text-lg"
         onClick={(e) => {
           e.preventDefault();
           setFeatureSelected();
@@ -80,7 +80,7 @@ const Item = ({
           <h3 className="inline">{title}</h3>
         </span>
         <svg
-          className={`flex-shrink-0 w-4 h-4 ml-auto fill-current ${isOpen ? "fill-primary" : ""
+          className={`ml-auto h-4 w-4 shrink-0 fill-current ${isOpen ? "fill-primary" : ""
             }`}
           viewBox="0 0 16 16"
           xmlns="http://www.w3.org/2000/svg"
@@ -90,7 +90,7 @@ const Item = ({
             width="16"
             height="2"
             rx="1"
-            className={`transform origin-center transition duration-200 ease-out ${isOpen && "rotate-180"
+            className={`origin-center transition duration-200 ease-out${isOpen && "rotate-180"
               }`}
           />
           <rect
@@ -98,7 +98,7 @@ const Item = ({
             width="16"
             height="2"
             rx="1"
-            className={`transform origin-center rotate-90 transition duration-200 ease-out ${isOpen && "rotate-180 hidden"
+            className={`origin-center rotate-90 transition duration-200 ease-out${isOpen && "hidden rotate-180"
               }`}
           />
         </svg>
@@ -106,7 +106,7 @@ const Item = ({
 
       <div
         ref={accordion}
-        className={`transition-all duration-300 ease-in-out text-base-content-secondary overflow-hidden`}
+        className={`text-base-content-secondary overflow-hidden transition-all duration-300 ease-in-out`}
         style={
           isOpen
             ? { maxHeight: accordion?.current?.scrollHeight, opacity: 1 }
@@ -167,20 +167,20 @@ const FeaturesAccordion = () => {
 
   return (
     <section
-      className="py-24 md:py-32 space-y-24 md:space-y-32 max-w-7xl mx-auto bg-base-100 "
+      className="mx-auto max-w-7xl space-y-24 bg-base-100 py-24 md:space-y-32 md:py-32 "
       id="features"
     >
       <div className="px-8">
-        <p className="font-medium text-sm text-accent mb-2">
+        <p className="mb-2 text-sm font-medium text-accent">
           There&apos;s a better way
         </p>
-        <h2 className="font-extrabold text-4xl lg:text-6xl tracking-tight mb-12 md:mb-24">
+        <h2 className="mb-12 text-4xl font-extrabold tracking-tight md:mb-24 lg:text-6xl">
           All you need to ship your startup in days,
-          <span className="bg-neutral text-neutral-content px-2 md:px-4 ml-1 md:ml-1.5 leading-relaxed whitespace-nowrap">
+          <span className="ml-1 whitespace-nowrap bg-neutral px-2 leading-relaxed text-neutral-content md:ml-1.5 md:px-4">
             not months
           </span>
         </h2>
-        <div className=" flex flex-col md:flex-row gap-12 md:gap-24">
+        <div className=" flex flex-col gap-12 md:flex-row md:gap-24">
           <div className="grid grid-cols-1 items-stretch gap-8 sm:gap-12 lg:grid-cols-2 lg:gap-20">
             <ul className="w-full">
               {features.map((feature, i) => (

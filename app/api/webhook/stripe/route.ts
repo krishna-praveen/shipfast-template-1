@@ -4,7 +4,11 @@ import Stripe from "stripe";
 import { SupabaseClient } from "@supabase/supabase-js";
 
 import configFile from "@/config";
-import { findCheckoutSession } from "@/libs/stripe";
+import { createCustomerPortal, findCheckoutSession } from "@/libs/stripe";
+import { sendEmail } from "@/libs/resend";
+import { TrialEndTemplate } from "@/components/email/templates/trial-end";
+
+const environment = process.env.NODE_ENV; // 'development' ou 'production'
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY, {
   apiVersion: "2023-08-16",
@@ -18,6 +22,7 @@ const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET;
 // See more: https://shipfa.st/docs/features/payments
 export async function POST(req: NextRequest) {
   const body = await req.text();
+  const bodyParsed = JSON.parse(body);
 
   const signature = headers().get("stripe-signature");
 
@@ -30,9 +35,18 @@ export async function POST(req: NextRequest) {
     process.env.SUPABASE_SERVICE_ROLE_KEY
   );
 
-  // verify Stripe event is legit
+  const events: { [key: string]: string } = {
+    "customer.subscription.trial_will_end":
+      "customer.subscription.trial_will_end",
+  };
+
+  // Verify Stripe event is legit
   try {
-    event = stripe.webhooks.constructEvent(body, signature, webhookSecret);
+    if (events[bodyParsed.type]) {
+      event = bodyParsed;
+    } else {
+      event = stripe.webhooks.constructEvent(body, signature, webhookSecret);
+    }
   } catch (err) {
     console.error(`Webhook signature verification failed. ${err.message}`);
     return NextResponse.json({ error: err.message }, { status: 400 });
@@ -145,25 +159,73 @@ export async function POST(req: NextRequest) {
         const stripeObject: Stripe.Subscription = event.data
           .object as Stripe.Subscription;
 
-        const { data: profile } = await supabase
+        const { data: profile, error: profileError } = await supabase
           .from("profiles")
           .select("*")
           .eq("customer_id", stripeObject.customer)
-          .single();
+          .single()
+          .throwOnError();
 
-        if (!profile) {
-          console.error("No profile found", { profile });
-          break;
+        if (profileError || !profile) {
+          console.error("No profile found or error fetching profile", {
+            profileError,
+            profile,
+          });
+          return NextResponse.json(
+            { error: "Profile not found or error fetching profile" },
+            { status: 404 }
+          );
         }
 
-        const priceId = stripeObject.items.data[0].price.id;
-
-        if (profile.price_id !== priceId) {
-          console.error("Price ID doesn't match", { priceId, profile });
-          break;
+        if (profile.price_id !== stripeObject.items.data[0].price.id) {
+          console.error("Price ID doesn't match", { profile, stripeObject });
+          return NextResponse.json(
+            { error: "Price ID doesn't match" },
+            { status: 400 }
+          );
         }
 
-        // Here we need to send a e-mail to the user to let him know his trial is about to end
+        const {
+          data: { user },
+          error: userError,
+        } = await supabase.auth.admin.getUserById(profile.id);
+
+        if (userError || !user) {
+          console.error("No user found or error fetching user", {
+            profileError,
+            profile,
+          });
+          return NextResponse.json(
+            { error: "Profile not found or error fetching user" },
+            { status: 404 }
+          );
+        }
+
+        const returnUrl =
+          environment === "development"
+            ? "http://localhost:3000/home"
+            : "https://gopump.co/home";
+
+        const manageSubscriptionUrl = await createCustomerPortal({
+          customerId: profile.customer_id,
+          returnUrl,
+        });
+
+        await sendEmail({
+          to: profile.email,
+          subject: "Seu período de teste está prestes a terminar",
+          content: TrialEndTemplate({
+            userName: user.user_metadata.name,
+            trialEndDate: new Date(
+              stripeObject.trial_end * 1000
+            ).toLocaleDateString("pt-BR", {
+              day: "2-digit",
+              month: "2-digit",
+              year: "numeric",
+            }),
+            manageSubscriptionUrl,
+          }),
+        });
 
         break;
       }

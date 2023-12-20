@@ -26,7 +26,7 @@ const refTypes: {
       <svg
         xmlns="http://www.w3.org/2000/svg"
         viewBox="0 0 26.245 26.256"
-        className="w-[18px] h-[18px]"
+        className="h-[18px] w-[18px]"
       >
         <path
           d="M26.254 13.128c0 7.253-5.875 13.128-13.128 13.128S-.003 20.382-.003 13.128 5.872 0 13.125 0s13.128 5.875 13.128 13.128"
@@ -44,7 +44,7 @@ const refTypes: {
     ariaLabel: "See user post on Twitter",
     svg: (
       <svg
-        className="w-5 h-5 fill-[#00aCee]"
+        className="h-5 w-5 fill-[#00aCee]"
         xmlns="http://www.w3.org/2000/svg"
         viewBox="0 0 24 24"
       >
@@ -151,27 +151,27 @@ const Testimonial = ({ i }: { i: number }) => {
 
   return (
     <li key={i}>
-      <figure className="relative h-full p-6 bg-base-100 rounded-lg">
+      <figure className="relative h-full rounded-lg bg-base-100 p-6">
         <blockquote className="relative">
           <p className="text-sm text-base-content/80">{testimonial.text}</p>
         </blockquote>
-        <figcaption className="relative flex items-center justify-start gap-4 pt-4 mt-4 border-t border-base-content/5">
-          <div className="overflow-hidden rounded-full bg-base-300 shrink-0">
+        <figcaption className="relative mt-4 flex items-center justify-start gap-4 border-t border-base-content/5 pt-4">
+          <div className="shrink-0 overflow-hidden rounded-full bg-base-300">
             {testimonial.img ? (
               <Image
-                className="w-10 h-10 rounded-full object-cover"
+                className="h-10 w-10 rounded-full object-cover"
                 src={list[i].img}
                 alt={`${list[i].name}'s testimonial for ${config.appName}`}
                 width={48}
                 height={48}
               />
             ) : (
-              <span className="w-10 h-10 rounded-full flex justify-center items-center text-lg font-medium bg-base-300">
+              <span className="flex h-10 w-10 items-center justify-center rounded-full bg-base-300 text-lg font-medium">
                 {testimonial.name.charAt(0)}
               </span>
             )}
           </div>
-          <div className="w-full flex items-end justify-between gap-2">
+          <div className="flex w-full items-end justify-between gap-2">
             <div>
               <div className="text-sm font-medium text-base-content">
                 {testimonial.name}
@@ -203,14 +203,14 @@ const Testimonial = ({ i }: { i: number }) => {
 const Testimonials11 = () => {
   return (
     <section className="bg-base-200" id="testimonials">
-      <div className="py-24 px-8 max-w-7xl mx-auto">
-        <div className="flex flex-col text-center w-full mb-20">
+      <div className="mx-auto max-w-7xl px-8 py-24">
+        <div className="mb-20 flex w-full flex-col text-center">
           <div className="mb-8">
-            <h2 className="sm:text-5xl text-4xl font-extrabold text-base-content">
+            <h2 className="text-4xl font-extrabold text-base-content sm:text-5xl">
               212 makers are already shipping faster!
             </h2>
           </div>
-          <p className="lg:w-2/3 mx-auto leading-relaxed text-base text-base-content/80">
+          <p className="mx-auto text-base leading-relaxed text-base-content/80 lg:w-2/3">
             Don&apos;t take our word for it. Here&apos;s what they have to say
             about ShipFast.
           </p>
@@ -218,7 +218,7 @@ const Testimonials11 = () => {
 
         <ul
           role="list"
-          className="grid max-w-2xl grid-cols-1 gap-6 mx-auto sm:gap-8 md:grid-cols-2 lg:max-w-none lg:grid-cols-4"
+          className="mx-auto grid max-w-2xl grid-cols-1 gap-6 sm:gap-8 md:grid-cols-2 lg:max-w-none lg:grid-cols-4"
         >
           <li>
             <ul role="list" className="flex flex-col gap-y-6 sm:gap-y-8">
@@ -228,21 +228,21 @@ const Testimonials11 = () => {
             </ul>
           </li>
 
-          <li className="hidden md:grid order-none md:order-first lg:order-none col-span-2 grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8">
+          <li className="order-none col-span-2 hidden grid-cols-1 gap-6 sm:gap-8 md:order-first md:grid md:grid-cols-2 lg:order-none">
             {/* BIG FEATURED TESTIMONIAL — THE LAST ONE IN THE LIST (11th) */}
             <ul className="col-span-2">
               <li>
-                <figure className="relative h-full p-6 bg-base-100 rounded-lg">
+                <figure className="relative h-full rounded-lg bg-base-100 p-6">
                   <blockquote className="relative p-4">
                     <p className="text-lg font-medium text-base-content">
                       {list[list.length - 1].text}
                     </p>
                   </blockquote>
-                  <figcaption className="relative flex items-center justify-start gap-4 pt-4 mt-4 border-t border-base-content/5">
-                    <div className="overflow-hidden rounded-full bg-base-300 shrink-0">
+                  <figcaption className="relative mt-4 flex items-center justify-start gap-4 border-t border-base-content/5 pt-4">
+                    <div className="shrink-0 overflow-hidden rounded-full bg-base-300">
                       {list[list.length - 1].img ? (
                         <Image
-                          className="w-12 h-12 rounded-full object-cover"
+                          className="h-12 w-12 rounded-full object-cover"
                           src={list[list.length - 1].img}
                           alt={`${list[list.length - 1].name
                             }'s testimonial for MakeLanding`}
@@ -250,7 +250,7 @@ const Testimonials11 = () => {
                           height={48}
                         />
                       ) : (
-                        <span className="w-12 h-12 rounded-full flex justify-center items-center text-xl font-medium bg-base-300">
+                        <span className="flex h-12 w-12 items-center justify-center rounded-full bg-base-300 text-xl font-medium">
                           {list[list.length - 1].name.charAt(0)}
                         </span>
                       )}

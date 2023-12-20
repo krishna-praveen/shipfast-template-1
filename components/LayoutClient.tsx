@@ -30,7 +30,7 @@ const CrispChat = (): null => {
       }
     };
     getUser();
-  }, []);
+  }, [supabase.auth]);
 
   useEffect(() => {
     if (config?.crisp?.id) {
@@ -85,7 +85,7 @@ const ClientLayout = ({ children }: { children: ReactNode }) => {
       {/* Show tooltips if any JSX elements has these 2 attributes: data-tooltip-id="tooltip" data-tooltip-content="" */}
       <Tooltip
         id="tooltip"
-        className="z-[60] !opacity-100 max-w-sm shadow-lg"
+        className="z-[60] max-w-sm !opacity-100 shadow-lg"
       />
 
       {/* Set Crisp customer chat support */}

@@ -11,10 +11,10 @@ const ButtonSupport = () => {
     if (config.crisp?.id) {
       Crisp.chat.show();
       Crisp.chat.open();
-    } else if (config.mailgun?.supportEmail) {
+    } else if (config.resend?.supportEmail) {
       // open default email client in new window with "need help with ${config.appName}" as subject
       window.open(
-        `mailto:${config.mailgun.supportEmail}?subject=Need help with ${config.appName}`,
+        `mailto:${config.resend.supportEmail}?subject=Need help with ${config.appName}`,
         "_blank"
       );
     }
@@ -32,7 +32,7 @@ const ButtonSupport = () => {
         xmlns="http://www.w3.org/2000/svg"
         viewBox="0 0 20 20"
         fill="currentColor"
-        className="w-5 h-5"
+        className="h-5 w-5"
       >
         <path
           fillRule="evenodd"

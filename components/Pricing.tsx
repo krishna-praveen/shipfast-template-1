@@ -8,39 +8,39 @@ import ButtonCheckout from "./ButtonCheckout";
 
 const Pricing = () => {
   return (
-    <section className="bg-base-200 overflow-hidden" id="pricing">
-      <div className="py-24 px-8 max-w-5xl mx-auto">
-        <div className="flex flex-col text-center w-full mb-20">
-          <h2 className="font-bold text-3xl lg:text-5xl tracking-tight">
+    <section className="overflow-hidden bg-base-200" id="pricing">
+      <div className="mx-auto max-w-5xl px-8 py-24">
+        <div className="mb-20 flex w-full flex-col text-center">
+          <h2 className="text-3xl font-bold tracking-tight lg:text-5xl">
             Encontre o plano perfeito com o Pump
           </h2>
         </div>
 
-        <div className="relative flex justify-center flex-col lg:flex-row items-center lg:items-stretch gap-8">
+        <div className="relative flex flex-col items-center justify-center gap-8 lg:flex-row lg:items-stretch">
           {config.stripe.plans.map((plan) => (
             <div key={plan.priceId} className="relative w-full max-w-lg">
               {plan.isFeatured && (
-                <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 z-20">
+                <div className="absolute left-1/2 top-0 z-20 -translate-x-1/2 -translate-y-1/2">
                   <span
-                    className={`badge text-xs text-primary-content font-semibold border-0 bg-primary`}
+                    className={`badge border-0 bg-primary text-xs font-semibold text-primary-content`}
                   >
-                    POPULAR
+                    RECOMENDADO
                   </span>
                 </div>
               )}
 
               {plan.isFeatured && (
                 <div
-                  className={`absolute -inset-[1px] rounded-[9px] bg-primary z-10`}
+                  className={`absolute inset-[1px] z-10 rounded-[9px] bg-primary`}
                 ></div>
               )}
 
-              <div className="relative flex flex-col h-full gap-5 lg:gap-8 z-10 bg-base-100 p-8 rounded-lg">
-                <div className="flex justify-between items-center gap-4">
+              <div className="relative z-10 flex h-full flex-col gap-5 rounded-lg bg-base-100 p-8 lg:gap-8">
+                <div className="flex items-center justify-between gap-4">
                   <div>
-                    <p className="text-lg lg:text-xl font-bold">{plan.name}</p>
+                    <p className="text-lg font-bold lg:text-xl">{plan.name}</p>
                     {plan.description && (
-                      <p className="text-base-content/80 mt-2">
+                      <p className="mt-2 text-base-content/80">
                         {plan.description}
                       </p>
                     )}
@@ -48,9 +48,9 @@ const Pricing = () => {
                 </div>
                 <div className="flex gap-2">
                   {plan.priceAnchor && (
-                    <div className="flex flex-col justify-end mb-[4px] text-lg ">
+                    <div className="mb-[4px] flex flex-col justify-end text-lg ">
                       <p className="relative">
-                        <span className="absolute bg-base-content h-[1.5px] inset-x-0 top-[53%]"></span>
+                        <span className="absolute inset-x-0 top-[53%] h-[1.5px] bg-base-content"></span>
                         <span className="text-base-content/80">
                           ${plan.priceAnchor}
                         </span>
@@ -58,7 +58,7 @@ const Pricing = () => {
                     </div>
                   )}
                   <div className="flex flex-col">
-                    <p className={`text-5xl tracking-tight font-extrabold`}>
+                    <p className={`text-5xl font-extrabold tracking-tight`}>
                       R$ {plan.price.toFixed(2)}
                     </p>
                     <div className="pt-2">
@@ -77,14 +77,14 @@ const Pricing = () => {
                    */}
                 </div>
                 {plan.features && (
-                  <ul className="space-y-2.5 leading-relaxed text-base flex-1">
+                  <ul className="flex-1 space-y-2.5 text-base leading-relaxed">
                     {plan.features.map((feature, i) => (
                       <li key={i} className="flex items-center gap-2">
                         <svg
                           xmlns="http://www.w3.org/2000/svg"
                           viewBox="0 0 20 20"
                           fill="currentColor"
-                          className="w-[18px] h-[18px] opacity-80 shrink-0"
+                          className="h-[18px] w-[18px] shrink-0 opacity-80"
                         >
                           <path
                             fillRule="evenodd"

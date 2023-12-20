@@ -57,13 +57,13 @@ export default function ResetPassword() {
 
   return (
     <main className="p-8 md:p-24" data-theme={config.colors.theme}>
-      <div className="text-center mb-4">
+      <div className="mb-4 text-center">
         <Link href="/sign-in" className="btn btn-ghost btn-sm">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             viewBox="0 0 20 20"
             fill="currentColor"
-            className="w-5 h-5"
+            className="h-5 w-5"
           >
             <path
               fillRule="evenodd"
@@ -75,11 +75,11 @@ export default function ResetPassword() {
         </Link>
       </div>
 
-      <h1 className="text-3xl md:text-4xl font-extrabold tracking-tight text-center mb-12">
+      <h1 className="mb-12 text-center text-3xl font-extrabold tracking-tight md:text-4xl">
         Nova senha
       </h1>
 
-      <div className="space-y-8 max-w-xl mx-auto">
+      <div className="mx-auto max-w-xl space-y-8">
         <form
           className="form-control w-full space-y-4"
           onSubmit={handleSubmit(onSubmit)}
