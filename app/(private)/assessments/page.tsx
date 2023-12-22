@@ -5,7 +5,8 @@ import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 
-import Layout from "@/components/Layout";
+import apiClient from "@/libs/api";
+import Layout from "@/components/layout/Layout";
 
 export const dynamic = "force-dynamic";
 
@@ -16,7 +17,6 @@ export default function Assessments() {
   const router = useRouter()
   const supabase = createClientComponentClient();
 
-  const [userId, setUserId] = useState("")
   const [students, setStudents] = useState([])
   const [assessmentsByStudentId, setAssessmentsByStudentId] = useState([])
   const [openAccordionId, setOpenAccordionId] = useState<string | null>(null);
@@ -26,38 +26,17 @@ export default function Assessments() {
   };
 
   useEffect(() => {
-    const getSession = async () => {
-      const session = await supabase.auth.getSession();
-      if (session.data.session) {
-        const { id } = session.data.session.user;
-        setUserId(id);
-      }
-    };
-
-    getSession();
-  }, [supabase]);
-
-  useEffect(() => {
-    if (!userId) {
-      return
-    }
-
     const getStudents = async () => {
-      const { data, error } = await supabase
-        .from('students')
-        .select('*')
-        .eq("user_id", userId)
-        .throwOnError()
-
-      if (error) {
+      try {
+        const { data } = await apiClient.get("/students")
+        setStudents(data)
+      } catch (error) {
         toast.error("Erro ao buscar alunos. Entre em contato com o suporte.")
       }
-
-      setStudents(data)
     }
 
     getStudents()
-  }, [supabase, userId])
+  }, [])
 
   useEffect(() => {
     if (students.length === 0 || !students) {
@@ -80,7 +59,7 @@ export default function Assessments() {
 
 
   const handleRegister = () => {
-    router.replace("/assessment/register")
+    router.replace("/assessments/register")
   }
 
   const handleAccordion = (studentId: string) => {
@@ -218,8 +197,8 @@ export default function Assessments() {
 
   return (
     <Layout>
-      <h1 className="text-3xl md:text-4xl font-extrabold">Avaliações</h1>
-      <button className="btn hover:bg-indigo-600 hover:text-white mt-8" onClick={handleRegister}>
+      <h1 className="text-3xl font-extrabold md:text-4xl">Avaliações</h1>
+      <button className="btn mt-8 hover:bg-indigo-600 hover:text-white" onClick={handleRegister}>
         Registrar avaliações
       </button>
 

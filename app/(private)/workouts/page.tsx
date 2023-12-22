@@ -2,7 +2,8 @@
 
 import { useRouter } from "next/navigation";
 
-import Layout from "@/components/Layout";
+import Layout from "@/components/layout/Layout";
+
 
 export const dynamic = "force-dynamic";
 
@@ -18,9 +19,9 @@ export default function Workouts() {
 
   return (
     <Layout>
-      <h1 className="text-3xl md:text-4xl font-extrabold">Treinos</h1>
+      <h1 className="text-3xl font-extrabold md:text-4xl">Treinos</h1>
 
-      <button className="btn hover:bg-indigo-600 hover:text-white mt-8" onClick={handleRegister}>
+      <button className="btn mt-8 hover:bg-indigo-600 hover:text-white" onClick={handleRegister}>
         Registrar Treino
       </button>
     </Layout>

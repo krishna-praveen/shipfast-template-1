@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 
-import ButtonSupport from "@/components/ButtonSupport";
+import { ButtonSupport } from "@/components/ui/buttons/ButtonSupport";
 
 // A simple error boundary to show a nice error page if something goes wrong (Error Boundary)
 // Users can contanct support, go to the main page or try to reset/refresh to fix the error
@@ -15,12 +15,12 @@ export default function Error({
 }) {
   return (
     <>
-      <div className="h-screen w-full flex flex-col justify-center items-center text-center gap-6 p-6">
-        <div className="p-6 bg-white rounded-xl">
+      <div className="flex h-screen w-full flex-col items-center justify-center gap-6 p-6 text-center">
+        <div className="rounded-xl bg-white p-6">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             data-name="Layer 1"
-            className="w-36 h-36 md:w-64 md:h-64"
+            className="h-36 w-36 md:h-64 md:w-64"
             viewBox="0 0 509.04617 507.58297"
           >
             <path
@@ -137,13 +137,13 @@ export default function Error({
 
         <p className="text-red-500">{error?.message}</p>
 
-        <div className="flex flex-wrap gap-4 justify-center">
+        <div className="flex flex-wrap justify-center gap-4">
           <button className="btn btn-sm" onClick={reset}>
             <svg
               xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 20 20"
               fill="currentColor"
-              className="w-5 h-5"
+              className="h-5 w-5"
             >
               <path
                 fillRule="evenodd"
@@ -159,7 +159,7 @@ export default function Error({
               xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 20 20"
               fill="currentColor"
-              className="w-5 h-5"
+              className="h-5 w-5"
             >
               <path
                 fillRule="evenodd"

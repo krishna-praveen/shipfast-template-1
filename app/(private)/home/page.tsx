@@ -4,13 +4,13 @@ import { useEffect, useState } from "react";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import Link from "next/link";
 
-import Layout from "@/components/Layout";
-import Modal from "@/components/Modal";
+import { Modal } from "@/components/ui/Modal";
+import Layout from "@/components/layout/Layout";
 
 export const dynamic = "force-dynamic";
 
 // This is a private page: It's protected by the layout.js component which ensures the user is authenticated.
-// It's a server compoment which means you can fetch data (like the user profile) before the page is rendered.
+// It's a server component which means you can fetch data (like the user profile) before the page is rendered.
 // See https://shipfa.st/docs/tutorials/private-page
 export default function Home() {
   const supabase = createClientComponentClient();
@@ -44,7 +44,7 @@ export default function Home() {
         </div>
       </Modal>
 
-      <h1 className="text-3xl md:text-4xl font-extrabold">Home</h1>
+      <h1 className="text-3xl font-extrabold md:text-4xl">Home</h1>
     </Layout>
   );
 }

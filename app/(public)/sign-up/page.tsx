@@ -8,7 +8,7 @@ import { useRouter } from "next/navigation";
 
 import config from "@/config";
 import { formatBirthDate, validateDate } from "@/libs/date";
-import { Input } from "@/components/Input";
+import { Input } from "@/components/ui/Input";
 
 // This a login/singup page for Supabase Auth.
 // Successfull login redirects to /api/auth/callback where the Code Exchange is processed (see app/api/auth/callback/route.js).
@@ -158,13 +158,13 @@ export default function Signup() {
   return (
     <main className="p-8 md:p-24" data-theme={config.colors.theme}>
 
-      <div className="text-center mb-4">
+      <div className="mb-4 text-center">
         <Link href="/sign-in" className="btn btn-ghost btn-sm">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             viewBox="0 0 20 20"
             fill="currentColor"
-            className="w-5 h-5"
+            className="h-5 w-5"
           >
             <path
               fillRule="evenodd"
@@ -176,7 +176,7 @@ export default function Signup() {
         </Link>
       </div>
 
-      <h1 className="text-3xl md:text-4xl font-extrabold tracking-tight text-center mb-12">
+      <h1 className="mb-12 text-center text-3xl font-extrabold tracking-tight md:text-4xl">
         Cadastrar
       </h1>
 

@@ -2,11 +2,10 @@
 "use client"
 
 import { useEffect, useState } from "react";
-import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
-import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 
-import Layout from "@/components/Layout";
+import apiClient from "@/libs/api";
+import Layout from "@/components/layout/Layout";
 
 export const dynamic = "force-dynamic";
 
@@ -24,11 +23,19 @@ function StudentInfo({ label, value }: any) {
 // See https://shipfa.st/docs/tutorials/private-page
 export default function Students() {
   const router = useRouter()
-  const supabase = createClientComponentClient();
 
-  const [userId, setUserId] = useState("")
   const [students, setStudents] = useState([])
   const [openAccordionId, setOpenAccordionId] = useState<string | null>(null);
+
+  useEffect(() => {
+    const getStudents = async () => {
+      const { data } = await apiClient.get("/students");
+
+      setStudents(data);
+    };
+
+    getStudents();
+  }, []);
 
   const calculateAge = (birthDateString: string) => {
     const birthDate = new Date(birthDateString);
@@ -45,41 +52,6 @@ export default function Students() {
     return new Date(dateString).toLocaleDateString('pt-BR');
   };
 
-  useEffect(() => {
-    const getSession = async () => {
-      const session = await supabase.auth.getSession();
-      if (session.data.session) {
-        const { id } = session.data.session.user;
-        setUserId(id);
-      }
-    };
-
-    getSession();
-  }, [supabase]);
-
-  useEffect(() => {
-    if (!userId) {
-      return
-    }
-
-    const getStudents = async () => {
-      const { data, error } = await supabase
-        .from('students')
-        .select('*')
-        .eq("user_id", userId)
-        .throwOnError()
-
-      if (error) {
-        toast.error("Erro ao buscar alunos. Entre em contato com o suporte.")
-      }
-
-      setStudents(data)
-    }
-
-    getStudents()
-  }, [supabase, userId])
-
-
   const handleRegister = () => {
     router.replace("/students/register")
   }
@@ -94,16 +66,16 @@ export default function Students() {
 
   return (
     <Layout>
-      <h1 className="text-3xl md:text-4xl font-extrabold">Alunos</h1>
+      <h1 className="text-3xl font-extrabold md:text-4xl">Alunos</h1>
 
-      <button className="btn hover:bg-indigo-600 hover:text-white mt-8" onClick={handleRegister}>
+      <button className="btn mt-8 hover:bg-indigo-600 hover:text-white" onClick={handleRegister}>
         Registrar aluno
       </button>
 
       <div className="overflow-x-auto pt-4">
-        {students.map((student: { id: string, name: string, surname: string, birth_date: string, gender: keyof typeof GenderEnum, state: string, city: string, email: string, phone: string }) => (
+        {students?.map((student: { id: string, name: string, surname: string, birth_date: string, gender: keyof typeof GenderEnum, state: string, city: string, email: string, phone: string }) => (
           <div key={student.id} className="mb-2">
-            <div className={`collapse collapse-arrow bg-base-200 rounded-box ${openAccordionId === student.id ? 'collapse-open' : ''}`}>
+            <div className={`collapse collapse-arrow rounded-box bg-base-200 ${openAccordionId === student.id ? 'collapse-open' : ''}`}>
               <input type="checkbox" className="peer" checked={openAccordionId === student.id} onChange={() => handleAccordion(student.id)} />
               <div className="collapse-title text-xl font-medium">
                 <div className="grid grid-cols-1 md:grid-cols-3">
@@ -111,7 +83,7 @@ export default function Students() {
                 </div>
               </div>
               <div className="collapse-content">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
                   <div>
                     <StudentInfo label="Nome completo" value={`${student.name} ${student.surname}`} />
                     <StudentInfo label="Data de nascimento" value={formatDate(student.birth_date)} />

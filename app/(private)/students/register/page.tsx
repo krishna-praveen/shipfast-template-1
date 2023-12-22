@@ -2,12 +2,12 @@
 "use client"
 
 import React, { useState } from "react";
-import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
 import { ArrowLeft } from "lucide-react";
 
-import Layout from "@/components/Layout";
+import apiClient from "@/libs/api";
+import Layout from "@/components/layout/Layout";
 
 export const dynamic = "force-dynamic";
 
@@ -19,8 +19,6 @@ enum NonGender {
 // It's a server component which means you can fetch data (like the user profile) before the page is rendered.
 // See https://shipfa.st/docs/tutorials/private-page
 export default function Register() {
-  const supabase = createClientComponentClient();
-
   const router = useRouter()
 
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -132,23 +130,18 @@ export default function Register() {
 
     setIsLoading(true);
 
+    const birthDateFormatted = birthDate.split('/').reverse().join('-');
     try {
-      const isoFormattedDate = birthDate.split('/').reverse().join('-');
-
-      const session = await supabase.auth.getSession()
-      const userId = session.data.session.user.id
-
-      await supabase.from('students').insert({
-        user_id: userId,
+      await apiClient.post("/students", {
         name,
         surname,
-        birth_date: isoFormattedDate,
+        birthDateFormatted,
         gender,
         state,
         city,
         email,
         phone
-      }).throwOnError()
+      })
 
       toast.success("Cadastrado com sucesso.");
 
@@ -171,12 +164,12 @@ export default function Register() {
     <Layout>
       <div className="flex flex-row items-center space-x-4">
         <ArrowLeft className="cursor-pointer hover:text-indigo-800" onClick={handleBack} />
-        <h1 className="text-3xl md:text-4xl font-extrabold">Registrar Aluno</h1>
+        <h1 className="text-3xl font-extrabold md:text-4xl">Registrar Aluno</h1>
       </div>
 
       <form className="mt-8 space-y-4" onSubmit={handleRegister}>
 
-        <div className="grid md:grid-cols-2 gap-4">
+        <div className="grid gap-4 md:grid-cols-2">
           <div>
             <input
               type="text"
@@ -186,7 +179,7 @@ export default function Register() {
               onChange={handleNameChange}
             />
             {nameError && (
-              <p className="text-red-500 text-sm">{nameError}</p>
+              <p className="text-sm text-red-500">{nameError}</p>
             )}
           </div>
 
@@ -199,7 +192,7 @@ export default function Register() {
               onChange={handleSurnameChange}
             />
             {surnameError && (
-              <p className="text-red-500 text-sm">{surnameError}</p>
+              <p className="text-sm text-red-500">{surnameError}</p>
             )}
           </div>
 
@@ -212,18 +205,18 @@ export default function Register() {
               onChange={(e) => handleBirthDateChange(e)}
             />
             {birthDateError && (
-              <p className="text-red-500 text-sm">{birthDateError}</p>
+              <p className="text-sm text-red-500">{birthDateError}</p>
             )}
           </div>
 
           <div>
             <select className="select select-bordered w-full" onChange={handleGenderChange}>
-              <option selected defaultValue={NonGender.SEXO}>{NonGender.SEXO}</option>
+              <option value={NonGender.SEXO} defaultValue={NonGender.SEXO}>{NonGender.SEXO}</option>
               <option key="male" value="male">Masculino</option>
               <option key="female" value="female">Feminino</option>
             </select>
             {genderError && (
-              <p className="text-red-500 text-sm">{genderError}</p>
+              <p className="text-sm text-red-500">{genderError}</p>
             )}
           </div>
 
@@ -268,7 +261,7 @@ export default function Register() {
           </div>
         </div>
 
-        <button className="btn hover:bg-indigo-600 hover:text-white mt-8" type="submit">
+        <button className="btn mt-8 hover:bg-indigo-600 hover:text-white" type="submit">
           {isLoading && (
             <span className="loading loading-spinner loading-xs"></span>
           )}

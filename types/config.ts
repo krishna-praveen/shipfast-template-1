@@ -40,6 +40,9 @@ export interface ConfigProps {
       description?: string;
       price: number;
       priceAnchor?: number;
+      options?: {
+        [key: string]: any;
+      };
       features: {
         name: string;
       }[];
@@ -53,9 +56,11 @@ export interface ConfigProps {
   mailgun: {
     subdomain: string;
     fromNoReply: string;
+  };
+  resend: {
     fromAdmin: string;
     supportEmail?: string;
-    forwardRepliesTo?: string;
+    forwardRepliesTo: string;
   };
   colors: {
     theme: Theme;

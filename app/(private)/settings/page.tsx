@@ -6,7 +6,7 @@ import { CreditCard, LogOut } from "lucide-react";
 import toast from "react-hot-toast";
 
 import apiClient from "@/libs/api";
-import Layout from "@/components/Layout";
+import Layout from "@/components/layout/Layout";
 
 export const dynamic = "force-dynamic";
 
@@ -61,7 +61,7 @@ export default function Settings() {
   return (
     <Layout>
       <div className="flex flex-row justify-between">
-        <h1 className="text-3xl md:text-4xl font-extrabold">Configurações</h1>
+        <h1 className="text-3xl font-extrabold md:text-4xl">Configurações</h1>
         <div className="flex flex-col space-y-4">
           <button className="btn hover:btn-error" onClick={handleSignOut}>
             Sair
@@ -77,9 +77,9 @@ export default function Settings() {
       <div className="divider" />
 
       <div>
-        <h1 className="text-3xl md:text-4xl font-extrabold">Alterar senha</h1>
+        <h1 className="text-3xl font-extrabold md:text-4xl">Alterar senha</h1>
 
-        <form className="space-y-4 mt-4 flex flex-col" onSubmit={handleSubmit}>
+        <form className="mt-4 flex flex-col space-y-4" onSubmit={handleSubmit}>
           <input
             required
             lang="pt"

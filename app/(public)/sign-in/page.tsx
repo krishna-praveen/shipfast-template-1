@@ -11,7 +11,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 
 import config from "@/config";
 import { SignInSchema } from "@/libs/schema";
-import { Input } from "@/components/Input";
+import { Input } from "@/components/ui/Input";
 
 type Inputs = z.infer<typeof SignInSchema>;
 
@@ -26,7 +26,7 @@ export default function SignIn() {
   const {
     register,
     handleSubmit,
-    formState: { errors },
+    formState: { errors, },
   } = useForm<Inputs>({
     resolver: zodResolver(SignInSchema),
   });
@@ -38,8 +38,8 @@ export default function SignIn() {
 
     try {
       const { error, data } = await supabase.auth.signInWithPassword({
-        email: event.email,
-        password: event.password,
+        email: String(event.email),
+        password: String(event.password),
       });
 
       if (error) {
@@ -58,17 +58,16 @@ export default function SignIn() {
     }
   };
 
-
   return (
     <main className="p-8 md:p-24" data-theme={config.colors.theme}>
 
-      <div className="text-center mb-4">
+      <div className="mb-4 text-center">
         <Link href="/" className="btn btn-ghost btn-sm">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             viewBox="0 0 20 20"
             fill="currentColor"
-            className="w-5 h-5"
+            className="h-5 w-5"
           >
             <path
               fillRule="evenodd"
@@ -80,19 +79,19 @@ export default function SignIn() {
         </Link>
       </div>
 
-      <h1 className="text-3xl md:text-4xl font-extrabold tracking-tight text-center mb-12">
+      <h1 className="mb-12 text-center text-3xl font-extrabold tracking-tight md:text-4xl">
         Entrar no {config.appName}{" "}
       </h1>
 
-      <div className="space-y-8 max-w-xl mx-auto">
+      <div className="mx-auto max-w-xl space-y-8">
         <form
           className="form-control w-full space-y-4"
           onSubmit={handleSubmit(onSubmit)}
         >
           <div>
             <Input
+              name="email"
               type="email"
-              autoComplete="email"
               placeholder="Seu e-mail"
               className="input input-bordered w-full placeholder:opacity-60"
               {...register('email')}
@@ -102,6 +101,7 @@ export default function SignIn() {
 
           <div>
             <Input
+              name="password"
               type="password"
               placeholder="Sua senha"
               className="input input-bordered w-full placeholder:opacity-60"
@@ -120,12 +120,12 @@ export default function SignIn() {
             )}
             Entrar
           </button>
-          <Link href="/request-reset-password" className="link link-hover text-xs hover:text-blue-600">
+          <Link href="/request-reset-password" className="link-hover link text-xs hover:text-blue-600">
             Esqueci a senha
           </Link>
 
           <div className="text-left">
-            <Link href="/sign-up" className="link link-hover">
+            <Link href="/sign-up" className="link-hover link">
               Criar conta
             </Link>
           </div>

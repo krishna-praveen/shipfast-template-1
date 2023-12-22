@@ -3,8 +3,8 @@ import { Inter } from "next/font/google";
 import { Viewport } from "next";
 import PlausibleProvider from "next-plausible";
 
+import { ClientLayout } from "@/components/layout/LayoutClient";
 import { getSEOTags } from "@/libs/seo";
-import ClientLayout from "@/components/LayoutClient";
 import config from "@/config";
 import "./globals.css";
 

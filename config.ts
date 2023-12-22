@@ -23,57 +23,85 @@ const config = {
         // REQUIRED — we use this to find the plan in the webhook (for instance if you want to update the user's credits based on the plan)
         priceId:
           process.env.NODE_ENV === "development"
-            ? "price_1ODT8IA56A0EdwEkQ6OcAXYf"
+            ? process.env.STRIPE_PLAN_STARTER
             : "need_to_be_configured",
         //  REQUIRED - Name of the plan, displayed on the pricing page
-        name: "Plano Básico",
+        name: "Plano Starter",
         // A friendly description of the plan, displayed on the pricing page. Tip: explain why this plan and not others
-        description: "Perfeito para quem está começando",
+        description: "Comece com o essencial",
         // The price you want to display, the one user will be charged on Stripe.
-        price: 29.9,
+        price: 39.9,
         // If you have an anchor price (i.e. $29) that you want to display crossed out, put it here. Otherwise, leave it empty
         // priceAnchor: 29,
+        options: {
+          student: {
+            quantity: 20,
+          },
+          assessment: {
+            quantity: 6,
+          },
+          workouts: {
+            quantity: 6,
+          },
+        },
         features: [
-          { name: "10 alunos registrados" },
-          { name: "10 avaliações registradas" },
-          { name: "10 treinos registrados" },
+          { name: "Registro de alunos" },
+          { name: "Registro e avaliação de aluno" },
+          { name: "Registro de treino por aluno" },
+          { name: "Geração e download de PDF (avaliação/treino)" },
+          { name: "Suporte por WhatsApp" },
         ],
       },
       {
         priceId:
           process.env.NODE_ENV === "development"
-            ? "price_1ODTDyA56A0EdwEkrGdzHKK9"
+            ? process.env.STRIPE_PLAN_BOOSTER
             : "need_to_be_configured",
         // This plan will look different on the pricing page, it will be highlighted. You can only have one plan with isFeatured: true
         isFeatured: true,
-        name: "Plano Avançado",
-        description: "Você precisa de mais recurso",
-        price: 39.9,
+        name: "Plano Booster",
+        description: "Acelere seu crescimento",
+        price: 69.9,
+        options: {
+          student: {
+            quantity: 40,
+          },
+          assessment: {
+            quantity: 12,
+          },
+          workouts: {
+            quantity: 12,
+          },
+        },
         // priceAnchor: 49,
         features: [
-          { name: "30 alunos registrados" },
-          { name: "30 avaliações registradas" },
-          { name: "30 treinos registrados" },
-          { name: "Envio de treino/avaliação via email" },
-          { name: "24/7 suporte" },
+          { name: "Todas as funcionalidades do Plano Starter" },
+          { name: "Envio de PDF por email" },
         ],
       },
       {
         priceId:
           process.env.NODE_ENV === "development"
-            ? "price_1ODTFeA56A0EdwEkebAeZlNy"
+            ? process.env.STRIPE_PLAN_MASTER
             : "need_to_be_configured",
         // This plan will look different on the pricing page, it will be highlighted. You can only have one plan with isFeatured: true
-        name: "Plano Premium",
-        description: "Outro patamar",
-        price: 59.9,
+        name: "Plano Master",
+        description: "Domine o mercado",
+        price: 99.9,
+        options: {
+          student: {
+            quantity: 60,
+          },
+          assessment: {
+            quantity: 24,
+          },
+          workouts: {
+            quantity: 24,
+          },
+        },
         features: [
-          { name: "50 alunos registrados" },
-          { name: "50 avaliações registradas" },
-          { name: "50 treinos registrados" },
-          { name: "Envio de treino/avaliação via email" },
-          { name: "Treino compartilhável com os alunos" },
-          { name: "24/7 suporte" },
+          { name: "Todas as funcionalidades do Plano Booster" },
+          { name: "O PDF com a sua logotipo" },
         ],
       },
     ],
@@ -89,12 +117,14 @@ const config = {
     subdomain: "mg",
     // REQUIRED — Email 'From' field to be used when sending magic login links
     fromNoReply: `ShipFast <noreply@mg.shipfa.st>`,
+  },
+  resend: {
     // REQUIRED — Email 'From' field to be used when sending other emails, like abandoned carts, updates etc..
-    fromAdmin: `Marc at ShipFast <marc@mg.shipfa.st>`,
+    fromAdmin: "Pump <official@gopump.co>",
     // Email shown to customer if need support. Leave empty if not needed => if empty, set up Crisp above, otherwise you won't be able to offer customer support."
     supportEmail: "official@gopump.co",
     // When someone replies to supportEmail sent by the app, forward it to the email below (otherwise it's lost). If you set supportEmail to empty, this will be ignored.
-    forwardRepliesTo: "marc.louvion@gmail.com",
+    forwardRepliesTo: "official@gopump.co",
   },
   colors: {
     // REQUIRED — The DaisyUI theme to use (added to the main layout.js). Leave blank for default (light & dark mode). If you any other theme than light/dark, you need to add it in config.tailwind.js in daisyui.themes.

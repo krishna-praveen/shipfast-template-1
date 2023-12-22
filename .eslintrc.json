@@ -1,7 +1,9 @@
 {
+  "root": true,
   "extends": [
     "next/core-web-vitals",
-    "eslint:recommended"
+    "eslint:recommended",
+    "plugin:tailwindcss/recommended"
   ],
   "env": {
     "browser": true,
@@ -13,6 +15,8 @@
   ],
   "rules": {
     // Your specific rules.
+    "tailwindcss/migration-from-tailwind-2": "off",
+    "tailwindcss/no-custom-classname": "off",
     "no-unused-vars": "warn",
     "import/order": [
       "error",
@@ -28,5 +32,15 @@
         "newlines-between": "always"
       }
     ]
-  }
+  },
+  "overrides": [
+    {
+      "files": [
+        "*.ts",
+        "*.tsx",
+        "*.js"
+      ],
+      "parser": "@typescript-eslint/parser"
+    }
+  ]
 }

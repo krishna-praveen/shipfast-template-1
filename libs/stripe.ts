@@ -77,6 +77,15 @@ export const createCheckout = async ({
       success_url: successUrl,
       cancel_url: cancelUrl,
       locale: "pt-BR",
+      subscription_data: {
+        trial_settings: {
+          end_behavior: {
+            missing_payment_method: "cancel",
+          },
+        },
+        trial_period_days: 7,
+      },
+      payment_method_collection: "if_required",
       ...extraParams,
     });
 
@@ -106,7 +115,7 @@ export const createCustomerPortal = async ({
   return portalSession.url;
 };
 
-// This is used to get the uesr checkout session and populate the data so we get the planId the user subscribed to
+// This is used to get the user checkout session and populate the data so we get the planId the user subscribed to
 export const findCheckoutSession = async (sessionId: string) => {
   try {
     const stripe = new Stripe(process.env.STRIPE_SECRET_KEY, {
