@@ -9,7 +9,7 @@ import apiClient from "@/libs/api";
 import config from "@/config";
 import logo from "@/app/icon.png";
 
-import Modal from "./Modal";
+import { Modal } from "../../ui/Modal";
 
 const IS_PRODUCTION = process.env.NODE_ENV === "production"
 
@@ -17,7 +17,7 @@ const IS_PRODUCTION = process.env.NODE_ENV === "production"
 // It calls the /api/stripe/create-checkout route with the priceId, successUrl and cancelUrl
 // Users must be authenticated. It will prefill the Checkout data with their email and/or credit card (if any)
 // You can also change the mode to "subscription" if you want to create a subscription instead of a one-time payment
-const ButtonCheckout = ({
+export const ButtonCheckout = ({
   priceId,
   mode = "payment",
 }: {
@@ -88,5 +88,3 @@ const ButtonCheckout = ({
     </>
   );
 };
-
-export default ButtonCheckout;

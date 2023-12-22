@@ -11,7 +11,7 @@ import {
   Dumbbell,
 } from 'lucide-react';
 
-const Sidebar = () => {
+export const Sidebar = () => {
   const [open, setOpen] = useState(true);
 
   const Menus = [
@@ -50,5 +50,3 @@ const Sidebar = () => {
     </div>
   );
 }
-
-export default Sidebar;

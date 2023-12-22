@@ -2,7 +2,7 @@
 
 import { Popover, Transition } from "@headlessui/react";
 
-const ButtonPopover = () => {
+export const ButtonPopover = () => {
   return (
     <Popover className="relative z-10">
       {({ open }) => (
@@ -120,5 +120,3 @@ const ButtonPopover = () => {
     </Popover>
   );
 };
-
-export default ButtonPopover;

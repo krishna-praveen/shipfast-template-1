@@ -6,7 +6,7 @@ import { CreditCard, LogOut } from "lucide-react";
 import toast from "react-hot-toast";
 
 import apiClient from "@/libs/api";
-import Layout from "@/components/Layout";
+import Layout from "@/components/layout/Layout";
 
 export const dynamic = "force-dynamic";
 

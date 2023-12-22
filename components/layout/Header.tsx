@@ -9,7 +9,7 @@ import Image from "next/image";
 import logo from "@/app/icon.png";
 import config from "@/config";
 
-import ButtonSignIn from "./ButtonSignin";
+import { ButtonSignIn } from "../ui/buttons";
 
 const links: {
   href: string;
@@ -29,7 +29,7 @@ const cta: JSX.Element = <ButtonSignIn extraStyle="btn-primary" />;
 
 // A header with a logo on the left, links in the center (like Pricing, etc...), and a CTA (like Get Started or Login) on the right.
 // The header is responsive, and on mobile, the links are hidden behind a burger button.
-const Header = () => {
+export const Header = () => {
   const searchParams = useSearchParams();
   const [isOpen, setIsOpen] = useState<boolean>(false);
 
@@ -180,5 +180,3 @@ const Header = () => {
     </header>
   );
 };
-
-export default Header;

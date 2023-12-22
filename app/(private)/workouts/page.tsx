@@ -2,7 +2,8 @@
 
 import { useRouter } from "next/navigation";
 
-import Layout from "@/components/Layout";
+import Layout from "@/components/layout/Layout";
+
 
 export const dynamic = "force-dynamic";
 

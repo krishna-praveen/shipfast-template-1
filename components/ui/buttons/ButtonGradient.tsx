@@ -2,7 +2,7 @@
 
 import React from "react";
 
-const ButtonGradient = ({
+export const ButtonGradient = ({
   title = "Gradient Button",
   onClick = () => { },
 }: {
@@ -15,5 +15,3 @@ const ButtonGradient = ({
     </button>
   );
 };
-
-export default ButtonGradient;

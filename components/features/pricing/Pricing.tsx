@@ -1,12 +1,12 @@
+import { ButtonCheckout } from "@/components/ui/buttons";
 import config from "@/config";
 
-import ButtonCheckout from "./ButtonCheckout";
 
 // <Pricing/> displays the pricing plans for your app
 // It's your Stripe config in config.js.stripe.plans[] that will be used to display the plans
 // <ButtonCheckout /> renders a button that will redirect the user to Stripe checkout called the /api/stripe/create-checkout API endpoint with the correct priceId
 
-const Pricing = () => {
+export const Pricing = () => {
   return (
     <section className="overflow-hidden bg-base-200" id="pricing">
       <div className="mx-auto max-w-5xl px-8 py-24">
@@ -109,5 +109,3 @@ const Pricing = () => {
     </section>
   );
 };
-
-export default Pricing;

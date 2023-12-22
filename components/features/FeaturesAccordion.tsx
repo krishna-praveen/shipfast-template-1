@@ -162,7 +162,7 @@ const Media = ({ feature }: { feature: Feature }) => {
 
 // A component to display 2 to 5 features in an accordion.
 // By default, the first feature is selected. When a feature is clicked, the others are closed.
-const FeaturesAccordion = () => {
+export const FeaturesAccordion = () => {
   const [featureSelected, setFeatureSelected] = useState<number>(0);
 
   return (
@@ -201,5 +201,3 @@ const FeaturesAccordion = () => {
     </section>
   );
 };
-
-export default FeaturesAccordion;

@@ -14,7 +14,7 @@ interface ModalProps {
 
 // A simple modal component which can be shown/hidden with a boolean and a function
 // Because of the setIsModalOpen function, you can't use it in a server component.
-const Modal = ({ isModalOpen, setIsModalOpen, title = "I'm a modal", isStatic = false, children }: ModalProps) => {
+export const Modal = ({ isModalOpen, setIsModalOpen, title = "I'm a modal", isStatic = false, children }: ModalProps) => {
   return (
     <Transition appear show={isModalOpen} as={Fragment}>
       <Dialog
@@ -78,5 +78,3 @@ const Modal = ({ isModalOpen, setIsModalOpen, title = "I'm a modal", isStatic = 
     </Transition>
   );
 };
-
-export default Modal;

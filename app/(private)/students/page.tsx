@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 
 import apiClient from "@/libs/api";
-import Layout from "@/components/Layout";
+import Layout from "@/components/layout/Layout";
 
 export const dynamic = "force-dynamic";
 

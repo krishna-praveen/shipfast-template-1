@@ -1,7 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 
-const Hero = () => {
+export const Hero = () => {
   return (
     <section className="mx-auto flex max-w-7xl flex-col items-center justify-center gap-16 bg-base-100 p-8 lg:flex-row lg:gap-20 lg:py-20">
       <div className="flex flex-col items-center justify-center gap-10 text-center lg:items-start lg:gap-14 lg:text-left">
@@ -29,5 +29,3 @@ const Hero = () => {
     </section>
   );
 };
-
-export default Hero;

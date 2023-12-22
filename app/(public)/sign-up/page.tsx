@@ -8,7 +8,7 @@ import { useRouter } from "next/navigation";
 
 import config from "@/config";
 import { formatBirthDate, validateDate } from "@/libs/date";
-import { Input } from "@/components/Input";
+import { Input } from "@/components/ui/Input";
 
 // This a login/singup page for Supabase Auth.
 // Successfull login redirects to /api/auth/callback where the Code Exchange is processed (see app/api/auth/callback/route.js).

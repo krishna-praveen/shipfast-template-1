@@ -7,7 +7,7 @@ import logo from "@/app/icon.png";
 // Add the Footer to the bottom of your landing page and more.
 // The support link is connected to the config.js file. If there's no config.mailgun.supportEmail, the link won't be displayed.
 
-const Footer = () => {
+export const Footer = () => {
   return (
     <footer className="border-t border-base-content/10 bg-base-200">
       <div className="mx-auto max-w-7xl px-8 py-24">
@@ -45,9 +45,9 @@ const Footer = () => {
               </div>
 
               <div className="mb-10 flex flex-col items-center justify-center gap-2 text-sm md:items-start">
-                {config.mailgun.supportEmail && (
+                {config.resend.supportEmail && (
                   <a
-                    href={`mailto:${config.mailgun.supportEmail}`}
+                    href={`mailto:${config.resend.supportEmail}`}
                     target="_blank"
                     className="link-hover link"
                     aria-label="Contact Support"
@@ -81,5 +81,3 @@ const Footer = () => {
     </footer>
   );
 };
-
-export default Footer;

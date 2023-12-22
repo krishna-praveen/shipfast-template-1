@@ -11,7 +11,8 @@ import { zodResolver } from "@hookform/resolvers/zod";
 
 import config from "@/config";
 import { ResetPasswordSchema } from "@/libs/schema";
-import { Input } from "@/components/Input";
+import { Input } from "@/components/ui/Input";
+
 
 type Inputs = z.infer<typeof ResetPasswordSchema>;
 

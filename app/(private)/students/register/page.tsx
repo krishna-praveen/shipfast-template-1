@@ -6,8 +6,8 @@ import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
 import { ArrowLeft } from "lucide-react";
 
-import Layout from "@/components/Layout";
 import apiClient from "@/libs/api";
+import Layout from "@/components/layout/Layout";
 
 export const dynamic = "force-dynamic";
 

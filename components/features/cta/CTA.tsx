@@ -1,7 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 
-const CTA = () => {
+export const CTA = () => {
   return (
     <section className="hero relative min-h-screen overflow-hidden">
       <Image
@@ -25,5 +25,3 @@ const CTA = () => {
     </section>
   );
 };
-
-export default CTA;

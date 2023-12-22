@@ -13,7 +13,7 @@ import apiClient from "@/libs/api";
 //     This is only available if the customer has a customerId (they made a purchase previously)
 //  2. Logout: sign out and go back to homepage
 // See more at https://shipfa.st/docs/components/buttonAccount
-const ButtonAccount = () => {
+export const ButtonAccount = () => {
   const supabase = createClientComponentClient();
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [user, setUser] = useState<any>(null);
@@ -155,5 +155,3 @@ const ButtonAccount = () => {
     </Popover>
   );
 };
-
-export default ButtonAccount;

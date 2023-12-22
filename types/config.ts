@@ -56,13 +56,11 @@ export interface ConfigProps {
   mailgun: {
     subdomain: string;
     fromNoReply: string;
-    fromAdmin: string;
-    supportEmail?: string;
-    forwardRepliesTo?: string;
   };
   resend: {
     fromAdmin: string;
     supportEmail?: string;
+    forwardRepliesTo: string;
   };
   colors: {
     theme: Theme;

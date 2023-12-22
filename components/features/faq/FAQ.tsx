@@ -90,7 +90,7 @@ const FaqItem = ({ item }: { item: FAQItemProps }) => {
   );
 };
 
-const FAQ = () => {
+export const FAQ = () => {
   return (
     <section className="bg-base-200" id="faq">
       <div className="mx-auto flex max-w-7xl flex-col gap-12 px-8 py-24 md:flex-row">
@@ -110,5 +110,3 @@ const FAQ = () => {
     </section>
   );
 };
-
-export default FAQ;

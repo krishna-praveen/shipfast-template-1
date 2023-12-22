@@ -12,9 +12,9 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { SubmitHandler, useForm } from "react-hook-form";
 
-import Layout from "@/components/Layout";
 import { FormDataSchema } from "@/libs/schema";
 import { AssessmentTypeEnum } from "@/libs/enums/assessment-type-enum";
+import Layout from "@/components/layout/Layout";
 
 export const dynamic = "force-dynamic";
 
