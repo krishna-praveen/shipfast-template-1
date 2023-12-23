@@ -1,11 +1,11 @@
 "use client"
 
-import { useEffect, useState } from "react";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import Link from "next/link";
+import { useEffect, useState } from "react";
 
-import { Modal } from "@/components/ui/Modal";
 import Layout from "@/components/layout/Layout";
+import { Modal } from "@/components/ui/Modal";
 
 export const dynamic = "force-dynamic";
 

@@ -1,19 +1,19 @@
 import { AssessmentTypeEnum } from "@/libs/enums/assessment-type-enum";
 
+
+import { calculateBMR } from "./calculate-bmr";
+import { calculateBodyMetrics } from "./calculate-body-metrics";
+import { calculateFatMass } from "./calculate-fat-mass";
+import { calculateIdealBodyFat } from "./calculate-ideal-body-fat";
+import { calculateIdealWeight } from "./calculate-ideal-weight";
+import { calculateLeanMass } from "./calculate-lean-mass";
+import { calculateSumOfSkinfolds } from "./calculate-sum-of-skin-folds";
 import {
   FEMALE_3_COEFFICIENTS,
   FEMALE_7_COEFFICIENTS,
   MALE_3_COEFFICIENTS,
   MALE_7_COEFFICIENTS,
 } from "../constants";
-
-import { calculateBMR } from "./calculate-bmr";
-import { calculateFatMass } from "./calculate-fat-mass";
-import { calculateLeanMass } from "./calculate-lean-mass";
-import { calculateSumOfSkinfolds } from "./calculate-sum-of-skin-folds";
-import { calculateBodyMetrics } from "./calculate-body-metrics";
-import { calculateIdealBodyFat } from "./calculate-ideal-body-fat";
-import { calculateIdealWeight } from "./calculate-ideal-weight";
 
 const calculateAge = (birthDateString: string) => {
   const birthDate = new Date(birthDateString);

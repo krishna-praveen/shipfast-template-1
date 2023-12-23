@@ -1,12 +1,13 @@
 "use client"
 
-import { useRouter } from "next/navigation";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 
-import apiClient from "@/libs/api";
 import Layout from "@/components/layout/Layout";
+
+import apiClient from "@/libs/api";
 
 export const dynamic = "force-dynamic";
 

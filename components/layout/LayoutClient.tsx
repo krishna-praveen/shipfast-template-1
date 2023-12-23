@@ -1,10 +1,10 @@
 "use client";
 
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
-import { useEffect, useState, ReactNode } from "react";
-import { usePathname } from "next/navigation";
 import { Crisp } from "crisp-sdk-web";
+import { usePathname } from "next/navigation";
 import NextTopLoader from "nextjs-toploader";
+import { useEffect, useState, ReactNode } from "react";
 import { Toaster } from "react-hot-toast";
 import { Tooltip } from "react-tooltip";
 

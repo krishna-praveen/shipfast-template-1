@@ -1,12 +1,15 @@
-import { NextResponse, NextRequest } from "next/server";
-import { headers } from "next/headers";
-import Stripe from "stripe";
 import { SupabaseClient } from "@supabase/supabase-js";
+import { headers } from "next/headers";
+import { NextResponse, NextRequest } from "next/server";
+import Stripe from "stripe";
+
+import { TrialEndTemplate } from "@/components/email/templates/trial-end";
+
+
+import { sendEmail } from "@/libs/resend";
+import { createCustomerPortal, findCheckoutSession } from "@/libs/stripe";
 
 import configFile from "@/config";
-import { createCustomerPortal, findCheckoutSession } from "@/libs/stripe";
-import { sendEmail } from "@/libs/resend";
-import { TrialEndTemplate } from "@/components/email/templates/trial-end";
 
 const environment = process.env.NODE_ENV; // 'development' ou 'production'
 

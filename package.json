@@ -9,7 +9,7 @@
     "start": "next start",
     "lint": "next lint",
     "lint:debug": "eslint ./src --debug",
-    "lint:fix": "eslint ./components --fix"
+    "lint:fix": "eslint ./ --fix"
   },
   "dependencies": {
     "@headlessui/react": "^1.7.17",

@@ -1,11 +1,16 @@
 /* eslint-disable no-unused-vars */
 "use client"
 
-import { useEffect, useState } from "react";
+
+import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
+import toast from "react-hot-toast";
+
+import Layout from "@/components/layout/Layout";
 
 import apiClient from "@/libs/api";
-import Layout from "@/components/layout/Layout";
+import { calculateAge, formatDate } from "@/libs/date";
 
 export const dynamic = "force-dynamic";
 
@@ -19,13 +24,16 @@ function StudentInfo({ label, value }: any) {
 }
 
 // This is a private page: It's protected by the layout.js component which ensures the user is authenticated.
-// It's a server compoment which means you can fetch data (like the user profile) before the page is rendered.
+// It's a server component which means you can fetch data (like the user profile) before the page is rendered.
 // See https://shipfa.st/docs/tutorials/private-page
 export default function Students() {
   const router = useRouter()
+  const supabase = createClientComponentClient();
 
   const [students, setStudents] = useState([])
   const [openAccordionId, setOpenAccordionId] = useState<string | null>(null);
+  const [studentLimit, setStudentLimit] = useState(0);
+  const [isLimitReached, setIsLimitReached] = useState(false);
 
   useEffect(() => {
     const getStudents = async () => {
@@ -37,20 +45,24 @@ export default function Students() {
     getStudents();
   }, []);
 
-  const calculateAge = (birthDateString: string) => {
-    const birthDate = new Date(birthDateString);
-    const today = new Date();
-    let age = today.getFullYear() - birthDate.getFullYear();
-    const monthDiff = today.getMonth() - birthDate.getMonth();
-    if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
-      age--;
-    }
-    return age;
-  };
+  useEffect(() => {
+    const fetchStudentLimit = async () => {
+      try {
+        const { data } = await apiClient.get('/plans/limit');
 
-  const formatDate = (dateString: string) => {
-    return new Date(dateString).toLocaleDateString('pt-BR');
-  };
+        setStudentLimit(data.limits.student);
+      } catch (error) {
+        toast.error('Não foi possível obter o limite de alunos.')
+        console.error(error);
+      }
+    };
+
+    fetchStudentLimit();
+  }, [supabase])
+
+  useEffect(() => {
+    setIsLimitReached(students.length >= studentLimit);
+  }, [students, studentLimit]);
 
   const handleRegister = () => {
     router.replace("/students/register")
@@ -68,9 +80,18 @@ export default function Students() {
     <Layout>
       <h1 className="text-3xl font-extrabold md:text-4xl">Alunos</h1>
 
-      <button className="btn mt-8 hover:bg-indigo-600 hover:text-white" onClick={handleRegister}>
-        Registrar aluno
-      </button>
+      <div className="mt-8 flex flex-row items-center space-x-2">
+        <div className={`${isLimitReached ? 'tooltip tooltip-right' : ''}`} data-tip={`${isLimitReached ? 'Limite de alunos atingido. Por favor, atualize seu plano para adicionar mais alunos.' : ''}`}>
+          <button
+            className={`btn hover:bg-indigo-600 hover:text-white ${isLimitReached ? 'btn-disabled' : ''}`}
+            onClick={handleRegister}
+          >
+            Registrar aluno
+          </button>
+        </div>
+
+        <p>{students.length}/{studentLimit}</p>
+      </div>
 
       <div className="overflow-x-auto pt-4">
         {students?.map((student: { id: string, name: string, surname: string, birth_date: string, gender: keyof typeof GenderEnum, state: string, city: string, email: string, phone: string }) => (

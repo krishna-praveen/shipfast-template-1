@@ -1,17 +1,20 @@
 "use client";
 
-import Link from "next/link";
-import React, { useState } from "react";
-import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
-import toast from "react-hot-toast";
-import { useRouter } from "next/navigation";
-import { z } from "zod";
-import { SubmitHandler, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+import React, { useState } from "react";
+import { SubmitHandler, useForm } from "react-hook-form";
+import toast from "react-hot-toast";
+import { z } from "zod";
+
+import { Input } from "@/components/ui/Input";
+
+import { ResetPasswordSchema } from "@/libs/schema";
 
 import config from "@/config";
-import { ResetPasswordSchema } from "@/libs/schema";
-import { Input } from "@/components/ui/Input";
+
 
 
 type Inputs = z.infer<typeof ResetPasswordSchema>;

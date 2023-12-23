@@ -1,6 +1,6 @@
 import axios from "axios";
-import { toast } from "react-hot-toast";
 import { redirect } from "next/navigation";
+import { toast } from "react-hot-toast";
 
 import config from "@/config";
 

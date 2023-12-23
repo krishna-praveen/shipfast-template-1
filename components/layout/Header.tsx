@@ -1,12 +1,13 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import type { JSX } from "react";
-import { useSearchParams } from "next/navigation";
-import Link from "next/link";
 import Image from "next/image";
+import Link from "next/link";
+import { useSearchParams } from "next/navigation";
+import type { JSX } from "react";
+import { useState, useEffect } from "react";
 
 import logo from "@/app/icon.png";
+
 import config from "@/config";
 
 import { ButtonSignIn } from "../ui/buttons";

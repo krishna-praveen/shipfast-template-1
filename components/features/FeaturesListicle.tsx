@@ -1,7 +1,7 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
 import type { JSX } from "react";
+import { useState, useEffect, useRef } from "react";
 
 // List of features to display:
 // - name: name of the feature
@@ -470,16 +470,16 @@ export const FeaturesListicle = () => {
             >
               <span
                 className={`duration-100 ${featureSelected === feature.name
-                    ? "text-primary"
-                    : "text-base-content/30 group-hover:text-base-content/50"
+                  ? "text-primary"
+                  : "text-base-content/30 group-hover:text-base-content/50"
                   }`}
               >
                 {feature.svg}
               </span>
               <span
                 className={`text-sm font-semibold ${featureSelected === feature.name
-                    ? "text-primary"
-                    : "text-base-content/50"
+                  ? "text-primary"
+                  : "text-base-content/50"
                   }`}
               >
                 {feature.name}
