@@ -1,7 +1,6 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
@@ -11,6 +10,7 @@ import { z } from "zod";
 
 import { Input } from "@/components/ui/Input";
 
+import apiClient from "@/libs/api";
 import { ResetPasswordSchema } from "@/libs/schema";
 
 import config from "@/config";
@@ -18,7 +18,6 @@ import config from "@/config";
 type Inputs = z.infer<typeof ResetPasswordSchema>;
 
 export default function ResetPassword() {
-  const supabase = createClientComponentClient();
 
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isDisabled, setIsDisabled] = useState<boolean>(false);
@@ -37,11 +36,9 @@ export default function ResetPassword() {
     setIsLoading(true);
 
     try {
-      const { error } = await supabase.auth.updateUser({ password });
-
-      if (error) {
-        toast.error("Erro ao atualizar senha.", { position: 'top-right' })
-      }
+      await apiClient.post("/auth/reset-password", {
+        password
+      })
 
       toast.success("Senha atualizada com sucesso!", { position: "top-right" });
 
@@ -49,7 +46,9 @@ export default function ResetPassword() {
 
       router.replace("/sign-in")
     } catch (error) {
-      console.log(error);
+      if (process.env.NODE_ENV === "development") {
+        console.log(error);
+      }
     } finally {
       setIsLoading(false);
     }

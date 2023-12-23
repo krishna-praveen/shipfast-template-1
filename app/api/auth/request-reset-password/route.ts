@@ -17,7 +17,7 @@ export async function POST(req: NextRequest) {
     console.info("Reset password e-mail sent >");
 
     if (error) {
-      console.error("Error to update password >", {
+      console.error("Error to request update password >", {
         error: JSON.stringify(error),
       });
 
@@ -29,7 +29,10 @@ export async function POST(req: NextRequest) {
        */
 
       return NextResponse.json(
-        { error: "Erro ao atualizar senha. Entre em contato com o suporte." },
+        {
+          error:
+            "Erro ao solicitar atualização da senha. Entre em contato com o suporte.",
+        },
         { status: 500 }
       );
     }
