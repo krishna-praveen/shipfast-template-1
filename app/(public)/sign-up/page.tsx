@@ -12,9 +12,6 @@ import { formatBirthDate, validateDate } from "@/libs/date";
 
 import config from "@/config";
 
-
-// This a login/singup page for Supabase Auth.
-// Successfull login redirects to /api/auth/callback where the Code Exchange is processed (see app/api/auth/callback/route.js).
 export default function Signup() {
   const supabase = createClientComponentClient();
 
