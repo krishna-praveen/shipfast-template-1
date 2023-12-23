@@ -1,7 +1,6 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
@@ -11,18 +10,14 @@ import { z } from "zod";
 
 import { Input } from "@/components/ui/Input";
 
+import apiClient from "@/libs/api";
 import { RequestResetPasswordSchema } from "@/libs/schema";
 
 import config from "@/config";
 
-
 type Inputs = z.infer<typeof RequestResetPasswordSchema>;
 
-// This a login/singup page for Supabase Auth.
-// Successfull login redirects to /api/auth/callback where the Code Exchange is processed (see app/api/auth/callback/route.js).
 export default function RequestResetPassword() {
-  const supabase = createClientComponentClient();
-
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isDisabled, setIsDisabled] = useState<boolean>(false);
 
@@ -40,11 +35,12 @@ export default function RequestResetPassword() {
     setIsLoading(true);
 
     try {
-      const redirectURL = window.location.origin + "/reset-password";
+      const redirectTo = window.location.origin + "/reset-password";
 
-      await supabase.auth.resetPasswordForEmail(email, {
-        redirectTo: redirectURL
-      });
+      await apiClient.post("/auth/request-reset-password", {
+        email,
+        redirectTo
+      })
 
       toast.success("Email para realizar restauração da senha enviado!", { position: "top-right" });
 
@@ -52,7 +48,9 @@ export default function RequestResetPassword() {
 
       router.push("/sign-in")
     } catch (error) {
-      console.log(error);
+      if (process.env.NODE_ENV === "development") {
+        console.log(error);
+      }
     } finally {
       setIsLoading(false);
     }
