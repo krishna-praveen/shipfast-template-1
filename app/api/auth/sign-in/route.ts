@@ -3,27 +3,30 @@ import { cookies } from "next/headers";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(req: NextRequest) {
-  const { password } = await req.json();
+  const { email, password } = await req.json();
 
   try {
     const supabase = createRouteHandlerClient({ cookies });
 
-    console.info("Resetting password");
+    console.info("Making the login >", { email });
 
-    const { error, data } = await supabase.auth.updateUser({ password });
+    const { error, data } = await supabase.auth.signInWithPassword({
+      email,
+      password,
+    });
 
     if (error) {
-      console.error("Error to reset password >", {
+      console.error("Error to login >", {
         error: JSON.stringify(error),
       });
 
       return NextResponse.json(
-        { error: "Erro ao atualizar senha. Entre em contato com o suporte." },
-        { status: 500 }
+        { error: "Por favor, verifique se seu email e senha estão corretos." },
+        { status: 400 }
       );
     }
 
-    console.info("Password reset successfully");
+    console.info("Login successfully");
 
     return NextResponse.json({ data });
   } catch (error) {

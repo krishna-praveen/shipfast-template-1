@@ -14,7 +14,7 @@ export async function POST(req: NextRequest) {
       redirectTo,
     });
 
-    console.info("Reset password e-mail sent >");
+    console.info("Reset password e-mail sent");
 
     if (error) {
       console.error("Error to request update password >", {
@@ -37,7 +37,9 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    return NextResponse.json(data);
+    console.info("Reset password successfully");
+
+    return NextResponse.json({ data });
   } catch (error) {
     console.error({ error });
     throw NextResponse.json({ error: error.message }, { status: 500 });

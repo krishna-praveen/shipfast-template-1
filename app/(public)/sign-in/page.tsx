@@ -1,7 +1,6 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
@@ -11,6 +10,7 @@ import { z } from "zod";
 
 import { Input } from "@/components/ui/Input";
 
+import apiClient from "@/libs/api";
 import { SignInSchema } from "@/libs/schema";
 
 import config from "@/config";
@@ -18,8 +18,6 @@ import config from "@/config";
 type Inputs = z.infer<typeof SignInSchema>;
 
 export default function SignIn() {
-  const supabase = createClientComponentClient();
-
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isDisabled, setIsDisabled] = useState<boolean>(false);
 
@@ -33,25 +31,23 @@ export default function SignIn() {
 
   const router = useRouter()
 
-  const onSubmit: SubmitHandler<Inputs> = async (event) => {
+  const onSubmit: SubmitHandler<Inputs> = async ({ email, password }) => {
     setIsLoading(true);
 
     try {
-      const { error, data } = await supabase.auth.signInWithPassword({
-        email: String(event.email),
-        password: String(event.password),
-      });
+      const { data } = await apiClient.post("/auth/sign-in", {
+        email,
+        password
+      })
 
-      if (error) {
-        toast.error("Por favor, verifique se seu email e senha estão corretos.", { position: "top-right" });
-        setIsDisabled(false);
-      } else if (data.user && data.session) {
+      if (data.user && data.session) {
         toast.success("Login realizado com sucesso!", { position: "top-right" });
         await router.replace("/home");
       }
     } catch (error) {
-      console.error(error);
-      toast.error("Ocorreu um erro inesperado.", { position: "top-right" });
+      if (process.env.NODE_ENV === 'development') {
+        console.error(error);
+      }
       setIsDisabled(false);
     } finally {
       setIsLoading(false);
