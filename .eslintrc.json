@@ -22,14 +22,38 @@
       "error",
       {
         "groups": [
-          "builtin",
           "external",
-          "internal",
-          "parent",
-          "sibling",
-          "index"
+          "builtin",
+          "internal"
         ],
-        "newlines-between": "always"
+        "pathGroups": [
+          {
+            "pattern": "@/api/**",
+            "group": "internal",
+            "position": "after"
+          },
+          {
+            "pattern": "@/component/**",
+            "group": "internal",
+            "position": "after"
+          },
+          {
+            "pattern": "@/libs/**",
+            "group": "internal",
+            "position": "after"
+          },
+          {
+            "pattern": "@/config",
+            "group": "internal",
+            "position": "after"
+          }
+        ],
+        "newlines-between": "always-and-inside-groups",
+        "alphabetize": {
+          "order": "asc",
+          "orderImportKind": "asc",
+          "caseInsensitive": true
+        }
       }
     ]
   },

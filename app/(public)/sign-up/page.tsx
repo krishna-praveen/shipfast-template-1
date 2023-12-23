@@ -1,14 +1,17 @@
 "use client";
 
-import Link from "next/link";
-import React, { useState } from "react";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
-import toast from "react-hot-toast";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
+import React, { useState } from "react";
+import toast from "react-hot-toast";
+
+import { Input } from "@/components/ui/Input";
+
+import { formatBirthDate, validateDate } from "@/libs/date";
 
 import config from "@/config";
-import { formatBirthDate, validateDate } from "@/libs/date";
-import { Input } from "@/components/ui/Input";
+
 
 // This a login/singup page for Supabase Auth.
 // Successfull login redirects to /api/auth/callback where the Code Exchange is processed (see app/api/auth/callback/route.js).

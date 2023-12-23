@@ -1,8 +1,8 @@
 /* eslint-disable no-unused-vars */
 import { z } from "zod";
 
-import { AssessmentTypeEnum } from "./enums/assessment-type-enum";
 import { validateDate } from "./date";
+import { AssessmentTypeEnum } from "./enums/assessment-type-enum";
 
 export const FormDataSchema = z.object({
   studentId: z.string().min(1, "Aluno é obrigatório"),

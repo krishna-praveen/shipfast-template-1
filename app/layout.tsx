@@ -1,11 +1,14 @@
-import { ReactNode } from "react";
-import { Inter } from "next/font/google";
 import { Viewport } from "next";
+import { Inter } from "next/font/google";
 import PlausibleProvider from "next-plausible";
+import { ReactNode } from "react";
 
 import { ClientLayout } from "@/components/layout/LayoutClient";
+
 import { getSEOTags } from "@/libs/seo";
+
 import config from "@/config";
+
 import "./globals.css";
 
 const font = Inter({ subsets: ["latin"] });

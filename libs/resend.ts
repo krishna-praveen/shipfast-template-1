@@ -1,5 +1,5 @@
-import { Resend } from "resend";
 import React from "react";
+import { Resend } from "resend";
 
 import config from "@/config";
 

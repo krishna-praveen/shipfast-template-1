@@ -1,13 +1,15 @@
 "use client";
 
-import { useState } from "react";
-import Image from "next/image";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
+import Image from "next/image";
 import Link from "next/link";
+import { useState } from "react";
+
+import logo from "@/app/icon.png";
 
 import apiClient from "@/libs/api";
+
 import config from "@/config";
-import logo from "@/app/icon.png";
 
 import { Modal } from "../../ui/Modal";
 
