@@ -1,0 +1,38 @@
+meta {
+  name: sign-up
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{base_url}}/auth/sign-up
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "name": "User Name",
+    "birthDate": "25/01/2000",
+    "email": "user@email.com",
+    "password": "your_password",
+    "phone": "61996649616"
+  }
+}
+
+docs {
+  # Sign-up
+  
+  This route is responsible for register a user into the application. For now, we'll just register Personal Trainers, but in the future, we'll be able to register others type of users.
+  
+  ## Required fields
+  
+  - name
+  - email
+  - password
+  - birthDate
+  
+  ## Optional fields
+  
+  - phone
+}

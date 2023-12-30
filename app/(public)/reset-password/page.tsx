@@ -18,7 +18,6 @@ import config from "@/config";
 type Inputs = z.infer<typeof ResetPasswordSchema>;
 
 export default function ResetPassword() {
-
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isDisabled, setIsDisabled] = useState<boolean>(false);
 
@@ -47,7 +46,7 @@ export default function ResetPassword() {
       router.replace("/sign-in")
     } catch (error) {
       if (process.env.NODE_ENV === "development") {
-        console.log(error);
+        console.error(error);
       }
     } finally {
       setIsLoading(false);

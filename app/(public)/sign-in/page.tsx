@@ -48,6 +48,7 @@ export default function SignIn() {
       if (process.env.NODE_ENV === 'development') {
         console.error(error);
       }
+
       setIsDisabled(false);
     } finally {
       setIsLoading(false);

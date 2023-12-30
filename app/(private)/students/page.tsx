@@ -1,7 +1,6 @@
 /* eslint-disable no-unused-vars */
 "use client"
 
-
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -52,8 +51,11 @@ export default function Students() {
 
         setStudentLimit(data.limits.student);
       } catch (error) {
+        if (process.env.NODE_ENV === 'development') {
+          console.error(error);
+        }
+
         toast.error('Não foi possível obter o limite de alunos.')
-        console.error(error);
       }
     };
 

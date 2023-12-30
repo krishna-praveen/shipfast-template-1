@@ -137,7 +137,8 @@ export default function Signup() {
         phone,
         options: {
           data: {
-            name
+            name,
+            birthDate
           },
           emailRedirectTo
         }
@@ -149,7 +150,9 @@ export default function Signup() {
 
       router.replace("/")
     } catch (error) {
-      console.log(error);
+      if (process.env.NODE_ENV === 'development') {
+        console.error(error);
+      }
     } finally {
       setIsLoading(false);
     }

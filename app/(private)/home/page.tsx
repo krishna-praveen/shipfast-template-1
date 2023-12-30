@@ -1,11 +1,12 @@
 "use client"
 
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
-import Link from "next/link";
 import { useEffect, useState } from "react";
 
 import Layout from "@/components/layout/Layout";
 import { Modal } from "@/components/ui/Modal";
+
+import apiClient from "@/libs/api";
 
 export const dynamic = "force-dynamic";
 
@@ -35,12 +36,28 @@ export default function Home() {
     fetchProfile()
   }, [supabase])
 
+
+  const handleBilling = async () => {
+    try {
+      const { url }: { url: string } = await apiClient.post(
+        "/stripe/create-portal",
+        {
+          returnUrl: window.location.href,
+        }
+      );
+
+      window.location.href = url;
+    } catch (e) {
+      console.error(e);
+    }
+  };
+
   return (
     <Layout>
       <Modal isModalOpen={isModalOpen} setIsModalOpen={setIsModalOpen} title="Faça sua inscrição!" isStatic={true}>
         <div className="space-y-4">
           <p>Agora que finalizamos o seu cadastro, o que você de escolhermos o plano que você mais se identificou?</p>
-          <Link href="/#pricing" className="btn btn-primary">Escolher Plano</Link>
+          <button onClick={handleBilling} className="btn btn-primary">Escolher Plano</button>
         </div>
       </Modal>
 

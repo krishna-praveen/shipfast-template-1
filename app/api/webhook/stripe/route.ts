@@ -5,7 +5,6 @@ import Stripe from "stripe";
 
 import { TrialEndTemplate } from "@/components/email/templates/trial-end";
 
-
 import { sendEmail } from "@/libs/resend";
 import { createCustomerPortal, findCheckoutSession } from "@/libs/stripe";
 
@@ -150,7 +149,7 @@ export async function POST(req: NextRequest) {
         break;
       }
 
-      case "invoice.payment_failed":
+      case "invoice.payment_failed": {
         // A payment failed (for instance the customer does not have a valid payment method)
         // ❌ Revoke access to the product
         // ⏳ OR wait for the customer to pay (more friendly):
@@ -158,6 +157,8 @@ export async function POST(req: NextRequest) {
         //      - We will receive a "customer.subscription.deleted" when all retries were made and the subscription has expired
 
         break;
+      }
+
       case "customer.subscription.trial_will_end": {
         const stripeObject: Stripe.Subscription = event.data
           .object as Stripe.Subscription;
@@ -233,7 +234,23 @@ export async function POST(req: NextRequest) {
         break;
       }
 
+      case "setup_intent.succeeded": {
+        const stripeObject: Stripe.SetupIntent = event.data
+          .object as Stripe.SetupIntent;
+
+        await supabase
+          .from("profiles")
+          .update({ has_access: true })
+          .eq("customer_id", stripeObject.customer);
+
+        break;
+      }
+
       default:
+        console.log(`Unhandled event type ${eventType}`, {
+          event: JSON.stringify(event),
+        });
+        break;
       // Unhandled event type
     }
   } catch (e) {

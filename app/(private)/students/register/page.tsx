@@ -149,7 +149,7 @@ export default function Register() {
       router.replace("/students")
 
     } catch (error) {
-      console.log(error);
+      console.error(error);
 
       toast.error("Erro ao cadastrar, entre em contato com o suporte.");
     } finally {

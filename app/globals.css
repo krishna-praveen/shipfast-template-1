@@ -20,3 +20,8 @@ progress::-webkit-progress-value {
     @apply !capitalize;
   }
 }
+
+.bg-image {
+  background: url("/images/Background.webp") no-repeat;
+  background-size: cover;
+}

@@ -146,3 +146,30 @@ export const SignupSchema = z.object({
     .min(10, "O telefone deve ter pelo menos 11 caracteres.")
     .optional(),
 });
+
+export const ExerciseSchema = z.object({
+  name: z.string().min(1),
+  sets: z.number().min(1),
+  repetitions: z.array(z.number()).min(1),
+  videoLink: z.string().url(),
+  observation: z.string(),
+  type: z.string(),
+});
+export type ExerciseType = z.infer<typeof ExerciseSchema>;
+
+const workoutTypeSchema = z.enum(["ABC", "ABCD", "ABCDE"]);
+const exercisesSchema = z.record(z.string(), z.array(ExerciseSchema));
+
+export const WorkoutSchema = z.object({
+  description: z
+    .string({ required_error: "A descrição é obrigatória." })
+    .min(1, "A descrição é obrigatória."),
+  phase: z.number().positive().min(1, "A fase é obrigatória."),
+  goal: z
+    .string({ required_error: "O objetivo é obrigatório." })
+    .min(1, "O objetivo é obrigatório"),
+  type: workoutTypeSchema,
+  exercises: exercisesSchema,
+  assessmentId: z.string({ required_error: "O aluno é obrigatório." }).uuid(),
+});
+export type WorkoutType = z.infer<typeof WorkoutSchema>;
