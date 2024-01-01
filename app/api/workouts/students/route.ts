@@ -1,16 +1,12 @@
 import { createRouteHandlerClient } from "@supabase/auth-helpers-nextjs";
 import { cookies } from "next/headers";
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 
-export async function GET() {
+export async function GET(req: NextRequest) {
+  const userId = req.nextUrl.searchParams.get("userId");
+
   try {
     const supabase = createRouteHandlerClient({ cookies });
-
-    const {
-      data: { session },
-    } = await supabase.auth.getSession();
-
-    const userId = session.user.id;
 
     const { data, error } = await supabase.rpc("get_student_workouts", {
       user_id: userId,

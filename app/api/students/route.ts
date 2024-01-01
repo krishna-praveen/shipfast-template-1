@@ -2,19 +2,11 @@ import { createRouteHandlerClient } from "@supabase/auth-helpers-nextjs";
 import { cookies } from "next/headers";
 import { NextResponse, NextRequest } from "next/server";
 
-export async function GET() {
-  let userId: string;
+export async function GET(req: NextRequest) {
+  const userId = req.nextUrl.searchParams.get("userId");
 
   try {
     const supabase = createRouteHandlerClient({ cookies });
-
-    const session = await supabase.auth.getSession();
-
-    if (session.data.session) {
-      const { id } = session.data.session.user;
-
-      userId = id;
-    }
 
     const { data, error } = await supabase
       .from("students")
@@ -37,20 +29,12 @@ export async function GET() {
 }
 
 export async function POST(req: NextRequest) {
-  let userId: string;
+  const userId = req.nextUrl.searchParams.get("userId");
 
   const body = await req.json();
 
   try {
     const supabase = createRouteHandlerClient({ cookies });
-
-    const session = await supabase.auth.getSession();
-
-    if (session.data.session) {
-      const { id } = session.data.session.user;
-
-      userId = id;
-    }
 
     const { error, data } = await supabase
       .from("students")

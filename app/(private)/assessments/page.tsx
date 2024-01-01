@@ -28,8 +28,11 @@ export default function Assessments() {
 
   useEffect(() => {
     const getStudents = async () => {
+      const session = await supabase.auth.getSession()
+      const userId = session.data.session.user.id
+
       try {
-        const { data } = await apiClient.get("/students")
+        const { data } = await apiClient.get("/students", { params: { userId } })
         setStudents(data)
       } catch (error) {
         toast.error("Erro ao buscar alunos. Entre em contato com o suporte.")
@@ -37,7 +40,7 @@ export default function Assessments() {
     }
 
     getStudents()
-  }, [])
+  }, [supabase])
 
   useEffect(() => {
     if (students.length === 0 || !students) {

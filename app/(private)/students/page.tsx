@@ -36,18 +36,24 @@ export default function Students() {
 
   useEffect(() => {
     const getStudents = async () => {
-      const { data } = await apiClient.get("/students");
+      const session = await supabase.auth.getSession()
+      const userId = session.data.session.user.id
+
+      const { data } = await apiClient.get("/students", { params: { userId } });
 
       setStudents(data);
     };
 
     getStudents();
-  }, []);
+  }, [supabase]);
 
   useEffect(() => {
     const fetchStudentLimit = async () => {
+      const session = await supabase.auth.getSession();
+      const userId = session.data.session.user.id
+
       try {
-        const { data } = await apiClient.get('/plans/limit');
+        const { data } = await apiClient.get('/plans/limit', { params: { userId } });
 
         setStudentLimit(data.limits.student);
       } catch (error) {

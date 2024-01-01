@@ -1,6 +1,6 @@
 "use client";
+import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import React, { useEffect, useState } from "react";
-
 import toast from "react-hot-toast";
 import { ZodError } from "zod";
 
@@ -57,9 +57,10 @@ type TopBarProps = {
 const validTabs = ["A", "B", "C", "D", "E"];
 
 export const TopBar = ({ onChangeTabsType, tabsType, exercises, workout }: TopBarProps) => {
-  const [students, setStudents] = useState<Array<StudentInterface>>([]); // This should be an API call
+  const [students, setStudents] = useState<Array<StudentInterface>>([]);
   const [assessmentId, setAssessmentId] = useState<string>();
   const [studentId, setStudentId] = useState<string>();
+  const supabase = createClientComponentClient();
 
   const [formData, setFormData] = useState({
     description: null,
@@ -70,8 +71,11 @@ export const TopBar = ({ onChangeTabsType, tabsType, exercises, workout }: TopBa
 
   useEffect(() => {
     const fetchStudents = async () => {
+      const session = await supabase.auth.getSession()
+      const userId = session.data.session.user.id
+
       try {
-        const { data } = await apiClient.get("/students")
+        const { data } = await apiClient.get("/students", { params: { userId } })
 
         setStudents(data)
       } catch (error) {
@@ -80,7 +84,7 @@ export const TopBar = ({ onChangeTabsType, tabsType, exercises, workout }: TopBa
     }
 
     fetchStudents()
-  }, [])
+  }, [supabase])
 
   useEffect(() => {
     if (workout) {
@@ -99,7 +103,10 @@ export const TopBar = ({ onChangeTabsType, tabsType, exercises, workout }: TopBa
 
     const studentId = event.target.value
 
-    const { data } = await apiClient.get<Array<AssessmentInterface>>(`/assessments/${studentId}/student`)
+    const session = await supabase.auth.getSession()
+    const userId = session.data.session.user.id
+
+    const { data } = await apiClient.get<Array<AssessmentInterface>>(`/assessments/${studentId}/student`, { params: { userId } })
 
     const assessment = data[0]
 
@@ -136,13 +143,16 @@ export const TopBar = ({ onChangeTabsType, tabsType, exercises, workout }: TopBa
 
       setErrors({});
 
+      const session = await supabase.auth.getSession()
+      const userId = session.data.session.user.id
+
       if (workout) {
-        await apiClient.put(`/workouts/${workout.id}`, formNewData);
+        await apiClient.put(`/workouts/${workout.id}`, formNewData, { params: { userId } });
         toast.success("Treino atualizado com sucesso!");
         return
       }
 
-      await apiClient.post("/workouts", formNewData);
+      await apiClient.post("/workouts", formNewData, { params: { userId } });
 
       toast.success("Treino salvo com sucesso!");
     } catch (error) {

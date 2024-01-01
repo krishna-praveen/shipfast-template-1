@@ -39,16 +39,15 @@ export async function GET(req: NextRequest, context: any) {
 export async function PUT(req: NextRequest, context: any) {
   const body = await req.json();
   const { params } = context;
+  const userId = req.nextUrl.searchParams.get("userId");
 
   try {
     const supabase = createRouteHandlerClient({ cookies });
 
-    const { data } = await supabase.auth.getSession();
-
     await supabase
       .from("workouts")
       .update({
-        user_id: data.session.user.id,
+        user_id: userId,
         student_id: body.studentId,
         assessment_id: body.assessmentId,
         description: body.description,

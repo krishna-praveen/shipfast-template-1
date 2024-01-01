@@ -1,5 +1,6 @@
 "use client"
 
+import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -7,7 +8,6 @@ import { useEffect, useState } from "react";
 import Layout from "@/components/layout/Layout";
 
 import apiClient from "@/libs/api";
-
 
 export const dynamic = "force-dynamic";
 
@@ -23,16 +23,20 @@ export default function Workouts() {
   const [workouts, setWorkouts] = useState<Array<StudentWorkouts>>([]);
   const [openAccordionId, setOpenAccordionId] = useState<string | null>(null);
   const router = useRouter()
+  const supabase = createClientComponentClient();
 
   useEffect(() => {
     const fetchWorkouts = async () => {
-      const { data } = await apiClient.get<Array<StudentWorkouts>>("/workouts/students");
+      const session = await supabase.auth.getSession()
+      const userId = session.data.session.user.id
+
+      const { data } = await apiClient.get<Array<StudentWorkouts>>("/workouts/students", { params: { userId } });
 
       setWorkouts(data);
     }
 
     fetchWorkouts()
-  }, [])
+  }, [supabase])
 
   const handleRegister = () => {
     router.replace("/workouts/register")

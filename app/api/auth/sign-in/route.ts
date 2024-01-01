@@ -8,7 +8,7 @@ export async function POST(req: NextRequest) {
   try {
     const supabase = createRouteHandlerClient({ cookies });
 
-    console.info("Making the login >", { email });
+    console.info("Making the login >", { email, password });
 
     const { error, data } = await supabase.auth.signInWithPassword({
       email,

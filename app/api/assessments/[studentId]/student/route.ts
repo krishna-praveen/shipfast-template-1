@@ -4,18 +4,10 @@ import { NextResponse, NextRequest } from "next/server";
 
 export async function GET(req: NextRequest, context: any) {
   const { params } = context;
-  let userId: string;
+  const userId = req.nextUrl.searchParams.get("userId");
 
   try {
     const supabase = createRouteHandlerClient({ cookies });
-
-    const session = await supabase.auth.getSession();
-
-    if (session.data.session) {
-      const { id } = session.data.session.user;
-
-      userId = id;
-    }
 
     const { data, error } = await supabase
       .from("assessments")
