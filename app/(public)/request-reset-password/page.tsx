@@ -49,7 +49,7 @@ export default function RequestResetPassword() {
       router.push("/sign-in")
     } catch (error) {
       if (process.env.NODE_ENV === "development") {
-        console.log(error);
+        console.error(error);
       }
     } finally {
       setIsLoading(false);

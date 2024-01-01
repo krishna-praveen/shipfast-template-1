@@ -1,16 +1,14 @@
 import { createRouteHandlerClient } from "@supabase/auth-helpers-nextjs";
 import { cookies } from "next/headers";
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 
-export async function GET() {
+export async function GET(req: NextRequest) {
+  const userId = req.nextUrl.searchParams.get("userId");
+
   try {
     const supabase = createRouteHandlerClient({ cookies });
 
-    const session = await supabase.auth.getSession();
-
-    if (session.data.session) {
-      const userId = session.data.session.user.id;
-
+    if (userId) {
       const { data: user } = await supabase
         .from("profiles")
         .select("*")

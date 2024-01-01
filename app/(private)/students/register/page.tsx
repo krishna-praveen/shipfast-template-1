@@ -1,6 +1,7 @@
 /* eslint-disable no-unused-vars */
 "use client"
 
+import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import { ArrowLeft } from "lucide-react";
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
@@ -21,6 +22,7 @@ enum NonGender {
 // See https://shipfa.st/docs/tutorials/private-page
 export default function Register() {
   const router = useRouter()
+  const supabase = createClientComponentClient();
 
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
@@ -132,7 +134,11 @@ export default function Register() {
     setIsLoading(true);
 
     const birthDateFormatted = birthDate.split('/').reverse().join('-');
+
     try {
+      const session = await supabase.auth.getSession()
+      const userId = session.data.session.user.id
+
       await apiClient.post("/students", {
         name,
         surname,
@@ -142,14 +148,14 @@ export default function Register() {
         city,
         email,
         phone
-      })
+      }, { params: { userId } })
 
       toast.success("Cadastrado com sucesso.");
 
       router.replace("/students")
 
     } catch (error) {
-      console.log(error);
+      console.error(error);
 
       toast.error("Erro ao cadastrar, entre em contato com o suporte.");
     } finally {

@@ -1,7 +1,6 @@
 /* eslint-disable no-unused-vars */
 "use client"
 
-
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -37,23 +36,32 @@ export default function Students() {
 
   useEffect(() => {
     const getStudents = async () => {
-      const { data } = await apiClient.get("/students");
+      const session = await supabase.auth.getSession()
+      const userId = session.data.session.user.id
+
+      const { data } = await apiClient.get("/students", { params: { userId } });
 
       setStudents(data);
     };
 
     getStudents();
-  }, []);
+  }, [supabase]);
 
   useEffect(() => {
     const fetchStudentLimit = async () => {
+      const session = await supabase.auth.getSession();
+      const userId = session.data.session.user.id
+
       try {
-        const { data } = await apiClient.get('/plans/limit');
+        const { data } = await apiClient.get('/plans/limit', { params: { userId } });
 
         setStudentLimit(data.limits.student);
       } catch (error) {
+        if (process.env.NODE_ENV === 'development') {
+          console.error(error);
+        }
+
         toast.error('Não foi possível obter o limite de alunos.')
-        console.error(error);
       }
     };
 

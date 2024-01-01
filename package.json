@@ -54,7 +54,7 @@
     "@types/react-syntax-highlighter": "^15.5.7",
     "@typescript-eslint/parser": "^6.15.0",
     "autoprefixer": "^10.4.15",
-    "daisyui": "^3.6.1",
+    "daisyui": "^4.4.23",
     "eslint-plugin-import": "^2.29.0",
     "eslint-plugin-tailwindcss": "^3.13.0",
     "postcss": "^8.4.28",

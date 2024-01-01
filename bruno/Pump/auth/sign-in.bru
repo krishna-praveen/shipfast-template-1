@@ -1,0 +1,29 @@
+meta {
+  name: sign-in
+  type: http
+  seq: 2
+}
+
+post {
+  url: {{base_url}}/auth/sign-in
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "email": "user@email.com",
+    "password": "your_password"
+  }
+}
+
+docs {
+  # Sign-in
+  
+  This route is responsible for log a user into the application. For now, we'll just sign in Personal Trainers, but in the future, we'll be able to log in others type of users.
+  
+  ## Required fields
+  
+  - name
+  - email
+}
