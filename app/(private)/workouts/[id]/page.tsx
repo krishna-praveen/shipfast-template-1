@@ -106,7 +106,7 @@ export default function Workout({ params }: { params: { id: string } }) {
   return (
     <Layout>
 
-      <TopBar workout={workout} onChangeTabsType={(typeTabs: string) => setWorkoutTabs(typeTabs)} tabsType={workoutTabs} exercises={exercises} />
+      <TopBar title="Treino" workout={workout} onChangeTabsType={(typeTabs: string) => setWorkoutTabs(typeTabs)} tabsType={workoutTabs} exercises={exercises} />
 
       <div className="w-full bg-base-100">
         <div role="tablist" aria-label="Workouts" className="tabs block border-primary px-10">

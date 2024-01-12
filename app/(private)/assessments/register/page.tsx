@@ -14,6 +14,11 @@ import { z } from "zod";
 
 import Layout from "@/components/layout/Layout";
 
+import { Modal } from "@/components/ui/Modal";
+
+import { AssessmentInterface } from "@/components/workouts/TopBar";
+
+import apiClient from "@/libs/api";
 import { AssessmentTypeEnum } from "@/libs/enums/assessment-type-enum";
 import { FormDataSchema } from "@/libs/schema";
 
@@ -64,6 +69,9 @@ const assessmentTypeMapper = {
 // See https://shipfa.st/docs/tutorials/private-page
 export default function Register() {
   const supabase = createClientComponentClient();
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+  const [planLimit, setPlanLimit] = useState<any>({ limits: { assessment: 0 } });
+  const [limitReached, setLimitReached] = useState<boolean>(false);
   const router = useRouter()
   const {
     register,
@@ -135,7 +143,6 @@ export default function Register() {
       }
 
       setStudents(data)
-      setValue('studentId', data[0].id)
     }
 
     getStudents()
@@ -767,6 +774,43 @@ export default function Register() {
     );
   }
 
+  const handleBilling = async () => {
+    try {
+      const { url }: { url: string } = await apiClient.post(
+        "/stripe/create-portal",
+        {
+          returnUrl: window.location.href,
+        }
+      );
+
+      window.location.href = url;
+    } catch (e) {
+      console.error(e);
+    }
+  };
+
+  const handleStudent = async (event: React.ChangeEvent<HTMLSelectElement>) => {
+    event.preventDefault()
+
+    const studentId = event.target.value
+
+    const session = await supabase.auth.getSession()
+    const userId = session.data.session.user.id
+
+    const { data: assessments } = await apiClient.get<Array<AssessmentInterface>>(`/assessments/${studentId}/student`, { params: { userId } })
+
+    const { data: plans } = await apiClient.get(`/plans/limit`, { params: { userId } })
+
+    if (plans.limits.assessment === assessments.length) {
+      setIsModalOpen(true)
+      setPlanLimit(plans)
+      setLimitReached(true)
+      return
+    }
+
+    setValue('studentId', studentId)
+  }
+
   return (
     <Layout>
       <div className="flex flex-row items-center space-x-4">
@@ -805,7 +849,12 @@ export default function Register() {
                       id="studentId"
                       {...register('studentId')}
                       className='select select-bordered w-full max-w-xs'
+                      defaultValue={0}
+                      onChange={handleStudent}
                     >
+                      <option disabled key={0} value={0}>
+                        Selecionar um Aluno
+                      </option>
                       {students.map((student) => (
                         <option
                           key={student.id}
@@ -1200,12 +1249,25 @@ export default function Register() {
               type='button'
               onClick={next}
               className={`btn btn-primary ${currentStep === steps.length - 1 ? 'btn-success' : ''}`}
+              disabled={limitReached === true}
             >
               {currentStep === steps.length - 1 ? 'Finalizar' : 'Avançar'}
             </button>
           </div>
         </div>
       </section>
+
+      <Modal
+        isModalOpen={isModalOpen}
+        setIsModalOpen={setIsModalOpen}
+        title="Atenção!"
+      >
+        <div className="space-y-4">
+          <p>O seu plano só permite cadastrar <strong>{planLimit.limits.assessment} avaliações</strong> por aluno.</p>
+          <p>Deseja <strong>atualizar</strong> seu plano?</p>
+          <button onClick={handleBilling} className="btn btn-primary">Escolher novo Plano</button>
+        </div>
+      </Modal>
     </Layout>
   );
 }

@@ -2,7 +2,7 @@
 
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 
 import Layout from "@/components/layout/Layout";
@@ -11,16 +11,17 @@ import apiClient from "@/libs/api";
 
 export const dynamic = "force-dynamic";
 
-// This is a private page: It's protected by the layout.js component which ensures the user is authenticated.
-// It's a server compoment which means you can fetch data (like the user profile) before the page is rendered.
-// See https://shipfa.st/docs/tutorials/private-page
 export default function Assessments() {
   const router = useRouter()
   const supabase = createClientComponentClient();
 
   const [students, setStudents] = useState([])
-  const [assessmentsByStudentId, setAssessmentsByStudentId] = useState([])
-  const [openAccordionId, setOpenAccordionId] = useState<string | null>(null);
+  const [studentId, setStudentId] = useState('')
+  const [assessments, setAssessments] = useState<any[]>([])
+  const [assessmentId, setAssessmentId] = useState('')
+  const [bodyMeasurementOpenAccordionId, setBodyMeasurementOpenAccordionId] = useState<string | null>(null);
+  const [assessmentMeasurementOpenAccordionId, setAssessmentMeasurementOpenAccordionId] = useState<string | null>(null);
+  const [assessmentResultOpenAccordionId, setAssessmentResultOpenAccordionId] = useState<string | null>(null);
 
   const formatDate = (dateString: string) => {
     return new Date(dateString).toLocaleDateString('pt-BR');
@@ -42,198 +43,369 @@ export default function Assessments() {
     getStudents()
   }, [supabase])
 
-  useEffect(() => {
-    if (students.length === 0 || !students) {
-      return
-    }
-
-    const getAssessmentsByStudentId = async () => {
-      const { data, error } = await supabase.from("assessments").select("*").in('student_id', students.map(student => student.id)).throwOnError()
-      console.log({ data: JSON.stringify(data) })
-
-      if (error) {
-        toast.error("Erro ao buscar avaliações por aluno. Entre em contato com o suporte.")
-      }
-
-      setAssessmentsByStudentId(data)
-    }
-
-    getAssessmentsByStudentId()
-  }, [supabase, students])
-
-
   const handleRegister = () => {
     router.replace("/assessments/register")
   }
 
-  const handleAccordion = (studentId: string) => {
-    const assessmentsForStudent = assessmentsByStudentId.filter(assessment => assessment.student_id === studentId);
-    if (assessmentsForStudent.length === 0) return;
+  const handleStudent = async (event: React.ChangeEvent<HTMLSelectElement>) => {
+    event.preventDefault()
 
-    setOpenAccordionId(openAccordionId === studentId ? null : studentId);
+    const studentId = event.target.value
+
+    setStudentId(studentId)
+
+    const session = await supabase.auth.getSession()
+    const userId = session.data.session.user.id
+
+    const { data } = await apiClient.get(`/assessments/${studentId}/student`, { params: { userId } })
+    setAssessments(data)
+  }
+
+  const handleAssessment = async (event: React.ChangeEvent<HTMLSelectElement>) => {
+    event.preventDefault()
+
+    const assessmentId = event.target.value
+
+    setAssessmentId(assessmentId)
+  }
+
+  const handleBodyMeasurementAccordion = (id: string) => {
+    if (bodyMeasurementOpenAccordionId === id) {
+      setBodyMeasurementOpenAccordionId(null);
+    } else {
+      setBodyMeasurementOpenAccordionId(id);
+    }
+  };
+
+  const handleAssessmentMeasurementAccordion = (id: string) => {
+    if (assessmentMeasurementOpenAccordionId === id) {
+      setAssessmentMeasurementOpenAccordionId(null);
+    } else {
+      setAssessmentMeasurementOpenAccordionId(id);
+    }
+  };
+
+  const handleAssessmentResultAccordion = (id: string) => {
+    if (assessmentResultOpenAccordionId === id) {
+      setAssessmentResultOpenAccordionId(null);
+    } else {
+      setAssessmentResultOpenAccordionId(id);
+    }
   };
 
   const formatNumber = (value: number) => {
     return Number(value.toFixed(2));
   };
 
-  const renderAssessmentDetails = (assessments: any[]) => {
-    const assessmentMeasureTranslations: { [key: string]: string } = {
-      calf: "Panturrilha",
-      chest: "Peito",
-      thigh: "Coxa",
-      axilla: "Axila",
-      height: "Altura",
-      weight: "Peso",
-      abdomen: "Abdômen",
-      triceps: "Tríceps",
-      subscapular: "Subescapular"
-    };
+  const formatAssessmentPeriod = (startDate: string, endDate: string) => {
+    const monthNames = ["Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho", "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"];
 
-    const assessmentResultTranslations: { [key: string]: string } = {
-      bmr: "Taxa Metabólica Basal",
-      fatMass: "Massa Gorda",
-      leanMass: "Massa Magra",
-      bodyDensity: "Densidade Corporal",
-      idealWeightMax: "Peso Ideal Máximo",
-      idealWeightMin: "Peso Ideal Mínimo",
-      sumOfSkinfolds: "Soma das Dobras Cutâneas",
-      idealBodyFatMax: "Gordura Corporal Ideal Máxima",
-      idealBodyFatMin: "Gordura Corporal Ideal Mínima",
-      bodyFatPercentage: "Porcentagem de Gordura Corporal"
-    };
+    const start = new Date(startDate);
+    const end = new Date(endDate);
 
-    const bodyMeasurementTranslations: { [key: string]: string } = {
-      hip: "Quadril",
-      chest: "Peito",
-      neck: "Pescoço",
-      waist: "Cintura",
-      abdomen: "Abdômen",
-      shoulder: "Ombro",
-      right: "Direito",
-      left: "Esquerdo",
-      arm: "Braço",
-      forearm: "Antebraço",
-      thigh: "Coxa",
-      calf: "Panturrilha"
-    };
+    const startMonth = monthNames[start.getMonth()];
+    const endMonth = monthNames[end.getMonth()];
+    const year = start.getFullYear();
 
-    const translateKey = (key: string, translations: { [key: string]: string }) => {
-      return translations[key] || key;
-    };
+    return `${startMonth} - ${endMonth} (${year})`;
+  }
 
-    const renderBodyMeasurement = (bodyMeasurement: any) => {
-      const translatedBodyMeasurements = Object.entries(bodyMeasurement)
-        .filter(([key]) => ['hip', 'chest', 'neck', 'waist', 'abdomen', 'shoulder'].includes(key))
-        .map(([key, value]) => (
-          <li key={key}>{`${translateKey(key, bodyMeasurementTranslations)}: ${value}`}</li>
-        ));
+  const renderAssessmentDetails = (assessments: Array<any>) => {
+    const assessment = assessments.find(assessment => assessment.id === assessmentId);
 
-      const renderSideMeasurements = (side: 'right' | 'left') => {
-        return (
-          <div>
-            <strong>{translateKey(side, bodyMeasurementTranslations)}</strong>
-            <ul>
-              {Object.entries(bodyMeasurement[side]).map(([innerKey, innerValue]) => (
-                <li key={innerKey}>{`${translateKey(innerKey, bodyMeasurementTranslations)}: ${innerValue}`}</li>
-              ))}
-            </ul>
-          </div>
-        );
-      };
-
+    const renderBodyMeasurement = (assessment: any) => {
       return (
-        <div>
-          <ul>{translatedBodyMeasurements}</ul>
-          <div className="mt-4 flex flex-col md:flex-row md:gap-x-16">
-            {renderSideMeasurements('right')}
-            {renderSideMeasurements('left')}
+        <div className="mt-4">
+          <div className={`collapse collapse-arrow rounded-box bg-base-200 ${bodyMeasurementOpenAccordionId === assessment.id + "body-measurement" ? 'collapse-open' : ''}`}>
+            <input type="checkbox" className="peer" checked={bodyMeasurementOpenAccordionId === assessment.id + "body-measurement"} onChange={() => handleBodyMeasurementAccordion(assessment.id + "body-measurement")} />
+            <div className="collapse-title text-xl font-medium">
+              <div className="mb-2 grid grid-cols-1">
+                <h1 className="text-xl font-medium">Medidas do Corpo</h1>
+              </div>
+            </div>
+
+            <div className="collapse-content">
+              <div className="space-y-2">
+                <div className="flex flex-row space-x-4">
+                  <div className="w-full rounded-md bg-base-100 p-2">
+                    <h2 className="text-2xl font-semibold">{assessment.bodyMeasurement.neck} cm</h2>
+                    <p>Pescoço</p>
+                  </div>
+                  <div className="w-full rounded-md bg-base-100 p-2">
+                    <h2 className="text-2xl font-semibold">{assessment.bodyMeasurement.shoulder} cm</h2>
+                    <p>Ombros</p>
+                  </div>
+                  <div className="w-full rounded-md bg-base-100 p-2">
+                    <h2 className="text-2xl font-semibold">{assessment.bodyMeasurement.chest} cm</h2>
+                    <p>Peito</p>
+                  </div>
+                  <div className="w-full rounded-md bg-base-100 p-2">
+                    <h2 className="text-2xl font-semibold">{assessment.bodyMeasurement.waist} cm</h2>
+                    <p>Cintura</p>
+                  </div>
+                  <div className="w-full rounded-md bg-base-100 p-2">
+                    <h2 className="text-2xl font-semibold">{assessment.bodyMeasurement.hip} cm</h2>
+                    <p>Quadril</p>
+                  </div>
+                  <div className="w-full rounded-md bg-base-100 p-2">
+                    <h2 className="text-2xl font-semibold">{assessment.bodyMeasurement.abdomen} cm</h2>
+                    <p>Abdômen</p>
+                  </div>
+                </div>
+
+                <div className="flex flex-row place-content-between space-x-8">
+                  <div className="w-full rounded-md">
+                    <h1 className="text-xl font-medium">Direito:</h1>
+                    <div className="flex flex-row space-x-4">
+                      <div className="w-full rounded-md bg-base-100 p-2">
+                        <h2 className="text-2xl font-semibold">{assessment.bodyMeasurement.right.forearm} cm</h2>
+                        <p>Antebraço</p>
+                      </div>
+                      <div className="w-full rounded-md bg-base-100 p-2">
+                        <h2 className="text-2xl font-semibold">{assessment.bodyMeasurement.right.arm} cm</h2>
+                        <p>Braço</p>
+                      </div>
+                      <div className="w-full rounded-md bg-base-100 p-2">
+                        <h2 className="text-2xl font-semibold">{assessment.bodyMeasurement.right.thigh} cm</h2>
+                        <p>Coxa</p>
+                      </div>
+                      <div className="w-full rounded-md bg-base-100 p-2">
+                        <h2 className="text-2xl font-semibold">{assessment.bodyMeasurement.right.calf} cm</h2>
+                        <p>Panturrilha</p>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="w-full rounded-md">
+                    <h1 className="text-xl font-medium">Esquerdo:</h1>
+                    <div className="flex flex-row space-x-4">
+                      <div className="w-full rounded-md bg-base-100 p-2">
+                        <h2 className="text-2xl font-semibold">{assessment.bodyMeasurement.left.forearm} cm</h2>
+                        <p>Antebraço</p>
+                      </div>
+                      <div className="w-full rounded-md bg-base-100 p-2">
+                        <h2 className="text-2xl font-semibold">{assessment.bodyMeasurement.left.arm} cm</h2>
+                        <p>Braço</p>
+                      </div>
+                      <div className="w-full rounded-md bg-base-100 p-2">
+                        <h2 className="text-2xl font-semibold">{assessment.bodyMeasurement.left.thigh} cm</h2>
+                        <p>Coxa</p>
+                      </div>
+                      <div className="w-full rounded-md bg-base-100 p-2">
+                        <h2 className="text-2xl font-semibold">{assessment.bodyMeasurement.left.calf} cm</h2>
+                        <p>Panturrilha</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       );
     };
 
-    return assessments.map(assessment => (
-      <div className="accordion" key={assessment.id}>
-        <div className="accordion-item">
-          <div className="accordion-body space-y-4">
-            <div className="flex flex-col md:flex-row">
-              <div className="flex-1">
-                <p><strong>Data de início:</strong> {formatDate(assessment.start_date)}</p>
-                <p><strong>Data de fim:</strong> {formatDate(assessment.end_date)}</p>
-                <p><strong>Tipo de Avaliação:</strong> {assessment.assessment_type === "pollock_7" ? "Pollock de 7 dobras" : "Pollock de 3 dobras"}</p>
-              </div>
-            </div>
-            <div className="flex flex-col md:flex-row">
-              <div className="flex-1">
-                <p><strong>Medidas da Avaliação:</strong></p>
-                <ul>
-                  {Object.entries(assessment.assessment_measures).map(([key, value]) => (
-                    <li key={key}>{`${translateKey(key, assessmentMeasureTranslations)}: ${value}`}</li>
-                  ))}
-                </ul>
-              </div>
-              <div className="flex-1">
-                <p><strong>Resultado da Avaliação:</strong></p>
-                <ul>
-                  {Object.entries(assessment.assessment_result).map(([key, value]) => {
-                    const formattedValue = typeof value === 'number' ? formatNumber(value) : value;
-                    return (
-                      <li key={key}>{`${translateKey(key, assessmentResultTranslations)}: ${formattedValue}`}</li>
-                    );
-                  })}
-                </ul>
-              </div>
-            </div>
-            <div>
-              <div>
-                <strong>Medidas Corporais:</strong>
-                {renderBodyMeasurement(assessment.body_measurement)}
+    const renderAssessmentMeasurement = (assessment: any) => {
+      return (
+        <div className="mt-4">
+          <div className={`collapse collapse-arrow rounded-box bg-base-200 ${assessmentMeasurementOpenAccordionId === assessment.id + "assessment-measurement" ? 'collapse-open' : ''}`}>
+            <input type="checkbox" className="peer" checked={assessmentMeasurementOpenAccordionId === assessment.id + "assessment-measurement"} onChange={() => handleAssessmentMeasurementAccordion(assessment.id + "assessment-measurement")} />
+            <div className="collapse-title text-xl font-medium">
+              <div className="mb-2 grid grid-cols-1">
+                <h1 className="text-xl font-medium">Medidas da Avaliação</h1>
               </div>
             </div>
 
-            <div className="divider" />
+            <div className="collapse-content">
+              <div className="flex flex-row space-x-4">
+                <div className="w-full rounded-md bg-base-100 p-2">
+                  <h2 className="text-2xl font-semibold">{assessment.assessmentMeasures.height}</h2>
+                  <p>Altura</p>
+                </div>
+                <div className="w-full rounded-md bg-base-100 p-2">
+                  <h2 className="text-2xl font-semibold">{assessment.assessmentMeasures.weight} kg</h2>
+                  <p>Peso</p>
+                </div>
+                <div className="w-full rounded-md bg-base-100 p-2">
+                  <h2 className="text-2xl font-semibold">{assessment.assessmentMeasures.thigh} cm</h2>
+                  <p>Chest</p>
+                </div>
+                <div className="w-full rounded-md bg-base-100 p-2">
+                  <h2 className="text-2xl font-semibold">{assessment.assessmentMeasures.thigh} cm</h2>
+                  <p>Coxa</p>
+                </div>
+                <div className="w-full rounded-md bg-base-100 p-2">
+                  <h2 className="text-2xl font-semibold">{assessment.assessmentMeasures.abdomen} cm</h2>
+                  <p>Abdômen</p>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
+      )
+    }
+
+    const renderAssessmentResult = (assessment: any) => {
+      return (
+        <div className="mt-4">
+          <div className={`collapse collapse-arrow rounded-box bg-base-200 ${assessmentResultOpenAccordionId === assessment.id + "assessment-result" ? 'collapse-open' : ''}`}>
+            <input type="checkbox" className="peer" checked={assessmentResultOpenAccordionId === assessment.id + "assessment-result"} onChange={() => handleAssessmentResultAccordion(assessment.id + "assessment-result")} />
+
+            <div className="collapse-title text-xl font-medium">
+              <div className="mb-2 grid grid-cols-1">
+                <h1 className="text-xl font-medium">Resultado da Avaliação</h1>
+              </div>
+            </div>
+
+            <div className="collapse-content">
+              <div className="flex flex-row place-content-between space-x-4">
+                <div className="flex w-full flex-col space-y-4">
+                  <div className="w-full rounded-md bg-base-100 p-2">
+                    <h2 className="text-2xl font-semibold">{formatNumber(assessment.assessmentMeasures.weight)} kg</h2>
+                    <p>Peso Atual</p>
+                  </div>
+                  <div className="w-full rounded-md bg-base-100 p-2">
+                    <h2 className="text-2xl font-semibold">{formatNumber(assessment.assessmentResult.idealWeightMax)} kg</h2>
+                    <p>Peso Máximo Ideal</p>
+                  </div>
+                  <div className="w-full rounded-md bg-base-100 p-2">
+                    <h2 className="text-2xl font-semibold">{formatNumber(assessment.assessmentResult.idealWeightMin)} kg</h2>
+                    <p>Peso Mínimo Ideal</p>
+                  </div>
+                </div>
+
+                <div className="flex w-full flex-col space-y-4">
+                  <div className="w-full rounded-md bg-base-100 p-2">
+                    <h2 className="text-2xl font-semibold">{formatNumber(assessment.assessmentResult.bodyFatPercentage)}%</h2>
+                    <p>Massa Gorda Atual</p>
+                  </div>
+                  <div className="w-full rounded-md bg-base-100 p-2">
+                    <h2 className="text-2xl font-semibold">{formatNumber(assessment.assessmentResult.idealBodyFatMax)}%</h2>
+                    <p>Máximo de Massa Gorda Ideal</p>
+                  </div>
+                  <div className="w-full rounded-md bg-base-100 p-2">
+                    <h2 className="text-2xl font-semibold">{formatNumber(assessment.assessmentResult.idealBodyFatMin)}%</h2>
+                    <p>Mínimo de Massa Gorda Ideal</p>
+                  </div>
+                </div>
+
+                <div className="flex w-full flex-col space-y-4">
+                  <div className="w-full rounded-md bg-base-100 p-2">
+                    <h2 className="text-2xl font-semibold">{formatNumber(assessment.assessmentResult.fatMass)} kg</h2>
+                    <p>Massa Gorda</p>
+                  </div>
+                  <div className="w-full rounded-md bg-base-100 p-2">
+                    <h2 className="text-2xl font-semibold">{formatNumber(assessment.assessmentResult.leanMass)} kg</h2>
+                    <p>Massa Magra</p>
+                  </div>
+                  <div className="w-full rounded-md bg-base-100 p-2">
+                    <h2 className="text-2xl font-semibold">{formatNumber(assessment.assessmentResult.bmr)} kcal</h2>
+                    <p>Taxa Metabólica Basal</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      )
+    };
+
+    return (
+      <div>
+        <div className="flex flex-row place-content-between items-center">
+          <div className="flex flex-col space-y-2">
+            <label className="text text-sm">Início da Avaliação</label>
+            <input className="input input-bordered input-sm" type="text" value={formatDate(assessment.startDate)} disabled />
+          </div>
+          <div className="flex flex-col space-y-2">
+            <label className="text text-sm">Fim da Avaliação</label>
+            <input className="input input-bordered input-sm" type="text" value={formatDate(assessment.endDate)} disabled />
+          </div>
+          <div className="flex flex-col space-y-2">
+            <label className="text text-sm">Tipo de Avaliação</label>
+            <input className="input input-bordered input-sm" type="text" value={assessment.assessmentType === "pollock_7" ? "Pollock de 7 dobras" : "Pollock de 3 dobras"} disabled />
+          </div>
+        </div>
+
+        {renderBodyMeasurement(assessment)}
+
+        {renderAssessmentMeasurement(assessment)}
+
+        {renderAssessmentResult(assessment)}
       </div>
-    ));
+    )
   }
 
   return (
     <Layout>
       <h1 className="text-3xl font-extrabold md:text-4xl">Avaliações</h1>
       <button className="btn mt-8 hover:bg-indigo-600 hover:text-white" onClick={handleRegister}>
-        Registrar avaliações
+        Registrar avaliação
       </button>
 
-      <div className="overflow-x-auto pt-4">
-        <table className="table w-full">
-          <thead>
-            <tr>
-              <th>Nome do Aluno</th>
-              <th>Avaliações</th>
-            </tr>
-          </thead>
-          <tbody>
-            {students.map(student => (
-              <>
-                <tr key={student.id} onClick={() => handleAccordion(student.id)} className="cursor-pointer">
-                  <td>{student.name} {student.surname}</td>
-                  <td>{assessmentsByStudentId.filter(assessment => assessment.student_id === student.id).length} avaliações</td>
-                </tr>
-                {openAccordionId === student.id && (
-                  <tr>
-                    <td colSpan={2}>
-                      {renderAssessmentDetails(
-                        assessmentsByStudentId.filter(assessment => assessment.student_id === student.id)
-                      )}
-                    </td>
-                  </tr>
-                )}
-              </>
-            ))}
-          </tbody>
-        </table>
+      <div className="space-y-4 overflow-x-auto pt-4">
+        <div className="flex flex-row space-x-8">
+          <div>
+            <h1 className="pb-2 text-base">Selecione um aluno</h1>
+            <select
+              className="select select-bordered select-sm w-full max-w-xs"
+              defaultValue={0}
+              onChange={handleStudent}
+            >
+              <option disabled key={0} value={0}>
+                Aluno
+              </option>
+              {students.map((student) => {
+                return (
+                  <option key={student.id} value={student.id}>
+                    {student.name} {student.surname}
+                  </option>
+                )
+              })}
+            </select>
+          </div>
+
+          <div>
+            <h1 className="pb-2 text-base">Selecione uma avaliação</h1>
+            <select
+              className="select select-bordered select-sm w-full max-w-xs"
+              defaultValue={0}
+              disabled={studentId === ''}
+              onChange={handleAssessment}
+            >
+              <option disabled key={0} value={0}>
+                Avaliação
+              </option>
+              {assessments.map((assessment, index) => {
+                const periodString = formatAssessmentPeriod(assessment.startDate, assessment.endDate);
+                return (
+                  <option key={index} value={assessment.id}>
+                    {periodString}
+                  </option>
+                );
+              })}
+            </select>
+          </div>
+        </div>
+
+        <div>
+          <h1 className="text-2xl font-bold">Informações da Avaliação</h1>
+
+          {
+            assessmentId === '' ? (
+              <div className="flex items-center justify-center">
+                <div className="card w-96 bg-base-200 shadow-xl">
+                  <div className="card-body">
+                    <h2 className="card-title">Atenção!</h2>
+                    <p>Selecione um <strong>Aluno</strong> e uma <strong>Avaliação</strong> para visualizar os dados.</p>
+                  </div>
+                </div>
+              </div>
+            ) : (
+              renderAssessmentDetails(assessments)
+            )
+          }
+        </div>
       </div>
     </Layout>
   );

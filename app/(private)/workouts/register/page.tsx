@@ -53,7 +53,7 @@ export default function Register() {
   return (
     <Layout>
 
-      <TopBar onChangeTabsType={(typeTabs: string) => setWorkoutTabs(typeTabs)} tabsType={workoutTabs} exercises={exercises} />
+      <TopBar title="Registrar Treino" onChangeTabsType={(typeTabs: string) => setWorkoutTabs(typeTabs)} tabsType={workoutTabs} exercises={exercises} />
 
       <div className="w-full bg-base-100">
         <div role="tablist" aria-label="Workouts" className="tabs block border-primary px-10">
@@ -64,10 +64,10 @@ export default function Register() {
           }
         </div>
 
-        <div className="bg-image flex flex-col gap-8 p-10">
+        <div className="bg-image flex flex-col gap-8 pt-10">
 
           <div className="flex items-center gap-5">
-            <h2 className="text-2xl font-bold">Exercícios</h2>
+            <h2 className="text-3xl font-bold">Exercícios</h2>
             <label htmlFor="addExercise" className="btn btn-outline btn-primary">Adicionar Exercício</label>
           </div>
 

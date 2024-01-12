@@ -1,5 +1,7 @@
 "use client";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
+import { ArrowLeft } from "lucide-react";
+import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { ZodError } from "zod";
@@ -8,6 +10,8 @@ import { ExerciseInterface } from "@/app/(private)/workouts/register/page";
 
 import apiClient from "@/libs/api";
 import { WorkoutSchema } from "@/libs/schema";
+
+import { Modal } from "../ui/Modal";
 
 export interface WorkoutInterface {
   id: string;
@@ -40,7 +44,8 @@ interface StudentInterface {
   name: string
   surname: string
 }
-interface AssessmentInterface {
+
+export interface AssessmentInterface {
   id: string
   userId: string
   studentId: string
@@ -52,15 +57,20 @@ type TopBarProps = {
   tabsType: string;
   workout?: WorkoutInterface
   exercises: { [key: string]: Array<ExerciseInterface> }
+  title: string
 }
 
 const validTabs = ["A", "B", "C", "D", "E"];
 
-export const TopBar = ({ onChangeTabsType, tabsType, exercises, workout }: TopBarProps) => {
+export const TopBar = ({ onChangeTabsType, tabsType, exercises, workout, title }: TopBarProps) => {
   const [students, setStudents] = useState<Array<StudentInterface>>([]);
   const [assessmentId, setAssessmentId] = useState<string>();
   const [studentId, setStudentId] = useState<string>();
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+  const [limitReached, setLimitReached] = useState<boolean>(false);
+  const [planLimit, setPlanLimit] = useState<any>({ limits: { assessment: 0 } });
   const supabase = createClientComponentClient();
+  const router = useRouter()
 
   const [formData, setFormData] = useState({
     description: null,
@@ -106,9 +116,20 @@ export const TopBar = ({ onChangeTabsType, tabsType, exercises, workout }: TopBa
     const session = await supabase.auth.getSession()
     const userId = session.data.session.user.id
 
-    const { data } = await apiClient.get<Array<AssessmentInterface>>(`/assessments/${studentId}/student`, { params: { userId } })
+    const { data: assessments } = await apiClient.get<Array<AssessmentInterface>>(`/assessments/${studentId}/student`, { params: { userId } })
 
-    const assessment = data[0]
+    const { data: students } = await apiClient.get(`/workouts/${studentId}/students`, { params: { userId } })
+
+    const { data: plans } = await apiClient.get(`/plans/limit`, { params: { userId } })
+
+    if (plans.limits.workout === students?.length) {
+      setIsModalOpen(true)
+      setPlanLimit(plans)
+      setLimitReached(true)
+      return
+    }
+
+    const assessment = assessments[0]
 
     setStudentId(studentId)
     setAssessmentId(assessment.id)
@@ -168,28 +189,38 @@ export const TopBar = ({ onChangeTabsType, tabsType, exercises, workout }: TopBa
     }
   }
 
+  const handleBack = () => {
+    router.replace("/workouts")
+  }
+
+  const handleBilling = async () => {
+    try {
+      const { url }: { url: string } = await apiClient.post(
+        "/stripe/create-portal",
+        {
+          returnUrl: window.location.href,
+        }
+      );
+
+      window.location.href = url;
+    } catch (e) {
+      console.error(e);
+    }
+  };
+
   return (
-    <div className="flex flex-col gap-8 px-10 py-8">
+    <div className="flex flex-col gap-8">
       <div className="flex w-full flex-wrap justify-between gap-5">
         <div className="flex flex-col gap-5">
-          <div className="breadcrumbs text-sm">
-            <ul>
-              <li>
-                <a href="/home">Home</a>
-              </li>
-              <li>
-                <a href="/workouts">Treinos</a>
-              </li>
-              <li>Novo Treino</li>
-            </ul>
+          <div className="flex flex-row items-center space-x-4">
+            <ArrowLeft className="cursor-pointer hover:text-indigo-800" onClick={handleBack} />
+            <h1 className="text-4xl font-bold">{title}</h1>
           </div>
-
-          <h1 className="text-4xl font-bold">Novo Treino</h1>
 
           <input
             type="text"
             placeholder="Descrição do treino"
-            className={`input input-bordered input-sm w-full md:w-80 ${errors.description ? 'select-error' : 'border-white'}`}
+            className={`input input-bordered w-full md:w-80 ${errors.description ? 'select-error' : 'border-white'}`}
             value={formData.description}
             onChange={(e) => setFormData({ ...formData, description: e.target.value })}
           />
@@ -197,7 +228,7 @@ export const TopBar = ({ onChangeTabsType, tabsType, exercises, workout }: TopBa
 
         <div className="flex flex-wrap items-center justify-center gap-8">
           <button className="btn btn-outline">Cancelar</button>
-          <button className="btn btn-primary" onClick={() => handleSubmit(formData)}>Salvar Treino</button>
+          <button className="btn btn-primary" onClick={() => handleSubmit(formData)} disabled={limitReached === true}>Salvar Treino</button>
         </div>
       </div>
 
@@ -209,7 +240,7 @@ export const TopBar = ({ onChangeTabsType, tabsType, exercises, workout }: TopBa
           {
             workout ? (
               <select
-                className={`select select-bordered select-sm w-full max-w-xs ${errors.assessmentId ? 'select-error' : 'border-white'}`}
+                className={`select select-bordered w-full max-w-xs ${errors.assessmentId ? 'select-error' : 'border-white'}`}
                 value={studentId}
                 onChange={handleStudent}
               >
@@ -223,7 +254,7 @@ export const TopBar = ({ onChangeTabsType, tabsType, exercises, workout }: TopBa
 
             ) : (
               <select
-                className={`select select-bordered select-sm w-full max-w-xs ${errors.assessmentId ? 'select-error' : 'border-white'}`}
+                className={`select select-bordered w-full max-w-xs ${errors.assessmentId ? 'select-error' : 'border-white'}`}
                 defaultValue={0}
                 onChange={handleStudent}
               >
@@ -252,7 +283,7 @@ export const TopBar = ({ onChangeTabsType, tabsType, exercises, workout }: TopBa
             type="text"
             value={formData.phase}
             onChange={(e) => setFormData({ ...formData, phase: Number(e.target.value) })}
-            className={`input input-bordered input-sm w-full ${errors.phase ? 'select-error' : 'border-white'}`}
+            className={`input input-bordered w-full ${errors.phase ? 'select-error' : 'border-white'}`}
             placeholder="Qual fase?"
           />
         </label>
@@ -264,7 +295,7 @@ export const TopBar = ({ onChangeTabsType, tabsType, exercises, workout }: TopBa
           {
             workout ? (
               <select
-                className={`select select-bordered select-sm w-full max-w-xs ${errors.type ? 'select-error' : 'border-white'}`}
+                className={`select select-bordered w-full max-w-xs ${errors.type ? 'select-error' : 'border-white'}`}
                 value={tabsType}
                 onChange={handleChangeTabs}>
                 {["ABC", "ABCD", "ABCDE"].map((type, index) => (
@@ -275,7 +306,7 @@ export const TopBar = ({ onChangeTabsType, tabsType, exercises, workout }: TopBa
               </select>
 
             ) : (
-              <select className={`select select-bordered select-sm w-full max-w-xs ${errors.type ? 'select-error' : 'border-white'}`} onChange={handleChangeTabs}>
+              <select className={`select select-bordered w-full max-w-xs ${errors.type ? 'select-error' : 'border-white'}`} onChange={handleChangeTabs}>
                 {
                   ["ABC", "ABCD", "ABCDE"].map((tabsType, index) => (
                     <option key={index} value={tabsType}>
@@ -294,13 +325,25 @@ export const TopBar = ({ onChangeTabsType, tabsType, exercises, workout }: TopBa
           </div>
           <input
             type="text"
-            className={`input input-bordered input-sm w-full ${errors.goal ? 'select-error' : 'border-white'}`}
+            className={`input input-bordered w-full ${errors.goal ? 'select-error' : 'border-white'}`}
             placeholder="Qual o objetivo?"
             value={formData.goal}
             onChange={(e) => setFormData({ ...formData, goal: e.target.value })}
           />
         </label>
       </div>
+
+      <Modal
+        isModalOpen={isModalOpen}
+        setIsModalOpen={setIsModalOpen}
+        title="Atenção!"
+      >
+        <div className="space-y-4">
+          <p>O seu plano só permite cadastrar <strong>{planLimit.limits.assessment} treinos</strong> por aluno.</p>
+          <p>Deseja <strong>atualizar</strong> seu plano?</p>
+          <button onClick={handleBilling} className="btn btn-primary">Escolher novo Plano</button>
+        </div>
+      </Modal>
     </div>
   );
 }

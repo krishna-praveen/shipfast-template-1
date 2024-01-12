@@ -8,8 +8,8 @@ interface ModalProps {
   isModalOpen: boolean;
   setIsModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
   isStatic?: boolean;
-  title?: string;  // Optional title prop
-  children?: ReactNode;  // Children elements
+  title?: string;
+  children?: ReactNode;
 }
 
 // A simple modal component which can be shown/hidden with a boolean and a function
@@ -32,7 +32,7 @@ export const Modal = ({ isModalOpen, setIsModalOpen, title = "I'm a modal", isSt
           leaveFrom="opacity-100"
           leaveTo="opacity-0"
         >
-          <div className="fixed inset-0 bg-neutral-focus bg-opacity-50" />
+          <div className="fixed inset-0 bg-base-300 bg-opacity-80" />
         </Transition.Child>
 
         <div className="fixed inset-0 overflow-y-auto">

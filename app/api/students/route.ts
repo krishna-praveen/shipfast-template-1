@@ -2,6 +2,8 @@ import { createRouteHandlerClient } from "@supabase/auth-helpers-nextjs";
 import { cookies } from "next/headers";
 import { NextResponse, NextRequest } from "next/server";
 
+import { mapKeysToCamelCase } from "@/libs/maps/mapKeysToCamelCase";
+
 export async function GET(req: NextRequest) {
   const userId = req.nextUrl.searchParams.get("userId");
 
@@ -21,7 +23,7 @@ export async function GET(req: NextRequest) {
       );
     }
 
-    return NextResponse.json({ data });
+    return NextResponse.json({ data: mapKeysToCamelCase(data) });
   } catch (e) {
     console.error({ e });
     throw NextResponse.json({ error: e.message }, { status: 500 });

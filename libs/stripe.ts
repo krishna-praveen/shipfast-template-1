@@ -85,7 +85,7 @@ export const createCheckout = async ({
         },
         trial_period_days: 7,
       },
-      payment_method_collection: "if_required",
+      payment_method_collection: "always",
       ...extraParams,
     });
 
