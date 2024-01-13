@@ -24,6 +24,8 @@ jobs:
         run: vercel env ls --token=${{ secrets.VERCEL_TOKEN }}
       - name: Log Pulled Environment Variables (Optional and Sensitive)
         run: cat .vercel/project.json # This is for debugging purposes only
+      - name: Load Environment Variables
+        run: source .vercel/.env.development.local
       - name: Build Project Artifacts
         run: vercel build --token=${{ secrets.VERCEL_TOKEN }}
       - name: Deploy Project Artifacts to Vercel
