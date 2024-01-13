@@ -20,6 +20,10 @@ jobs:
         run: vercel pull --yes --environment=development --token=${{ secrets.VERCEL_TOKEN }}
       - name: Log Environment Variables
         run: vercel env ls --token=${{ secrets.VERCEL_TOKEN }}
+      - name: Set Environment Variables
+        run: |
+          echo "NEXT_PUBLIC_SUPABASE_URL=${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}" >> $GITHUB_ENV
+          echo "NEXT_PUBLIC_SUPABASE_ANON_KEY=${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY }}" >> $GITHUB_ENV
       - name: Build Project Artifacts
         run: vercel build --token=${{ secrets.VERCEL_TOKEN }}
       - name: Deploy Project Artifacts to Vercel
