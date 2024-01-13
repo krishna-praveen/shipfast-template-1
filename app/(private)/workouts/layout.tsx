@@ -1,9 +1,20 @@
 import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
+import { ReadonlyRequestCookies } from "next/dist/server/web/spec-extension/adapters/request-cookies";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import { ReactNode } from "react";
 
 import config from "@/config";
+
+async function getCookieData(): Promise<ReadonlyRequestCookies> {
+  const cookieData = cookies()
+
+  return new Promise((resolve) =>
+    setTimeout(() => {
+      resolve(cookieData)
+    }, 1000)
+  )
+}
 
 // This is a server-side component to ensure the user is logged in.
 // If not, it will redirect to the login page.
@@ -15,7 +26,8 @@ export default async function LayoutPrivate({
 }: {
   children: ReactNode;
 }) {
-  const supabase = createServerComponentClient({ cookies });
+  const allCookies = await getCookieData()
+  const supabase = createServerComponentClient({ cookies: () => allCookies });
 
   const {
     data: { session },
