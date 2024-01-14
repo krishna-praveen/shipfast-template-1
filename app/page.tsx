@@ -11,6 +11,7 @@ export default function Home() {
     <>
       <Header />
       <main>
+        {JSON.stringify(process.env)}
         <Hero />
         <Problem />
         <Pricing />

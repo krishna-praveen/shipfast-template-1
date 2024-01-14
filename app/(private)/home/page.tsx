@@ -251,7 +251,7 @@ export default function Home() {
 
       <h1 className="text-3xl font-extrabold md:text-4xl">Dashboard</h1>
       <h2 className="mt-2 text-xl">Olá, {user?.user_metadata?.name}</h2>
-      <h3 className="mt-2 text-base">Bem vindo de volta ao Pump! {JSON.stringify(process.env)}</h3>
+      <h3 className="mt-2 text-base">Bem vindo de volta ao Pump!</h3>
 
       <div className="mt-8 grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
         <CardStats
