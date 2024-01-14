@@ -1,6 +1,5 @@
 "use client";
 
-import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
@@ -13,7 +12,7 @@ import config from "@/config";
 
 import { Modal } from "../../ui/Modal";
 
-const IS_PRODUCTION = process.env.NODE_ENV === "production"
+const IS_PRODUCTION = process.env.VERCEL_ENV === "production"
 
 // This component is used to create Stripe Checkout Sessions
 // It calls the /api/stripe/create-checkout route with the priceId, successUrl and cancelUrl
@@ -26,32 +25,24 @@ export const ButtonCheckout = ({
   priceId: string;
   mode?: "payment" | "subscription";
 }) => {
-  const supabase = createClientComponentClient();
-
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 
   const handlePayment = async () => {
     setIsLoading(true);
 
-    const { data: { session } } = await supabase.auth.getSession()
-
     try {
-      if (!session) {
-        setIsModalOpen(true)
-      } else {
-        const { url }: { url: string } = await apiClient.post(
-          "/stripe/create-checkout",
-          {
-            priceId,
-            successUrl: window.location.href,
-            cancelUrl: window.location.href,
-            mode,
-          }
-        );
+      const { url }: { url: string } = await apiClient.post(
+        "/stripe/create-checkout",
+        {
+          priceId,
+          successUrl: window.location.href,
+          cancelUrl: window.location.href,
+          mode,
+        }
+      );
 
-        window.location.href = url;
-      }
+      window.location.href = url;
     } catch (e) {
       console.error(e);
     }

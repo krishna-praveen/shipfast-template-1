@@ -100,7 +100,7 @@ export const Pricing = () => {
                   </ul>
                 )}
                 <div className="space-y-2">
-                  <ButtonCheckout priceId={plan.priceId} mode="subscription" />
+                  <ButtonCheckout priceId={plan?.priceId} mode="subscription" />
                 </div>
               </div>
             </div>
