@@ -4,8 +4,6 @@ import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
 
-import logo from "@/app/icon.png";
-
 import apiClient from "@/libs/api";
 
 import config from "@/config";
@@ -68,7 +66,7 @@ export const ButtonCheckout = ({
           <span className="loading loading-spinner loading-xs"></span>
         ) : (
           <Image
-            src={logo}
+            src='/images/logo/icon.png'
             alt={`${config.appName} logo`}
             priority={true}
             className="h-6 w-6"

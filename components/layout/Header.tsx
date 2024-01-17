@@ -6,8 +6,6 @@ import { useSearchParams } from "next/navigation";
 import type { JSX } from "react";
 import { useState, useEffect } from "react";
 
-import logo from "@/app/icon.png";
-
 import config from "@/config";
 
 import { ButtonSignIn } from "../ui/buttons";
@@ -53,10 +51,9 @@ export const Header = () => {
             title={`${config.appName} hompage`}
           >
             <Image
-              src={logo}
+              src='/images/logo/icon.png'
               alt={`${config.appName} logo`}
               className="w-8"
-              placeholder="blur"
               priority={true}
               width={32}
               height={32}
@@ -122,10 +119,9 @@ export const Header = () => {
               href="/"
             >
               <Image
-                src={logo}
+                src='/images/logo/icon.png'
                 alt={`${config.appName} logo`}
                 className="w-8"
-                placeholder="blur"
                 priority={true}
                 width={32}
                 height={32}
