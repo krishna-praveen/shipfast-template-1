@@ -11,8 +11,6 @@ import { ExerciseInterface } from "@/app/(private)/workouts/register/page";
 import apiClient from "@/libs/api";
 import { WorkoutSchema } from "@/libs/schema";
 
-import { Modal } from "../ui/Modal";
-
 export interface WorkoutInterface {
   id: string;
   studentId: string;
@@ -66,9 +64,7 @@ export const TopBar = ({ onChangeTabsType, tabsType, exercises, workout, title }
   const [students, setStudents] = useState<Array<StudentInterface>>([]);
   const [assessmentId, setAssessmentId] = useState<string>();
   const [studentId, setStudentId] = useState<string>();
-  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
-  const [limitReached, setLimitReached] = useState<boolean>(false);
-  const [planLimit, setPlanLimit] = useState<any>({ limits: { assessment: 0 } });
+
   const supabase = createClientComponentClient();
   const router = useRouter()
 
@@ -117,17 +113,6 @@ export const TopBar = ({ onChangeTabsType, tabsType, exercises, workout, title }
     const userId = session.data.session.user.id
 
     const { data: assessments } = await apiClient.get<Array<AssessmentInterface>>(`/assessments/${studentId}/student`, { params: { userId } })
-
-    const { data: students } = await apiClient.get(`/workouts/${studentId}/students`, { params: { userId } })
-
-    const { data: plans } = await apiClient.get(`/plans/limit`, { params: { userId } })
-
-    if (plans.limits.workout === students?.length) {
-      setIsModalOpen(true)
-      setPlanLimit(plans)
-      setLimitReached(true)
-      return
-    }
 
     const assessment = assessments[0]
 
@@ -228,7 +213,7 @@ export const TopBar = ({ onChangeTabsType, tabsType, exercises, workout, title }
 
         <div className="flex flex-wrap items-center justify-center gap-8">
           <button className="btn btn-outline">Cancelar</button>
-          <button className="btn btn-primary" onClick={() => handleSubmit(formData)} disabled={limitReached === true}>Salvar Treino</button>
+          <button className="btn btn-primary" onClick={() => handleSubmit(formData)}>Salvar Treino</button>
         </div>
       </div>
 
@@ -332,18 +317,6 @@ export const TopBar = ({ onChangeTabsType, tabsType, exercises, workout, title }
           />
         </label>
       </div>
-
-      <Modal
-        isModalOpen={isModalOpen}
-        setIsModalOpen={setIsModalOpen}
-        title="Atenção!"
-      >
-        <div className="space-y-4">
-          <p>O seu plano só permite cadastrar <strong>{planLimit.limits.assessment} treinos</strong> por aluno.</p>
-          <p>Deseja <strong>atualizar</strong> seu plano?</p>
-          <button onClick={handleBilling} className="btn btn-primary">Escolher novo Plano</button>
-        </div>
-      </Modal>
     </div>
   );
 }

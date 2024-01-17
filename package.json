@@ -27,7 +27,6 @@
     "form-data": "^4.0.0",
     "framer-motion": "^10.16.7",
     "lucide-react": "^0.293.0",
-    "mailgun.js": "^9.2.1",
     "next": "^14.0.0",
     "next-auth": "^4.24.5",
     "next-plausible": "^3.11.3",

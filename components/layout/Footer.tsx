@@ -4,7 +4,7 @@ import Link from "next/link";
 import config from "@/config";
 
 // Add the Footer to the bottom of your landing page and more.
-// The support link is connected to the config.js file. If there's no config.mailgun.supportEmail, the link won't be displayed.
+// The support link is connected to the config.js file. If there's no config.resend.supportEmail, the link won't be displayed.
 
 export const Footer = () => {
   return (

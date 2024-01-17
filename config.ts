@@ -11,7 +11,7 @@ const config = {
   // REQUIRED (no https://, not trialing slash at the end, just the naked domain)
   domainName: "pump",
   crisp: {
-    // Crisp website ID. IF YOU DON'T USE CRISP: just remove this => Then add a support email in this config file (mailgun.supportEmail) otherwise customer support won't work.
+    // Crisp website ID. IF YOU DON'T USE CRISP: just remove this => Then add a support email in this config file (resend.supportEmail) otherwise customer support won't work.
     id: "",
     // Hide Crisp by default, except on route "/". Crisp is toggled with <ButtonSupport/>. If you want to show Crisp on every routes, just remove this below
     onlyShowOnRoutes: ["/"],
@@ -26,82 +26,20 @@ const config = {
             ? process.env.STRIPE_PLAN_STARTER
             : "need_to_be_configured",
         //  REQUIRED - Name of the plan, displayed on the pricing page
-        name: "Plano Starter",
+        name: "Plano Essencial",
         // A friendly description of the plan, displayed on the pricing page. Tip: explain why this plan and not others
-        description: "Comece com o essencial",
+        description: "A mudança começa aqui!",
         // The price you want to display, the one user will be charged on Stripe.
-        price: 39.9,
+        price: 79.9,
         // If you have an anchor price (i.e. $29) that you want to display crossed out, put it here. Otherwise, leave it empty
-        // priceAnchor: 29,
-        options: {
-          student: {
-            quantity: 20,
-          },
-          assessment: {
-            quantity: 6,
-          },
-          workouts: {
-            quantity: 6,
-          },
-        },
+        priceAnchor: 99.9,
         features: [
           { name: "Registro de alunos" },
           { name: "Registro e avaliação de aluno" },
           { name: "Registro de treino por aluno" },
           { name: "Geração e download de PDF (avaliação/treino)" },
-          { name: "Suporte por WhatsApp" },
-        ],
-      },
-      {
-        priceId:
-          process.env.VERCEL_ENV !== "production"
-            ? process.env.STRIPE_PLAN_BOOSTER
-            : "need_to_be_configured",
-        // This plan will look different on the pricing page, it will be highlighted. You can only have one plan with isFeatured: true
-        isFeatured: true,
-        name: "Plano Booster",
-        description: "Acelere seu crescimento",
-        price: 69.9,
-        options: {
-          student: {
-            quantity: 40,
-          },
-          assessment: {
-            quantity: 12,
-          },
-          workouts: {
-            quantity: 12,
-          },
-        },
-        // priceAnchor: 49,
-        features: [
-          { name: "Todas as funcionalidades do Plano Starter" },
           { name: "Envio de PDF por email" },
-        ],
-      },
-      {
-        priceId:
-          process.env.NODE_ENV !== "production"
-            ? process.env.STRIPE_PLAN_MASTER
-            : "need_to_be_configured",
-        // This plan will look different on the pricing page, it will be highlighted. You can only have one plan with isFeatured: true
-        name: "Plano Master",
-        description: "Domine o mercado",
-        price: 99.9,
-        options: {
-          student: {
-            quantity: 60,
-          },
-          assessment: {
-            quantity: 24,
-          },
-          workouts: {
-            quantity: 24,
-          },
-        },
-        features: [
-          { name: "Todas as funcionalidades do Plano Booster" },
-          { name: "O PDF com a sua logotipo" },
+          { name: "Suporte por WhatsApp" },
         ],
       },
     ],
@@ -111,12 +49,6 @@ const config = {
     bucket: "bucket-name",
     bucketUrl: `https://bucket-name.s3.amazonaws.com/`,
     cdn: "https://cdn-id.cloudfront.net/",
-  },
-  mailgun: {
-    // subdomain to use when sending emails, if you don't have a subdomain, just remove it. Highly recommended to have one (i.e. mg.yourdomain.com or mail.yourdomain.com)
-    subdomain: "mg",
-    // REQUIRED — Email 'From' field to be used when sending magic login links
-    fromNoReply: `ShipFast <noreply@mg.shipfa.st>`,
   },
   resend: {
     // REQUIRED — Email 'From' field to be used when sending other emails, like abandoned carts, updates etc..
