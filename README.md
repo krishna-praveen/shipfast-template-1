@@ -1,32 +1,62 @@
-# ShipFast — Typescript
+# Pump
 
-Hey maker 👋 it's Marc from [ShipFast](https://shipfa.st/docs). Let's get your startup off the ground, FAST ⚡️
+Olá dev 👋 tudo bem?
 
-<sub>**Watch/Star the repo to be notified when updates are pushed**</sub>
+Nessa simples documentação você terá as informações e instruções necessárias para você rodar o projeto pela primeira vez.
 
-## Get Started
+## Vamos começar!
 
-1. Follow the [Get Started Tutorial](https://shipfa.st/docs) to clone the repo and run your local server 💻
+### Primeira etapa
 
-<sub>**Looking for the /pages router version?** Use this [documentation](https://shipfa.st/docs-old) instead</sub>
+1. Execute o comando para logar no Vercel
 
-2. Follow the [Ship In 5 Minutes Tutorial](https://shipfa.st/docs/tutorials/ship-in-5-minutes) to learn the foundation and ship your app quickly ⚡️
+```bash
+yarn vercel login
+```
 
-## Links
+2. Selecione a opção de login por email
+3. E siga as instruções do terminal
 
-- [📚 Documentation](https://shipfa.st/docs)
-- [📣 Updates](https://shipfast.beehiiv.com/)
-- [🧑‍💻 Discord](https://shipfa.st/dashboard)
+### Segunda etapa
 
-## Support
+1. Execute o comando para utilizar a versão Node.js que estamos utilizando no momento atual. (caso não tiver o nvm, instale, só pesquisar, fácil fácil)
 
-Reach out to me on [Twitter](https://twitter.com/marc_louvion) or marc@shipfa.st
+```bash
+nvm use
+```
 
-\_
+2. Execute o comando para instalar as dependências
 
-Let's ship it, FAST ⚡️
+```bash
+yarn
+```
 
-P.S.
+### Terceira etapa
 
-- Want to showcase your startups? Get your [Indie Page](https://indiepa.ge?ref=shipfast_readme) and share your entrepreneur's journey. Join 3,132 founders ⭐️
-- Setting up a new business? Don't get banned from Stripe for 1 dispute. Use [ByeDispute](https://byedispute.com/?ref=shipfast_readme) to prevent them from happenening.
+1. Execute o comando para buscar as envs que estão no Vercel
+
+```bash
+yarn vercel env pull .env.local
+```
+
+2. Execute o projeto e seja feliz
+
+```bash
+yarn dev
+```
+
+### Quarta etapa
+
+1. É indicado você ter o Stripe em sua máquina, para assim você ter a integração com os eventos do Stripe e a nossa aplicação. Pesquise para instalar o Stripe CLI na sua máquina.
+
+2. Execute o seguinte comando e siga os demais passos para conectar com a nossa conta Stripe
+
+```bash
+stripe login
+```
+
+2. Execute o comando abaixo em outra instância do seu terminal para escutar os eventos do Stripe em nossa aplicação:
+
+```bash
+stripe listen --forward-to localhost:3000/api/webhook/stripe
+```

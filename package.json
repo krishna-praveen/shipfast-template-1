@@ -9,7 +9,9 @@
     "start": "next start",
     "lint": "next lint",
     "lint:debug": "eslint ./src --debug",
-    "lint:fix": "eslint ./ --fix"
+    "lint:fix": "eslint ./ --fix",
+    "vercel": "vercel",
+    "supabase": "supabase"
   },
   "dependencies": {
     "@headlessui/react": "^1.7.17",
@@ -59,7 +61,9 @@
     "eslint-plugin-import": "^2.29.0",
     "eslint-plugin-tailwindcss": "^3.13.0",
     "postcss": "^8.4.28",
+    "supabase": "^1.131.5",
     "tailwindcss": "^3.3.3",
-    "typescript": "^5.2.2"
+    "typescript": "^5.2.2",
+    "vercel": "^33.1.0"
   }
 }
