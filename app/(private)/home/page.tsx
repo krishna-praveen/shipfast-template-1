@@ -155,7 +155,7 @@ export default function Home() {
     }
 
     fetchStudents()
-  }, [supabase])
+  }, [])
 
   useEffect(() => {
     const fetchAssessments = async () => {
