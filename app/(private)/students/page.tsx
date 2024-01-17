@@ -102,7 +102,7 @@ export default function Students() {
       </div>
 
       <div className="overflow-x-auto pt-4">
-        {students?.map((student: { id: string, name: string, surname: string, birth_date: string, gender: keyof typeof GenderEnum, state: string, city: string, email: string, phone: string }) => (
+        {students?.map((student: { id: string, name: string, surname: string, birthDate: string, gender: keyof typeof GenderEnum, state: string, city: string, email: string, phone: string }) => (
           <div key={student.id} className="mb-2">
             <div className={`collapse collapse-arrow rounded-box bg-base-200 ${openAccordionId === student.id ? 'collapse-open' : ''}`}>
               <input type="checkbox" className="peer" checked={openAccordionId === student.id} onChange={() => handleAccordion(student.id)} />
@@ -115,8 +115,8 @@ export default function Students() {
                 <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
                   <div>
                     <StudentInfo label="Nome completo" value={`${student.name} ${student.surname}`} />
-                    <StudentInfo label="Data de nascimento" value={formatDate(student.birth_date)} />
-                    <StudentInfo label="Idade" value={`${calculateAge(student.birth_date)} anos`} />
+                    <StudentInfo label="Data de nascimento" value={formatDate(student.birthDate)} />
+                    <StudentInfo label="Idade" value={`${calculateAge(student.birthDate)} anos`} />
                     <StudentInfo label="Sexo" value={GenderEnum[student.gender]} />
                   </div>
                   <div>

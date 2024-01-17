@@ -54,7 +54,7 @@ const config = {
       },
       {
         priceId:
-          process.env.NODE_ENV === "development"
+          process.env.VERCEL_ENV !== "production"
             ? process.env.STRIPE_PLAN_BOOSTER
             : "need_to_be_configured",
         // This plan will look different on the pricing page, it will be highlighted. You can only have one plan with isFeatured: true
@@ -81,7 +81,7 @@ const config = {
       },
       {
         priceId:
-          process.env.NODE_ENV === "development"
+          process.env.NODE_ENV !== "production"
             ? process.env.STRIPE_PLAN_MASTER
             : "need_to_be_configured",
         // This plan will look different on the pricing page, it will be highlighted. You can only have one plan with isFeatured: true

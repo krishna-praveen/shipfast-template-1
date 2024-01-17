@@ -12,6 +12,8 @@ import { formatBirthDate, validateDate } from "@/libs/date";
 
 import config from "@/config";
 
+import { findCustomerAndSubscription } from "./actions";
+
 export default function Signup() {
   const supabase = createClientComponentClient();
 
@@ -129,9 +131,16 @@ export default function Signup() {
     setIsLoading(true);
 
     try {
-      const emailRedirectTo = window.location.origin + "/#pricing";
+      const emailRedirectTo = window.location.origin + "/home";
 
-      await supabase.auth.signUp({
+      const { customer, subscription } = await findCustomerAndSubscription(email)
+
+      if (!customer && !subscription) {
+        toast.error("Por favor, adquire o seu plano primeiro, ou utilize o mesmo email que você utilizou para a compra do plano.", { position: "top-center", duration: 10000, icon: '❌' })
+        return
+      }
+
+      const { data: { user } } = await supabase.auth.signUp({
         email,
         password,
         phone,
@@ -144,13 +153,31 @@ export default function Signup() {
         }
       })
 
-      toast.success("Confirme o cadastro no seu e-mail. E finalize a compra.", { position: "top-center", duration: 5000, icon: '✅' })
+      const { data: profile } = await supabase
+        .from("profiles")
+        .select("*")
+        .eq("id", user.id)
+        .single();
+
+      if (!profile) {
+        await supabase.from("profiles").insert(
+          {
+            id: user.id,
+            price_id: subscription.items.data[0].price.id,
+            email,
+            has_access: true,
+            customer_id: customer.id
+          },
+        );
+      }
+
+      toast.success("Conta criada com sucesso. Email para confirmação já foi enviado pra sua caixa de entrada.", { position: "top-center", duration: 5000, icon: '✅' })
 
       setIsDisabled(true);
 
       router.replace("/")
     } catch (error) {
-      if (process.env.NODE_ENV === 'development') {
+      if (process.env.VERCEL_ENV !== 'production') {
         console.error(error);
       }
     } finally {
