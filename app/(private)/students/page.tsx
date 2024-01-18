@@ -31,8 +31,6 @@ export default function Students() {
 
   const [students, setStudents] = useState([])
   const [openAccordionId, setOpenAccordionId] = useState<string | null>(null);
-  const [studentLimit, setStudentLimit] = useState(0);
-  const [isLimitReached, setIsLimitReached] = useState(false);
 
   useEffect(() => {
     const getStudents = async () => {
@@ -46,31 +44,6 @@ export default function Students() {
 
     getStudents();
   }, [supabase]);
-
-  useEffect(() => {
-    const fetchStudentLimit = async () => {
-      const session = await supabase.auth.getSession();
-      const userId = session.data.session.user.id
-
-      try {
-        const { data } = await apiClient.get('/plans/limit', { params: { userId } });
-
-        setStudentLimit(data.limits.student);
-      } catch (error) {
-        if (process.env.NODE_ENV === 'development') {
-          console.error(error);
-        }
-
-        toast.error('Não foi possível obter o limite de alunos.')
-      }
-    };
-
-    fetchStudentLimit();
-  }, [supabase])
-
-  useEffect(() => {
-    setIsLimitReached(students.length >= studentLimit);
-  }, [students, studentLimit]);
 
   const handleRegister = () => {
     router.replace("/students/register")
@@ -88,18 +61,12 @@ export default function Students() {
     <Layout>
       <h1 className="text-3xl font-extrabold md:text-4xl">Alunos</h1>
 
-      <div className="mt-8 flex flex-row items-center space-x-2">
-        <div className={`${isLimitReached ? 'tooltip tooltip-right' : ''}`} data-tip={`${isLimitReached ? 'Limite de alunos atingido. Por favor, atualize seu plano para adicionar mais alunos.' : ''}`}>
-          <button
-            className={`btn hover:bg-indigo-600 hover:text-white ${isLimitReached ? 'btn-disabled' : ''}`}
-            onClick={handleRegister}
-          >
-            Registrar aluno
-          </button>
-        </div>
-
-        <p>{students.length}/{studentLimit}</p>
-      </div>
+      <button
+        className={`btn hover:bg-indigo-600 hover:text-white`}
+        onClick={handleRegister}
+      >
+        Registrar aluno
+      </button>
 
       <div className="overflow-x-auto pt-4">
         {students?.map((student: { id: string, name: string, surname: string, birthDate: string, gender: keyof typeof GenderEnum, state: string, city: string, email: string, phone: string }) => (

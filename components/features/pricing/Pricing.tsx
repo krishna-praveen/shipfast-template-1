@@ -13,7 +13,7 @@ export const Pricing = () => {
       <div className="mx-auto max-w-5xl px-8 py-24">
         <div className="mb-20 flex w-full flex-col text-center">
           <h2 className="text-3xl font-bold tracking-tight lg:text-5xl">
-            Encontre o plano perfeito com o Pump
+            Assine o Pump agora mesmo
           </h2>
         </div>
 
@@ -36,7 +36,7 @@ export const Pricing = () => {
                 ></div>
               )}
 
-              <div className="relative z-10 flex h-full flex-col gap-5 rounded-lg bg-base-100 p-8 lg:gap-8">
+              <div className="relative z-10 flex h-full flex-col gap-5 rounded-lg border-4 border-primary bg-base-100 p-8 lg:gap-8">
                 <div className="flex items-center justify-between gap-4">
                   <div>
                     <p className="text-lg font-bold lg:text-xl">{plan.name}</p>
@@ -53,7 +53,7 @@ export const Pricing = () => {
                       <p className="relative">
                         <span className="absolute inset-x-0 top-[53%] h-[1.5px] bg-base-content"></span>
                         <span className="text-base-content/80">
-                          ${plan.priceAnchor}
+                          ${plan.priceAnchor.toFixed(2)}
                         </span>
                       </p>
                     </div>
@@ -62,20 +62,8 @@ export const Pricing = () => {
                     <p className={`text-5xl font-extrabold tracking-tight`}>
                       R$ {plan.price.toFixed(2)}
                     </p>
-                    <div className="pt-2">
-                      <p>Até <strong>{plan.options.student.quantity} alunos </strong> 💪🏽</p>
-                      <p>Até <strong>{plan.options.assessment.quantity} avaliações</strong> 🧾 por aluno</p>
-                      <p>Até <strong>{plan.options.workouts.quantity} treinos</strong> 🏋🏽 por aluno</p>
-                    </div>
                   </div>
-                  {/* Lets comments this, for now */}
-                  {/* 
-                    <div className="flex flex-col justify-end mb-[4px]">
-                      <p className="text-xs text-base-content/60 uppercase font-semibold">
-                        REAIS
-                      </p>
-                    </div>
-                   */}
+
                 </div>
                 {plan.features && (
                   <ul className="flex-1 space-y-2.5 text-base leading-relaxed">

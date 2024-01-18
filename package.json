@@ -9,7 +9,9 @@
     "start": "next start",
     "lint": "next lint",
     "lint:debug": "eslint ./src --debug",
-    "lint:fix": "eslint ./ --fix"
+    "lint:fix": "eslint ./ --fix",
+    "vercel": "vercel",
+    "supabase": "supabase"
   },
   "dependencies": {
     "@headlessui/react": "^1.7.17",
@@ -27,7 +29,6 @@
     "form-data": "^4.0.0",
     "framer-motion": "^10.16.7",
     "lucide-react": "^0.293.0",
-    "mailgun.js": "^9.2.1",
     "next": "^14.0.0",
     "next-auth": "^4.24.5",
     "next-plausible": "^3.11.3",
@@ -60,7 +61,9 @@
     "eslint-plugin-import": "^2.29.0",
     "eslint-plugin-tailwindcss": "^3.13.0",
     "postcss": "^8.4.28",
+    "supabase": "^1.131.5",
     "tailwindcss": "^3.3.3",
-    "typescript": "^5.2.2"
+    "typescript": "^5.2.2",
+    "vercel": "^33.1.0"
   }
 }
