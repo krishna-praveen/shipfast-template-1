@@ -3,56 +3,50 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import React, { useState } from "react";
+import React from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import { z } from "zod";
 
 import { Input } from "@/components/ui/Input";
 
-import apiClient from "@/libs/api";
-import { SignInSchema } from "@/libs/schema";
+import { useSchema } from '@/hooks/useSchema';
+
+import { useSignIn } from '@/services/hooks/useSingIn';
 
 import config from "@/config";
 
-type Inputs = z.infer<typeof SignInSchema>;
+type SignInProps = Required<z.infer<typeof useSchema.singIn>>;
 
 export default function SignIn() {
-  const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [isDisabled, setIsDisabled] = useState<boolean>(false);
-
   const {
     register,
     handleSubmit,
     formState: { errors, },
-  } = useForm<Inputs>({
-    resolver: zodResolver(SignInSchema),
+  } = useForm<SignInProps>({
+    resolver: zodResolver(useSchema.singIn),
   });
 
-  const router = useRouter()
+  const router = useRouter();
 
-  const onSubmit: SubmitHandler<Inputs> = async ({ email, password }) => {
-    setIsLoading(true);
-
-    try {
-      const { data } = await apiClient.post("/auth/sign-in", {
-        email,
-        password
-      })
-
-      if (data.user && data.session) {
-        toast.success("Login realizado com sucesso!", { position: "top-right" });
-        await router.replace("/home");
+  const UseSignIn = useSignIn({
+    options: {
+      onSuccess: (data) => {
+        if (data.user && data.session) {
+          toast.success("Login realizado com sucesso!", { position: "top-right" });
+          router.replace("/home");
+        }
+      },
+      onError: (error) => {
+        if (process.env.NODE_ENV === 'development') {
+          console.error(error);
+        }
       }
-    } catch (error) {
-      if (process.env.NODE_ENV === 'development') {
-        console.error(error);
-      }
-
-      setIsDisabled(false);
-    } finally {
-      setIsLoading(false);
     }
+  });
+
+  const onSubmit: SubmitHandler<SignInProps> = async ({ email, password }) => {
+    await UseSignIn.mutateAsync({ email, password });
   };
 
   return (
@@ -109,10 +103,10 @@ export default function SignIn() {
 
           <button
             className="btn btn-primary btn-block"
-            disabled={isLoading || isDisabled}
+            disabled={UseSignIn.isLoading}
             type="submit"
           >
-            {isLoading && (
+            {UseSignIn.isLoading && (
               <span className="loading loading-spinner loading-xs"></span>
             )}
             Entrar

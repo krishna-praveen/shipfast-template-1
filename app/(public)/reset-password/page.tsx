@@ -3,14 +3,14 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import React, { useState } from "react";
+import React from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import { z } from "zod";
 
 import { Input } from "@/components/ui/Input";
+import { useResetPassword } from '@/services/hooks/useResetPassword';
 
-import apiClient from "@/libs/api";
 import { ResetPasswordSchema } from "@/libs/schema";
 
 import config from "@/config";
@@ -18,9 +18,6 @@ import config from "@/config";
 type Inputs = z.infer<typeof ResetPasswordSchema>;
 
 export default function ResetPassword() {
-  const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [isDisabled, setIsDisabled] = useState<boolean>(false);
-
   const {
     register,
     handleSubmit,
@@ -30,27 +27,24 @@ export default function ResetPassword() {
   });
 
   const router = useRouter()
+  const UseResetPassword = useResetPassword({
+    options: {
+      onSuccess: (data) => {
+        if (data.user && data.session) {
+          toast.success("Senha atualizada com sucesso!", { position: "top-right" });
+          router.replace("/sign-in")
+        }
+      },
+      onError: (error) => {
+        if (process.env.NODE_ENV === "development") {
+          console.error(error);
+        }
+      }
+    }
+  })
 
   const onSubmit: SubmitHandler<Inputs> = async ({ password }) => {
-    setIsLoading(true);
-
-    try {
-      await apiClient.post("/auth/reset-password", {
-        password
-      })
-
-      toast.success("Senha atualizada com sucesso!", { position: "top-right" });
-
-      setIsDisabled(true);
-
-      router.replace("/sign-in")
-    } catch (error) {
-      if (process.env.NODE_ENV === "development") {
-        console.error(error);
-      }
-    } finally {
-      setIsLoading(false);
-    }
+    await UseResetPassword.mutateAsync({ password });
   };
 
   return (
@@ -94,10 +88,10 @@ export default function ResetPassword() {
 
           <button
             className="btn btn-primary btn-block"
-            disabled={isLoading || isDisabled}
+            disabled={UseResetPassword.isLoading}
             type="submit"
           >
-            {isLoading && (
+            {UseResetPassword.isLoading && (
               <span className="loading loading-spinner loading-xs"></span>
             )}
             Resetar
