@@ -1,147 +1,43 @@
 "use client";
 
-import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
+import { zodResolver } from '@hookform/resolvers/zod';
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
+import { SubmitHandler, useForm } from "react-hook-form"
 import toast from "react-hot-toast";
+import { z } from 'zod';
 
 import { Input } from "@/components/ui/Input";
+import { useSchema } from '@/hooks/useSchema';
 
-import { formatBirthDate, validateDate } from "@/libs/date";
+import { useSignUp } from '@/services/hooks/useSignUp';
 
 import config from "@/config";
+type SignUpProps = Required<z.infer<typeof useSchema.signUp>>
+
 
 export default function Signup() {
-  const supabase = createClientComponentClient();
-
-  const router = useRouter()
+  const router = useRouter();
 
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isDisabled, setIsDisabled] = useState<boolean>(false);
 
-  const [phone, setPhone] = useState<string>("");
+  const { register, handleSubmit, formState: { errors } } = useForm<SignUpProps>({
+    resolver: zodResolver(useSchema.signUp),
+  });
 
-  const [name, setName] = useState<string>("");
-  const [nameError, setNameError] = useState<string>("");
-
-  const [birthDate, setBirthDate] = useState<string>("");
-  const [birthDateError, setBirthDateError] = useState<string>("");
-
-  const [email, setEmail] = useState<string>("");
-  const [emailError, setEmailError] = useState<string>("");
-
-  const [password, setPassword] = useState<string>("");
-  const [passwordError, setPasswordError] = useState<string>("");
-
-  const validateEmail = (inputEmail: string) => {
-    if (!inputEmail || inputEmail.trim().length === 0) {
-      setEmailError("E-mail é obrigatório.");
-      return false;
-    }
-
-    if (!inputEmail.includes("@")) {
-      setEmailError("E-mail deve conter um @.");
-      return false;
-    }
-
-    setEmailError("");
-
-    return true;
-  };
-
-  const validateName = (inputName: string) => {
-    if (!inputName || inputName.trim().length === 0) {
-      setNameError("Nome é obrigatório.");
-      return false;
-    }
-
-    if (inputName.length < 6) {
-      setNameError("O nome deve ter pelo menos 6 caracteres.");
-      return false;
-    }
-
-    setNameError("");
-
-    return true;
-  };
-
-  const validatePassword = (inputPassword: string) => {
-    if (!inputPassword || inputPassword.trim().length === 0) {
-      setPasswordError("Senha é obrigatória.");
-      return false;
-    }
-
-    if (inputPassword.length < 6) {
-      setPasswordError("A senha deve ter pelo menos 6 caracteres.");
-      return false;
-    }
-
-    setPasswordError("");
-
-    return true;
-  };
-
-  const handleEmailChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const newEmail = event.target.value;
-    setEmail(newEmail);
-    validateEmail(newEmail);
-  };
-
-  const handlePasswordChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const newPassword = event.target.value;
-    setPassword(newPassword);
-    validatePassword(newPassword);
-  };
-
-  const handleNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const newName = event.target.value;
-    setName(newName);
-    validateName(newName);
-  };
-
-  const handleBirthDateChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const formattedDate = formatBirthDate(event.target.value);
-    setBirthDate(formattedDate);
-  };
-
-  const handleSignup = async (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-
-    if (!validateName(name)) {
-      return;
-    }
-
-    if (!validateDate(birthDate)) {
-      setBirthDateError("Formato de data inválido. Use DD/MM/YYYY.");
-      return;
-    }
-
-    if (!validateEmail(email)) {
-      return;
-    }
-
-    if (!validatePassword(password)) {
-      return;
-    }
-
-    setBirthDateError("");
-    setIsLoading(true);
+  const handleSubmitSingUp: SubmitHandler<SignUpProps> = async ({ email, password, phone, name, birthDate }) => {
+    const emailRedirectTo = window.location.origin + "/#pricing";
 
     try {
-      const emailRedirectTo = window.location.origin + "/#pricing";
-
-      await supabase.auth.signUp({
+      await useSignUp({
         email,
         password,
         phone,
-        options: {
-          data: {
-            name,
-            birthDate
-          },
-          emailRedirectTo
-        }
+        name,
+        birthDate,
+        emailRedirectTo
       })
 
       toast.success("Confirme o cadastro no seu e-mail. E finalize a compra.", { position: "top-center", duration: 5000, icon: '✅' })
@@ -156,7 +52,7 @@ export default function Signup() {
     } finally {
       setIsLoading(false);
     }
-  };
+  }
 
   return (
     <main className="p-8 md:p-24" data-theme={config.colors.theme}>
@@ -185,46 +81,42 @@ export default function Signup() {
 
       <form
         className="form-control w-full space-y-4"
-        onSubmit={(e) => handleSignup(e)}
+        onSubmit={handleSubmit((e) => handleSubmitSingUp(e))}
       >
         <Input
           type="text"
-          value={name}
           placeholder="Seu nome"
-          onChange={handleNameChange}
-          errorName={nameError}
+          errorName={errors.name?.message}
+          {...register('name')}
         />
 
         <Input
           type="text"
-          value={birthDate}
           placeholder="Data de nascimento"
-          onChange={handleBirthDateChange}
-          errorName={birthDateError}
+          errorName={errors.birthDate?.message}
+          {...register('birthDate')}
         />
 
         <Input
           type="text"
-          value={phone}
           placeholder="Seu número (opcional)"
-          onChange={(e) => setPhone(e.target.value)}
+          errorName={errors.phone?.message}
+          {...register('phone')}
         />
 
         <Input
           type="email"
-          value={email}
           placeholder="Seu e-mail"
-          onChange={handleEmailChange}
-          errorName={emailError}
           autoComplete="email"
+          errorName={errors.email?.message}
+          {...register('email')}
         />
 
         <Input
           type="password"
-          value={password}
           placeholder="Sua senha"
-          onChange={handlePasswordChange}
-          errorName={passwordError}
+          errorName={errors.password?.message}
+          {...register('password')}
         />
 
         <button
