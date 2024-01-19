@@ -8,7 +8,7 @@ import { ZodError } from "zod";
 
 import { ExerciseInterface } from "@/app/(private)/workouts/register/page";
 
-import apiClient from "@/libs/api";
+import apiClient from "@/services/api";
 import { WorkoutSchema } from "@/libs/schema";
 
 import { Modal } from "../ui/Modal";

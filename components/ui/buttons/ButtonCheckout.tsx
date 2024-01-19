@@ -4,7 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
 
-import apiClient from "@/libs/api";
+import apiClient from "@/services/api";
 
 import config from "@/config";
 
