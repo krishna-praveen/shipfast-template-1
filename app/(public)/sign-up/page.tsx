@@ -31,6 +31,8 @@ export default function Signup() {
     const emailRedirectTo = window.location.origin + "/#pricing";
 
     try {
+      setIsLoading(true);
+
       await useSignUp({
         email,
         password,
