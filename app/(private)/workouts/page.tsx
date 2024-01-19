@@ -7,7 +7,7 @@ import { useEffect, useState } from "react";
 
 import Layout from "@/components/layout/Layout";
 
-import apiClient from "@/libs/api";
+import apiClient from "@/services/api";
 
 export const dynamic = "force-dynamic";
 

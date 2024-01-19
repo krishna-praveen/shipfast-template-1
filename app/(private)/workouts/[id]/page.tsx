@@ -8,7 +8,7 @@ import { CardExercise } from "@/components/workouts/CardExercise";
 import { EditExercise } from "@/components/workouts/EditExercise";
 import { TopBar } from "@/components/workouts/TopBar";
 
-import apiClient from "@/libs/api";
+import apiClient from "@/services/api";
 
 
 export interface WorkoutInterface {

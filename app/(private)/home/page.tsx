@@ -11,7 +11,7 @@ import Layout from "@/components/layout/Layout";
 import { CardStats } from "@/components/ui/CardStats";
 import { Modal } from "@/components/ui/Modal";
 
-import apiClient from "@/libs/api";
+import apiClient from "@/services/api";
 
 export const dynamic = "force-dynamic";
 

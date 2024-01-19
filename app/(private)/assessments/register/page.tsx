@@ -18,7 +18,7 @@ import { Modal } from "@/components/ui/Modal";
 
 import { AssessmentInterface } from "@/components/workouts/TopBar";
 
-import apiClient from "@/libs/api";
+import apiClient from "@/services/api";
 import { AssessmentTypeEnum } from "@/libs/enums/assessment-type-enum";
 import { FormDataSchema } from "@/libs/schema";
 
