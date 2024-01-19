@@ -46,7 +46,14 @@ export default function SignIn() {
   });
 
   const onSubmit: SubmitHandler<SignInProps> = async ({ email, password }) => {
-    await UseSignIn.mutateAsync({ email, password });
+    try {
+      await UseSignIn.mutateAsync({ email, password });
+
+    } catch (e) {
+      if (process.env.NODE_ENV === "development") {
+        console.error(e);
+      }
+    }
   };
 
   return (

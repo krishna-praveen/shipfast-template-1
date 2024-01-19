@@ -44,7 +44,14 @@ export default function ResetPassword() {
   })
 
   const onSubmit: SubmitHandler<Inputs> = async ({ password }) => {
-    await UseResetPassword.mutateAsync({ password });
+    try {
+      await UseResetPassword.mutateAsync({ password });
+
+    } catch (e) {
+      if (process.env.NODE_ENV === "development") {
+        console.error(e);
+      }
+    }
   };
 
   return (
