@@ -9,21 +9,22 @@ import toast from "react-hot-toast";
 import { z } from "zod";
 
 import { Input } from "@/components/ui/Input";
-import { useResetPassword } from '@/services/hooks/useResetPassword';
 
-import { ResetPasswordSchema } from "@/libs/schema";
+import { useSchema } from '@/hooks/useSchema';
+
+import { useResetPassword } from '@/services/hooks/useResetPassword';
 
 import config from "@/config";
 
-type Inputs = z.infer<typeof ResetPasswordSchema>;
+type ResetPasswordProps = Required<z.infer<typeof useSchema.resetPassword>>;
 
 export default function ResetPassword() {
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<Inputs>({
-    resolver: zodResolver(ResetPasswordSchema),
+  } = useForm<ResetPasswordProps>({
+    resolver: zodResolver(useSchema.resetPassword),
   });
 
   const router = useRouter()
@@ -43,7 +44,7 @@ export default function ResetPassword() {
     }
   })
 
-  const onSubmit: SubmitHandler<Inputs> = async ({ password }) => {
+  const onSubmit: SubmitHandler<ResetPasswordProps> = async ({ password }) => {
     try {
       await UseResetPassword.mutateAsync({ password });
 

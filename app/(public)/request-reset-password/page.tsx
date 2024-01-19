@@ -10,15 +10,25 @@ import { z } from "zod";
 
 import { Input } from "@/components/ui/Input";
 
-import { useRequestResetPassword } from '@/services/hooks/useRequestResetPassword';
+import { useSchema } from '@/hooks/useSchema';
 
-import { RequestResetPasswordSchema } from "@/libs/schema";
+import { useRequestResetPassword } from '@/services/hooks/useRequestResetPassword';
 
 import config from "@/config";
 
-type Inputs = z.infer<typeof RequestResetPasswordSchema>;
+type RequestResetPasswordProps = Required<z.infer<typeof useSchema.requestResetPassword>>;
 
 export default function RequestResetPassword() {
+  const router = useRouter();
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<RequestResetPasswordProps>({
+    resolver: zodResolver(useSchema.requestResetPassword),
+  });
+
   const UseRequestResetPassword = useRequestResetPassword({
     options: {
       onSuccess: () => {
@@ -33,17 +43,7 @@ export default function RequestResetPassword() {
     }
   });
 
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm<Inputs>({
-    resolver: zodResolver(RequestResetPasswordSchema),
-  });
-
-  const router = useRouter()
-
-  const onSubmit: SubmitHandler<Inputs> = async ({ email }) => {
+  const onSubmit: SubmitHandler<RequestResetPasswordProps> = async ({ email }) => {
     try {
       await UseRequestResetPassword.mutateAsync({ email });
 
