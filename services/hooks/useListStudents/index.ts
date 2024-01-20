@@ -2,7 +2,7 @@ import { useQuery, UseQueryOptions } from 'react-query';
 
 import { IListStudentsResponse } from '@/types/models/listStudents.model';
 
-import { listStudentsRequest } from './ListStudents.request';
+import { listStudentsRequest } from './listStudents.request';
 
 export function useListStudents(options: UseQueryOptions<IListStudentsResponse, unknown, IListStudentsResponse, string[]>) {
   const key = JSON.stringify(1);
