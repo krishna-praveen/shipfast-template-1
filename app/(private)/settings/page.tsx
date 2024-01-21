@@ -1,63 +1,94 @@
 "use client"
 
-import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
+import { zodResolver } from '@hookform/resolvers/zod';
 import { CreditCard, LogOut } from "lucide-react";
-import React, { useState } from "react";
+import React from "react";
+import { useForm, SubmitHandler } from 'react-hook-form';
 import toast from "react-hot-toast";
+import { z } from 'zod';
+
 
 import Layout from "@/components/layout/Layout";
 
-import apiClient from "@/services/api";
+import { useSchema } from '@/hooks/useSchema';
+
+import { useBilling } from '@/services/hooks/useBilling';
+import { useResetPassword } from '@/services/hooks/useResetPassword';
+import { useSignOut } from '@/services/hooks/useSignOut';
+
 
 export const dynamic = "force-dynamic";
+
+type ResetPasswordProps = Required<z.infer<typeof useSchema.resetPassword>>;
 
 // This is a private page: It's protected by the layout.js component which ensures the user is authenticated.
 // It's a server compoment which means you can fetch data (like the user profile) before the page is rendered.
 // See https://shipfa.st/docs/tutorials/private-page
 export default function Settings() {
-  const supabase = createClientComponentClient();
-  const [newPassword, setNewPassword] = useState<string>("")
-  const [isLoading, setIsLoading] = useState<boolean>()
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<ResetPasswordProps>({
+    resolver: zodResolver(useSchema.resetPassword),
+  });
+
+  const UseBilling = useBilling({
+    options: {
+      onSuccess: (data) => {
+        window.location.href = data.url
+      },
+      onError: (error) => {
+        toast.error(`Erro ao trocar a senha.`, { position: "top-right" })
+        if (process.env.NODE_ENV === 'development') {
+          console.error(JSON.stringify(error))
+        }
+      }
+    }
+  });
+
+  const UseResetPassword = useResetPassword({
+    options: {
+      onSuccess: (data) => {
+        if (data.user && data.session) {
+          toast.success("Senha atualizada com sucesso!", { position: "top-right" });
+        }
+      },
+      onError: (error) => {
+        if (process.env.NODE_ENV === "development") {
+          console.error(error);
+        }
+      }
+    }
+  })
 
   const handleSignOut = async () => {
-    await supabase.auth.signOut({ scope: "global" });
+    await useSignOut()
     window.location.href = "/";
   };
 
   const handleBilling = async () => {
     try {
-      const { url }: { url: string } = await apiClient.post(
-        "/stripe/create-portal",
-        {
-          returnUrl: window.location.href,
-        }
-      );
+      await UseBilling.mutateAsync({ url: window.location.href });
 
-      window.location.href = url;
     } catch (e) {
-      console.error(e);
+      if (process.env.NODE_ENV === "development") {
+        console.error(e);
+      }
     }
   };
 
-  const handleSubmit = async (event: React.FormEvent<HTMLFormElement> | React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
-    event.preventDefault();
+  const handleOnSubmit: SubmitHandler<ResetPasswordProps> = async ({ password }) => {
+    try {
+      await UseResetPassword.mutateAsync({ password });
 
-    setIsLoading(true);
-
-    const { data, error } = await supabase.auth.updateUser({ password: newPassword })
-
-    if (error) {
-      toast.error(`Erro ao trocar a senha.`, { position: "top-right" })
-      console.error(JSON.stringify(error))
+    } catch (e) {
+      if (process.env.NODE_ENV === "development") {
+        console.error(e);
+      }
     }
-
-    if (data.user) {
-      toast.success("Sucesso ao trocar a senha.", { position: "top-right" })
-      setNewPassword("")
-    }
-
-    setIsLoading(false)
-  }
+  };
 
   return (
     <Layout>
@@ -80,23 +111,22 @@ export default function Settings() {
       <div>
         <h1 className="text-3xl font-extrabold md:text-4xl">Alterar senha</h1>
 
-        <form className="mt-4 flex flex-col space-y-4" onSubmit={handleSubmit}>
+        <form className="mt-4 flex flex-col space-y-4" onSubmit={handleSubmit(handleOnSubmit)}>
           <input
             required
             lang="pt"
             type="password"
-            value={newPassword}
             placeholder="Nova senha"
             className="input input-bordered w-full max-w-xs placeholder:opacity-60"
-            onChange={(e) => setNewPassword(e.target.value)}
+            {...register("password")}
           />
-          <p className="text-xs">A senha deve conter no mínimo 6 caracteres.</p>
+          <p className="text-xs">{errors.password?.message}</p>
 
           <button
             className="btn btn-primary w-full max-w-xs"
             type="submit"
           >
-            {isLoading && (
+            {UseResetPassword.isLoading && (
               <span className="loading loading-spinner loading-xs"></span>
             )}
             Alterar
