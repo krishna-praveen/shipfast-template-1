@@ -3,53 +3,55 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import React, { useState } from "react";
+import React from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import { z } from "zod";
 
 import { Input } from "@/components/ui/Input";
 
-import apiClient from "@/libs/api";
-import { ResetPasswordSchema } from "@/libs/schema";
+import { useSchema } from '@/hooks/useSchema';
+
+import { useResetPassword } from '@/services/hooks/useResetPassword';
 
 import config from "@/config";
 
-type Inputs = z.infer<typeof ResetPasswordSchema>;
+type ResetPasswordProps = Required<z.infer<typeof useSchema.resetPassword>>;
 
 export default function ResetPassword() {
-  const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [isDisabled, setIsDisabled] = useState<boolean>(false);
-
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<Inputs>({
-    resolver: zodResolver(ResetPasswordSchema),
+  } = useForm<ResetPasswordProps>({
+    resolver: zodResolver(useSchema.resetPassword),
   });
 
   const router = useRouter()
-
-  const onSubmit: SubmitHandler<Inputs> = async ({ password }) => {
-    setIsLoading(true);
-
-    try {
-      await apiClient.post("/auth/reset-password", {
-        password
-      })
-
-      toast.success("Senha atualizada com sucesso!", { position: "top-right" });
-
-      setIsDisabled(true);
-
-      router.replace("/sign-in")
-    } catch (error) {
-      if (process.env.NODE_ENV === "development") {
-        console.error(error);
+  const UseResetPassword = useResetPassword({
+    options: {
+      onSuccess: (data) => {
+        if (data.user && data.session) {
+          toast.success("Senha atualizada com sucesso!", { position: "top-right" });
+          router.replace("/sign-in")
+        }
+      },
+      onError: (error) => {
+        if (process.env.NODE_ENV === "development") {
+          console.error(error);
+        }
       }
-    } finally {
-      setIsLoading(false);
+    }
+  })
+
+  const onSubmit: SubmitHandler<ResetPasswordProps> = async ({ password }) => {
+    try {
+      await UseResetPassword.mutateAsync({ password });
+
+    } catch (e) {
+      if (process.env.NODE_ENV === "development") {
+        console.error(e);
+      }
     }
   };
 
@@ -94,10 +96,10 @@ export default function ResetPassword() {
 
           <button
             className="btn btn-primary btn-block"
-            disabled={isLoading || isDisabled}
+            disabled={UseResetPassword.isLoading}
             type="submit"
           >
-            {isLoading && (
+            {UseResetPassword.isLoading && (
               <span className="loading loading-spinner loading-xs"></span>
             )}
             Resetar

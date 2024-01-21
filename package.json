@@ -15,7 +15,7 @@
   },
   "dependencies": {
     "@headlessui/react": "^1.7.17",
-    "@hookform/resolvers": "^3.3.2",
+    "@hookform/resolvers": "^3.3.4",
     "@mdx-js/loader": "^2.3.0",
     "@mdx-js/react": "^2.3.0",
     "@next/mdx": "^13.4.19",
@@ -40,6 +40,7 @@
     "react-dom": "18.2.0",
     "react-hook-form": "^7.48.2",
     "react-hot-toast": "^2.4.1",
+    "react-query": "^3.39.3",
     "react-syntax-highlighter": "^15.5.0",
     "react-tooltip": "^5.21.1",
     "resend": "^2.0.0",

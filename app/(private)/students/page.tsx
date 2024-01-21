@@ -8,8 +8,10 @@ import toast from "react-hot-toast";
 
 import Layout from "@/components/layout/Layout";
 
-import apiClient from "@/libs/api";
+import apiClient from "@/services/api";
+
 import { calculateAge, formatDate } from "@/libs/date";
+
 
 export const dynamic = "force-dynamic";
 

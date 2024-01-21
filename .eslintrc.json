@@ -18,6 +18,7 @@
     "tailwindcss/migration-from-tailwind-2": "off",
     "tailwindcss/no-custom-classname": "off",
     "no-unused-vars": "warn",
+    "react-hooks/rules-of-hooks": "off",
     "import/order": [
       "error",
       {

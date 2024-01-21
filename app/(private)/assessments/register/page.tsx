@@ -14,9 +14,16 @@ import { z } from "zod";
 
 import Layout from "@/components/layout/Layout";
 
-import apiClient from "@/libs/api";
+
+import { Modal } from "@/components/ui/Modal";
+
+import { AssessmentInterface } from "@/components/workouts/TopBar";
+
+import apiClient from "@/services/api";
+
 import { AssessmentTypeEnum } from "@/libs/enums/assessment-type-enum";
 import { FormDataSchema } from "@/libs/schema";
+
 
 export const dynamic = "force-dynamic";
 

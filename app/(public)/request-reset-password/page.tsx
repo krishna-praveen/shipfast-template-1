@@ -3,56 +3,54 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import React, { useState } from "react";
+import React from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import { z } from "zod";
 
 import { Input } from "@/components/ui/Input";
 
-import apiClient from "@/libs/api";
-import { RequestResetPasswordSchema } from "@/libs/schema";
+import { useSchema } from '@/hooks/useSchema';
+
+import { useRequestResetPassword } from '@/services/hooks/useRequestResetPassword';
 
 import config from "@/config";
 
-type Inputs = z.infer<typeof RequestResetPasswordSchema>;
+type RequestResetPasswordProps = Required<z.infer<typeof useSchema.requestResetPassword>>;
 
 export default function RequestResetPassword() {
-  const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [isDisabled, setIsDisabled] = useState<boolean>(false);
+  const router = useRouter();
 
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<Inputs>({
-    resolver: zodResolver(RequestResetPasswordSchema),
+  } = useForm<RequestResetPasswordProps>({
+    resolver: zodResolver(useSchema.requestResetPassword),
   });
 
-  const router = useRouter()
-
-  const onSubmit: SubmitHandler<Inputs> = async ({ email }) => {
-    setIsLoading(true);
-
-    try {
-      const redirectTo = window.location.origin + "/reset-password";
-
-      await apiClient.post("/auth/request-reset-password", {
-        email,
-        redirectTo
-      })
-
-      toast.success("Email para realizar restauração da senha enviado!", { position: "top-right" });
-
-      setIsDisabled(true);
-
-      router.push("/sign-in")
-    } catch (error) {
-      if (process.env.NODE_ENV === "development") {
-        console.error(error);
+  const UseRequestResetPassword = useRequestResetPassword({
+    options: {
+      onSuccess: () => {
+        toast.success("Email para realizar restauração da senha enviado!", { position: "top-right" });
+        router.push("/sign-in")
+      },
+      onError: (error) => {
+        if (process.env.NODE_ENV === "development") {
+          console.error(error);
+        }
       }
-    } finally {
-      setIsLoading(false);
+    }
+  });
+
+  const onSubmit: SubmitHandler<RequestResetPasswordProps> = async ({ email }) => {
+    try {
+      await UseRequestResetPassword.mutateAsync({ email });
+
+    } catch (e) {
+      if (process.env.NODE_ENV === "development") {
+        console.error(e);
+      }
     }
   };
 
@@ -98,10 +96,10 @@ export default function RequestResetPassword() {
 
           <button
             className="btn btn-primary btn-block"
-            disabled={isLoading || isDisabled}
+            disabled={UseRequestResetPassword.isLoading}
             type="submit"
           >
-            {isLoading && (
+            {UseRequestResetPassword.isLoading && (
               <span className="loading loading-spinner loading-xs"></span>
             )}
             Solicitar
