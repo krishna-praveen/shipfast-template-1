@@ -3,6 +3,7 @@ import { headers } from "next/headers";
 import { NextResponse, NextRequest } from "next/server";
 import Stripe from "stripe";
 
+import { PurchasedPlan } from "@/components/email/templates/purchased-plan";
 import { TrialEndTemplate } from "@/components/email/templates/trial-end";
 
 import { sendEmail } from "@/libs/resend";
@@ -84,11 +85,21 @@ export async function POST(req: NextRequest) {
           .eq("id", userId);
 
         // Extra: send email with user link, product page, etc...
-        // try {
-        //   await sendEmail(...);
-        // } catch (e) {
-        //   console.error("Email issue:" + e?.message);
-        // }
+        try {
+          await sendEmail({
+            to: stripeObject.customer_details.email,
+            subject: "Seu acesso ao Pump foi liberado",
+            content: PurchasedPlan({
+              userName: stripeObject.customer_details.name,
+              redirectUrl:
+                process.env.VERCEL_ENV === "production"
+                  ? "https://gopump.co/sign-up"
+                  : "http://localhost:3000/sign-up",
+            }),
+          });
+        } catch (e) {
+          console.error("Email issue:" + e?.message);
+        }
 
         break;
       }
@@ -138,7 +149,7 @@ export async function POST(req: NextRequest) {
           .single();
 
         // Make sure the invoice is for the same plan (priceId) the user subscribed to
-        if (profile.price_id !== priceId) break;
+        if (profile?.price_id !== priceId) break;
 
         // Grant the profile access to your product. It's a boolean in the database, but could be a number of credits, etc...
         await supabase
@@ -181,7 +192,7 @@ export async function POST(req: NextRequest) {
           );
         }
 
-        if (profile.price_id !== stripeObject.items.data[0].price.id) {
+        if (profile?.price_id !== stripeObject.items.data[0].price.id) {
           console.error("Price ID doesn't match", { profile, stripeObject });
           return NextResponse.json(
             { error: "Price ID doesn't match" },

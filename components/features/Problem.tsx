@@ -44,25 +44,26 @@ export const Problem = () => {
     <section className="bg-neutral text-neutral-content">
       <div className="mx-auto max-w-7xl px-8 py-16 text-center md:py-32">
         <h2 className="mx-auto mb-6 max-w-3xl text-4xl font-extrabold tracking-tight md:mb-8 md:text-5xl">
-          80% of startups fail because founders never launch
+          Personal Trainers enfrentam um emaranhado de desafios diários
         </h2>
         <p className="mx-auto mb-12 max-w-xl text-lg leading-relaxed opacity-90 md:mb-20">
-          Emails, DNS records, user authentication... There&apos;s so much going
-          on.
+          Da gestão de múltiplos alunos à manutenção de registros detalhados de treino e progresso, o dia a dia pode rapidamente se tornar opressor.
         </p>
 
         <div className="flex flex-col items-center justify-center gap-6 md:flex-row md:items-start">
-          <Step emoji="🧑‍💻" text="8 hrs to add Stripe" />
-
+          <Step emoji="💻" text="Dispersão de dados entre PDFs, Word e Excel" />
           <Arrow extraStyle="max-md:-scale-x-100 md:-rotate-90" />
 
-          <Step emoji="😮‍💨" text="Struggle to find time" />
-
+          <Step emoji="🔄" text="Perda de tempo com processos manuais" />
           <Arrow extraStyle="md:-scale-x-100 md:-rotate-90" />
 
-          <Step emoji="😔" text="Quit project" />
+          <Step emoji="😩" text="Dificuldade em monitorar o progresso do aluno" />
+          <Arrow extraStyle="max-md:-scale-x-100 md:-rotate-90" />
+
+          <Step emoji="📉" text="Clientes insatisfeitos com a falta de personalização" />
         </div>
       </div>
     </section>
   );
 };
+
