@@ -179,20 +179,20 @@ export const TopBar = ({ onChangeTabsType, tabsType, exercises, workout, title }
     router.replace("/workouts")
   }
 
-  const handleBilling = async () => {
-    try {
-      const { url }: { url: string } = await apiClient.post(
-        "/stripe/create-portal",
-        {
-          returnUrl: window.location.href,
-        }
-      );
+  // const handleBilling = async () => {
+  //   try {
+  //     const { url }: { url: string } = await apiClient.post(
+  //       "/stripe/create-portal",
+  //       {
+  //         returnUrl: window.location.href,
+  //       }
+  //     );
 
-      window.location.href = url;
-    } catch (e) {
-      console.error(e);
-    }
-  };
+  //     window.location.href = url;
+  //   } catch (e) {
+  //     console.error(e);
+  //   }
+  // };
 
   return (
     <div className="flex flex-col gap-8">
