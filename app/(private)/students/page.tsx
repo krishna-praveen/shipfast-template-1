@@ -1,14 +1,12 @@
 /* eslint-disable no-unused-vars */
 "use client"
 
-import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
-import toast from "react-hot-toast";
+import { useState } from "react";
 
 import Layout from "@/components/layout/Layout";
 
-import apiClient from "@/services/api";
+import { useListStudents } from '@/services/hooks/useListStudents';
 
 import { calculateAge, formatDate } from "@/libs/date";
 
@@ -29,23 +27,12 @@ function StudentInfo({ label, value }: any) {
 // See https://shipfa.st/docs/tutorials/private-page
 export default function Students() {
   const router = useRouter()
-  const supabase = createClientComponentClient();
 
-  const [students, setStudents] = useState([])
   const [openAccordionId, setOpenAccordionId] = useState<string | null>(null);
 
-  useEffect(() => {
-    const getStudents = async () => {
-      const session = await supabase.auth.getSession()
-      const userId = session.data.session.user.id
-
-      const { data } = await apiClient.get("/students", { params: { userId } });
-
-      setStudents(data);
-    };
-
-    getStudents();
-  }, [supabase]);
+  const { data: listStudents, isLoading: isLoadingListStudents } = useListStudents({
+    refetchOnWindowFocus: false,
+  });
 
   const handleRegister = () => {
     router.replace("/students/register")
@@ -71,7 +58,7 @@ export default function Students() {
       </button>
 
       <div className="overflow-x-auto pt-4">
-        {students?.map((student: { id: string, name: string, surname: string, birthDate: string, gender: keyof typeof GenderEnum, state: string, city: string, email: string, phone: string }) => (
+        {listStudents?.map((student: { id: string, name: string, surname: string, birthDate: string, gender: keyof typeof GenderEnum, state: string, city: string, email: string, phone: string }) => (
           <div key={student.id} className="mb-2">
             <div className={`collapse collapse-arrow rounded-box bg-base-200 ${openAccordionId === student.id ? 'collapse-open' : ''}`}>
               <input type="checkbox" className="peer" checked={openAccordionId === student.id} onChange={() => handleAccordion(student.id)} />
