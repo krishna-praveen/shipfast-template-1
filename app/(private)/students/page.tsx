@@ -30,7 +30,7 @@ export default function Students() {
 
   const [openAccordionId, setOpenAccordionId] = useState<string | null>(null);
 
-  const { data: listStudents, isLoading: isLoadingListStudents } = useListStudents({
+  const { data: listStudents } = useListStudents({
     refetchOnWindowFocus: false,
   });
 
