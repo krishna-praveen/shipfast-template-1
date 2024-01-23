@@ -1,7 +1,6 @@
 /* eslint-disable no-unused-vars */
 "use client"
 
-import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import { ArrowLeft } from "lucide-react";
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
@@ -9,7 +8,7 @@ import toast from "react-hot-toast";
 
 import Layout from "@/components/layout/Layout";
 
-import apiClient from "@/services/api";
+import { useRegisterStudents } from '@/services/hooks/useRegisterStudents';
 
 export const dynamic = "force-dynamic";
 
@@ -22,7 +21,6 @@ enum NonGender {
 // See https://shipfa.st/docs/tutorials/private-page
 export default function Register() {
   const router = useRouter()
-  const supabase = createClientComponentClient();
 
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
@@ -42,6 +40,19 @@ export default function Register() {
   const [state, setState] = useState("")
   const [email, setEmail] = useState("")
   const [phone, setPhone] = useState("")
+
+  const UseRegisterStudents = useRegisterStudents({
+    options: {
+      onSuccess: () => {
+        toast.success("Cadastrado com sucesso.");
+        router.replace("/students");
+      },
+      onError: (error) => {
+        console.error(error);
+        toast.error("Erro ao cadastrar, entre em contato com o suporte.");
+      }
+    }
+  })
 
   const isValidDate = (date: string) => {
     const regex = /^(0[1-9]|[12][0-9]|3[01])\/(0[1-9]|1[0-2])\/\d{4}$/;
@@ -136,30 +147,18 @@ export default function Register() {
     const birthDateFormatted = birthDate.split('/').reverse().join('-');
 
     try {
-      const session = await supabase.auth.getSession()
-      const userId = session.data.session.user.id
-
-      await apiClient.post("/students", {
+      await UseRegisterStudents.mutateAsync({
         name,
         surname,
-        birthDateFormatted,
+        birthDate: birthDateFormatted,
         gender,
-        state,
         city,
+        state,
         email,
         phone
-      }, { params: { userId } })
-
-      toast.success("Cadastrado com sucesso.");
-
-      router.replace("/students")
-
+      })
     } catch (error) {
       console.error(error);
-
-      toast.error("Erro ao cadastrar, entre em contato com o suporte.");
-    } finally {
-      setIsLoading(false);
     }
   };
 
