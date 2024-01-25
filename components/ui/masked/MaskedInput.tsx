@@ -1,19 +1,24 @@
+import { ForwardRefRenderFunction, forwardRef } from 'react';
 import { PatternFormat, PatternFormatProps } from 'react-number-format'
+
 
 import { InputBase } from './base/InputBase';
 
 interface MaskedInputProps extends PatternFormatProps {
-  placeholder?: string;
-  mask: string;
+
 }
 
-export const MaskedInput = ({ placeholder, mask, ...props }: MaskedInputProps) => {
+
+const MaskedInputBase: ForwardRefRenderFunction<HTMLInputElement, MaskedInputProps> = ({ placeholder, format, ...props }, ref) => {
   return (
     <PatternFormat
-      format={mask}
+      getInputRef={ref}
+      format={format}
       customInput={InputBase}
       placeholder={placeholder || ''}
       {...props}
     />
   );
 }
+
+export const MaskedInput = forwardRef(MaskedInputBase)
