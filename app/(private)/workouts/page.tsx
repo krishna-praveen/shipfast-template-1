@@ -1,52 +1,29 @@
 "use client"
 
-import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 import Layout from "@/components/layout/Layout";
 
-import apiClient from "@/services/api";
+import { useListWorkoutsStudents } from '@/services/hooks/useListWorkoutsStudents';
 
 export const dynamic = "force-dynamic";
 
-interface StudentWorkouts {
-  studentFullName: string;
-  workouts: Array<{
-    id: string;
-    description: string;
-  }>;
-}
-
 export default function Workouts() {
-  const [workouts, setWorkouts] = useState<Array<StudentWorkouts>>([]);
-  const [openAccordionId, setOpenAccordionId] = useState<string | null>(null);
+  const [accordionOpened, serAccordionOpened] = useState(-1);
   const router = useRouter()
-  const supabase = createClientComponentClient();
 
-  useEffect(() => {
-    const fetchWorkouts = async () => {
-      const session = await supabase.auth.getSession()
-      const userId = session.data.session.user.id
-
-      const { data } = await apiClient.get<Array<StudentWorkouts>>("/workouts/students", { params: { userId } });
-
-      setWorkouts(data);
-    }
-
-    fetchWorkouts()
-  }, [supabase])
-
+  const { data: workouts, isLoading } = useListWorkoutsStudents({ refetchOnWindowFocus: false })
   const handleRegister = () => {
     router.replace("/workouts/register")
   }
 
-  const handleAccordion = (studentId: string) => {
-    if (openAccordionId === studentId) {
-      setOpenAccordionId(null);
+  const handleAccordion = (studentId: number) => {
+    if (accordionOpened === studentId) {
+      serAccordionOpened(-1);
     } else {
-      setOpenAccordionId(studentId);
+      serAccordionOpened(studentId);
     }
   };
 
@@ -61,10 +38,10 @@ export default function Workouts() {
       </div>
 
       <div className="overflow-x-auto pt-4">
-        {workouts.map((studentWorkouts) => (
-          <div key={setWorkouts.name} className="mb-2">
-            <div className={`collapse collapse-arrow rounded-box bg-base-200 ${openAccordionId === studentWorkouts.studentFullName ? 'collapse-open' : ''}`}>
-              <input type="checkbox" className="peer" checked={openAccordionId === studentWorkouts.studentFullName} onChange={() => handleAccordion(studentWorkouts.studentFullName)} />
+        {!isLoading && workouts.map((studentWorkouts, key) => (
+          <div key={key} className="mb-2">
+            <div className={`collapse collapse-arrow rounded-box bg-base-200 ${accordionOpened === key && 'collapse-open'}`}>
+              <input type="checkbox" className="peer" checked={accordionOpened === key} onChange={() => handleAccordion(key)} />
               <div className="collapse-title text-xl font-medium">
                 <div className="grid grid-cols-1 md:grid-cols-3">
                   <div className="col-span-1">{studentWorkouts.studentFullName}</div>
