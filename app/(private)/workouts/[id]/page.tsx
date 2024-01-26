@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 import Layout from "@/components/layout/Layout";
 import { AddExercise } from "@/components/workouts/AddExercise";
@@ -8,46 +8,13 @@ import { CardExercise } from "@/components/workouts/CardExercise";
 import { EditExercise } from "@/components/workouts/EditExercise";
 import { TopBar } from "@/components/workouts/TopBar";
 
-import apiClient from "@/services/api";
+import { useListWorkoutsById } from '@/services/hooks/useListWorkoutsById';
 
-
-export interface WorkoutInterface {
-  id: string;
-  studentId: string;
-  userId: string;
-  assessmentId: string;
-  description: string;
-  phase: number;
-  goal: string;
-  type: string;
-  exercises: Exercises;
-}
-
-interface Exercises {
-  [key: string]: Array<ExerciseDetail>;
-}
-
-interface ExerciseDetail {
-  name: string;
-  sets: number;
-  type: string;
-  repetitions: Array<number>;
-  videoLink: string;
-  observation: string;
-}
-
-export interface ExerciseInterface {
-  name: string;
-  sets: number;
-  type: string
-  repetitions: Array<number>;
-  videoLink: string;
-  observation: string;
-}
+import { ExerciseInterface, WorkoutInterface } from '@/types/models/listWorkoutsById.model';
 
 export default function Workout({ params }: { params: { id: string } }) {
-  const [workoutTabs, setWorkoutTabs] = useState<string>("ABC");
-  const [selectedWorkoutTab, setSelectedWorkoutTab] = useState<string>("A");
+  const [workoutTabs, setWorkoutTabs] = useState("ABC");
+  const [selectedWorkoutTab, setSelectedWorkoutTab] = useState("A");
   const [exercises, setExercises] = useState<{ [key: string]: ExerciseInterface[] }>({});
   const [workout, setWorkout] = useState<WorkoutInterface>();
   const [editingExercise, setEditingExercise] = useState({ exercise: null, tab: '', index: -1 });
@@ -83,25 +50,16 @@ export default function Workout({ params }: { params: { id: string } }) {
     setEditingExercise({ exercise: null, tab: '', index: -1 });
   };
 
-  useEffect(() => {
-    const fetchWorkout = async () => {
-      if (workoutId) {
-        try {
-          const { data } = await apiClient.get<WorkoutInterface>(`/workouts/${workoutId}`);
-
-          if (data) {
-            const { exercises, ...rest } = data
-            setExercises(exercises || {});
-            setWorkout({ ...rest, exercises });
-          }
-        } catch (error) {
-          console.error("Erro ao carregar os dados do treino", error);
-        }
+  useListWorkoutsById({
+    workoutId, options: {
+      enabled: !!workoutId,
+      onSuccess: (data) => {
+        const { exercises, ...rest } = data
+        setExercises(exercises || {});
+        setWorkout({ ...rest, exercises });
       }
-    };
-
-    fetchWorkout();
-  }, [workoutId]);
+    }
+  })
 
   return (
     <Layout>
