@@ -44,7 +44,7 @@ export async function POST(req: NextRequest) {
         user_id: userId,
         name: body.name,
         surname: body.surname,
-        birth_date: body.birthDateFormatted,
+        birth_date: body.birthDate,
         gender: body.gender,
         state: body.state,
         city: body.city,

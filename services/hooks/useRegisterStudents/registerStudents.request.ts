@@ -9,7 +9,7 @@ export const registerStudentsRequest = async ({ birthDate, city, email, gender, 
   await apiClient.post("/students", {
     name,
     surname,
-    birthDateFormatted: birthDate,
+    birthDate,
     gender,
     state,
     city,
