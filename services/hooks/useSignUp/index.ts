@@ -1,5 +1,7 @@
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
 
+import { useStipe } from '@/services/hooks/useStipe';
+
 interface SignUpProps {
   email: string;
   password: string;
@@ -11,8 +13,12 @@ interface SignUpProps {
 
 export const useSignUp = async ({ birthDate, email, emailRedirectTo, name, password, phone }: SignUpProps) => {
   const supabase = createClientComponentClient();
+  const { customer, subscription } = await useStipe.findCustomerAndSubscription(email);
 
-  return await supabase.auth.signUp({
+  const priceId = subscription?.items.data[0].price.id || '';
+  const customerId = customer?.id || '';
+
+  const { data: { user } } = await supabase.auth.signUp({
     email,
     password,
     phone,
@@ -24,4 +30,22 @@ export const useSignUp = async ({ birthDate, email, emailRedirectTo, name, passw
       emailRedirectTo
     }
   })
+
+  const { data: profile } = await supabase
+    .from("profiles")
+    .select("*")
+    .eq("id", user.id)
+    .single();
+
+  if (!profile) {
+    await supabase.from("profiles").insert(
+      {
+        id: user.id,
+        price_id: priceId,
+        email,
+        has_access: true,
+        customer_id: customerId
+      },
+    );
+  }
 }

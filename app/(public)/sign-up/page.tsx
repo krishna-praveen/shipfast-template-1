@@ -16,11 +16,7 @@ import { useSignUp } from '@/services/hooks/useSignUp';
 import config from "@/config";
 type SignUpProps = Required<z.infer<typeof useSchema.signUp>>
 
-
-import { findCustomerAndSubscription } from "./actions";
-
 export default function Signup() {
-  const supabase = createClientComponentClient();
   const router = useRouter();
 
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -31,7 +27,7 @@ export default function Signup() {
   });
 
   const handleSubmitSingUp: SubmitHandler<SignUpProps> = async ({ email, password, phone, name, birthDate }) => {
-    const emailRedirectTo = window.location.origin + "/#pricing";
+    const emailRedirectTo = window.location.origin + "/home";
 
     try {
       setIsLoading(true);
@@ -44,24 +40,6 @@ export default function Signup() {
         birthDate,
         emailRedirectTo
       })
-
-      const { data: profile } = await supabase
-        .from("profiles")
-        .select("*")
-        .eq("id", user.id)
-        .single();
-
-      if (!profile) {
-        await supabase.from("profiles").insert(
-          {
-            id: user.id,
-            price_id: subscription.items.data[0].price.id,
-            email,
-            has_access: true,
-            customer_id: customer.id
-          },
-        );
-      }
 
       toast.success("Conta criada com sucesso. Email para confirmação já foi enviado pra sua caixa de entrada.", { position: "top-center", duration: 5000, icon: '✅' })
 

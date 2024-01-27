@@ -34,7 +34,8 @@
     "next-env.d.ts",
     "**/*.ts",
     "**/*.tsx",
-    ".next/types/**/*.ts"
+    ".next/types/**/*.ts",
+    "components/ui/masked/DateInput.tsx,"
   ],
   "exclude": [
     "node_modules"
