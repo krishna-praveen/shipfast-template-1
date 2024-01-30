@@ -6,6 +6,7 @@ import { useState } from "react";
 
 import Layout from "@/components/layout/Layout";
 
+import { Button } from "@/components/ui/Button";
 import { useListStudents } from '@/services/hooks/useListStudents';
 
 import { calculateAge, formatDate } from "@/libs/date";
@@ -50,17 +51,16 @@ export default function Students() {
     <Layout>
       <h1 className="text-3xl font-extrabold md:text-4xl">Alunos</h1>
 
-      <button
-        className={`btn hover:bg-indigo-600 hover:text-white`}
+      <Button
         onClick={handleRegister}
       >
         Registrar aluno
-      </button>
+      </Button>
 
       <div className="overflow-x-auto pt-4">
         {listStudents?.map((student: { id: string, name: string, surname: string, birthDate: string, gender: keyof typeof GenderEnum, state: string, city: string, email: string, phone: string }) => (
           <div key={student.id} className="mb-2">
-            <div className={`collapse collapse-arrow rounded-box bg-base-200 ${openAccordionId === student.id ? 'collapse-open' : ''}`}>
+            <div className={`collapse-arrow rounded-box bg-base-200 collapse ${openAccordionId === student.id ? 'collapse-open' : ''}`}>
               <input type="checkbox" className="peer" checked={openAccordionId === student.id} onChange={() => handleAccordion(student.id)} />
               <div className="collapse-title text-xl font-medium">
                 <div className="grid grid-cols-1 md:grid-cols-3">

@@ -4,7 +4,9 @@ import PlausibleProvider from "next-plausible";
 import { ReactNode } from "react";
 
 import { ClientLayout } from "@/components/layout/LayoutClient";
+
 import { GlobalProviders } from '@/providers/GlobalProviders';
+import { ThemeProvider } from "@/providers/ThemeProvider"
 
 import { getSEOTags } from "@/libs/seo";
 
@@ -34,11 +36,19 @@ export default function RootLayout({ children }: { children: ReactNode }) {
         </head>
       )}
       <body>
-        {/* GlobalProviders contains all contexts */}
-        <GlobalProviders>
-          {/* ClientLayout contains all the client wrappers (Crisp chat support, toast messages, tooltips, etc.) */}
-          <ClientLayout>{children}</ClientLayout>
-        </GlobalProviders>
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
+        >
+          {/* GlobalProviders contains all contexts */}
+          <GlobalProviders>
+            {/* ClientLayout contains all the client wrappers (Crisp chat support, toast messages, tooltips, etc.) */}
+            <ClientLayout>{children}</ClientLayout>
+          </GlobalProviders>
+        </ThemeProvider>
+
       </body>
     </html>
   );

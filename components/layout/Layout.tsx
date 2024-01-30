@@ -4,7 +4,6 @@ import { ReactNode } from 'react';
 
 import { Sidebar } from '../features/Sidebar';
 
-
 const Layout = ({ children }: { children: ReactNode }) => {
   return (
     <div className="flex">
