@@ -1,4 +1,4 @@
-export const notAllowSpecialCharacters = (value: string) => {
+export const notAllowSpecialCharactersRefine = (value: string) => {
   if (value) {
     const nameValid = value
       .trim()

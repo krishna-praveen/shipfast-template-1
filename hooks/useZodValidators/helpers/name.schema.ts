@@ -1,7 +1,7 @@
 import { z } from "zod";
 
 import { notAllowNumbersRefine } from "./refines/not-allow-numbers.refine";
-import { notAllowSpecialCharacters } from "./refines/not-allow-special-characters.refine";
+import { notAllowSpecialCharactersRefine } from "./refines/not-allow-special-characters.refine";
 
 export const nameSchema = () => {
   return z
@@ -12,7 +12,7 @@ export const nameSchema = () => {
       message: "É necessário nome",
       path: [],
     })
-    .refine((value) => notAllowSpecialCharacters(value), {
+    .refine((value) => notAllowSpecialCharactersRefine(value), {
       message: "Caracteres especiais /*#?@ não são permitidos",
       path: [],
     });
