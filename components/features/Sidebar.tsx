@@ -37,7 +37,7 @@ export const Sidebar = () => {
 
   return (
     <div className="bg-base-300 flex">
-      <div className={`bg-dark-purple flex h-screen w-20 flex-col justify-between p-5 pt-8 duration-300`}>
+      <div className={`flex h-screen w-20 flex-col justify-between bg-zinc-800 p-5 pt-8 duration-300`}>
         <div>
           <div className="flex items-center p-2">
             <Icon className="h-6 w-6 duration-500" />
@@ -46,7 +46,7 @@ export const Sidebar = () => {
           <ul className="pt-6">
             {Menus.map((Menu, index) => (
               <Link href={Menu.href} key={index}>
-                <li className={`tooltip tooltip-right flex cursor-pointer items-center justify-center rounded-md p-2 text-sm text-gray-300 hover:bg-indigo-600 ${currentPath === Menu.href ? 'bg-indigo-600 text-white' : ''} ${Menu.gap ? "mt-9" : "mt-2"}`} data-tip={Menu.title}>
+                <li className={`tooltip tooltip-right flex cursor-pointer items-center justify-center rounded-md p-2 text-sm text-gray-300 hover:text-primary ${currentPath === Menu.href ? 'text-primary' : ''} ${Menu.gap ? "mt-9" : "mt-2"}`} data-tip={Menu.title}>
                   <Menu.icon />
                 </li>
               </Link>
@@ -54,7 +54,7 @@ export const Sidebar = () => {
           </ul>
         </div>
 
-        <div className="tooltip tooltip-right flex cursor-pointer items-center justify-center rounded-md p-2 text-sm text-gray-300 hover:bg-indigo-600" data-tip="Tema" onClick={() => handleThemeChange(theme === 'dark' ? 'light' : 'dark')}>
+        <div className="tooltip tooltip-right flex cursor-pointer items-center justify-center rounded-md p-2 text-sm text-gray-300 hover:text-primary" data-tip="Tema" onClick={() => handleThemeChange(theme === 'dark' ? 'light' : 'dark')}>
           {theme === 'dark' ? <Sun /> : <Moon />}
         </div>
       </div>
