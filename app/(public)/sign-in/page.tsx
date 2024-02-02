@@ -1,22 +1,25 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import Link from "next/link";
 import { useRouter } from "next/navigation";
 import React from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import { z } from "zod";
 
+import { Button } from "@/components/ui/Button";
+import { Card, CardContent, CardFooter, CardDescription, CardHeader, CardTitle } from "@/components/ui/Card";
 import { Input } from "@/components/ui/Input";
+import { Label } from "@/components/ui/Label";
+import { Tabs, TabsList, TabsContent, TabsTrigger } from "@/components/ui/Tabs";
 
 import { useSchema } from '@/hooks/useSchema';
 
+import { useRequestResetPassword } from "@/services/hooks/useRequestResetPassword";
 import { useSignIn } from '@/services/hooks/useSingIn';
 
-import config from "@/config";
-
 type SignInProps = Required<z.infer<typeof useSchema.singIn>>;
+type RequestResetPasswordProps = Required<z.infer<typeof useSchema.requestResetPassword>>;
 
 export default function SignIn() {
   const {
@@ -25,6 +28,14 @@ export default function SignIn() {
     formState: { errors, },
   } = useForm<SignInProps>({
     resolver: zodResolver(useSchema.singIn),
+  });
+
+  const {
+    register: requestResetPasswordRegister,
+    handleSubmit: handleRequestResetPasswordSubmit,
+    formState: { errors: requestResetPasswordErrors },
+  } = useForm<RequestResetPasswordProps>({
+    resolver: zodResolver(useSchema.requestResetPassword),
   });
 
   const router = useRouter();
@@ -45,6 +56,20 @@ export default function SignIn() {
     }
   });
 
+  const UseRequestResetPassword = useRequestResetPassword({
+    options: {
+      onSuccess: () => {
+        toast.success("Email para realizar restauração da senha enviado!", { position: "top-right" });
+        router.push("/sign-in")
+      },
+      onError: (error) => {
+        if (process.env.NODE_ENV === "development") {
+          console.error(error);
+        }
+      }
+    }
+  });
+
   const onSubmit: SubmitHandler<SignInProps> = async ({ email, password }) => {
     try {
       await UseSignIn.mutateAsync({ email, password });
@@ -56,79 +81,106 @@ export default function SignIn() {
     }
   };
 
+  const onRequestResetPasswordSubmit: SubmitHandler<RequestResetPasswordProps> = async ({ email }) => {
+    try {
+      await UseRequestResetPassword.mutateAsync({ email });
+
+    } catch (e) {
+      if (process.env.NODE_ENV === "development") {
+        console.error(e);
+      }
+    }
+  };
+
   return (
-    <main className="p-8 md:p-24" data-theme={config.colors.theme}>
+    <div className="flex h-screen flex-col items-center justify-center bg-zinc-900">
+      <Tabs defaultValue="sign-in" className="w-[400px]">
+        <TabsList className="grid w-full grid-cols-2">
+          <TabsTrigger value="sign-in">Sign In</TabsTrigger>
+          <TabsTrigger value="request-reset-password">Esqueceu a senha</TabsTrigger>
+        </TabsList>
+        <TabsContent value="sign-in">
+          <Card className="bg-zinc-900">
+            <CardHeader>
+              <CardTitle>Entrar</CardTitle>
+              <CardDescription>
+                Insira seu e-mail e senha para acessar sua conta.
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-2">
+              <div className="space-y-1">
+                <Label className="block text-sm font-bold text-white" htmlFor="email">Email</Label>
+                <Input
+                  id="email"
+                  name="email"
+                  type="email"
+                  placeholder="Seu e-mail"
+                  className="mt-2 w-full rounded-lg border-2 bg-zinc-800 px-4 py-2 text-white focus:border-primary-600 focus:outline-none"
+                  {...register('email')}
+                  errorName={errors?.email?.message}
+                />
+              </div>
+              <div className="space-y-1">
+                <Label className="block text-sm font-bold text-white" htmlFor="password">Senha</Label>
+                <Input
+                  id="password"
+                  name="password"
+                  type="password"
+                  placeholder="Sua senha"
+                  className="mt-2 w-full rounded-lg border-2 bg-zinc-800 px-4 py-2 text-white focus:border-primary-600 focus:outline-none"
+                  {...register('password')}
+                  errorName={errors?.password?.message}
+                />
+              </div>
+            </CardContent>
+            <CardFooter>
+              <form onSubmit={handleSubmit(onSubmit)}>
+                <Button type="submit">Entrar</Button>
+              </form>
+            </CardFooter>
+          </Card>
+        </TabsContent>
+        <TabsContent value="request-reset-password">
+          <Card className="bg-zinc-900">
+            <CardHeader>
+              <CardTitle>Nova senha</CardTitle>
+              <CardDescription>
+                Insira o seu e-mail para receber um link de recuperação de senha.
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-2">
+              <div className="space-y-1">
+                <Label htmlFor="new-password" >Seu e-mail</Label>
+                <Input
+                  id="new-password"
+                  type="email"
+                  className="mt-2 w-full rounded-lg border-2 bg-zinc-800 px-4 py-2 text-white focus:border-primary-600 focus:outline-none"
+                  {...requestResetPasswordRegister('email')}
+                  errorName={requestResetPasswordErrors?.email?.message}
+                />
+              </div>
+            </CardContent>
+            <CardFooter>
+              <form onSubmit={handleRequestResetPasswordSubmit(onRequestResetPasswordSubmit)}>
+                <Button
+                  type="submit"
+                  disabled={UseRequestResetPassword.isLoading}
+                >
+                  {UseRequestResetPassword.isLoading && (
+                    <span className="loading loading-spinner loading-xs"></span>
+                  )}
+                  Solicitar
+                </Button>
+              </form>
+            </CardFooter>
+          </Card>
+        </TabsContent>
+      </Tabs>
 
-      <div className="mb-4 text-center">
-        <Link href="/" className="btn btn-ghost btn-sm">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 20 20"
-            fill="currentColor"
-            className="h-5 w-5"
-          >
-            <path
-              fillRule="evenodd"
-              d="M15 10a.75.75 0 01-.75.75H7.612l2.158 1.96a.75.75 0 11-1.04 1.08l-3.5-3.25a.75.75 0 010-1.08l3.5-3.25a.75.75 0 111.04 1.08L7.612 9.25h6.638A.75.75 0 0115 10z"
-              clipRule="evenodd"
-            />
-          </svg>
-          Home
-        </Link>
-      </div>
-
-      <h1 className="mb-12 text-center text-3xl font-extrabold tracking-tight md:text-4xl">
-        Entrar no {config.appName}{" "}
-      </h1>
-
-      <div className="mx-auto max-w-xl space-y-8">
-        <form
-          className="form-control w-full space-y-4"
-          onSubmit={handleSubmit(onSubmit)}
-        >
-          <div>
-            <Input
-              name="email"
-              type="email"
-              placeholder="Seu e-mail"
-              className="input input-bordered w-full placeholder:opacity-60"
-              {...register('email')}
-              errorName={errors?.email?.message}
-            />
-          </div>
-
-          <div>
-            <Input
-              name="password"
-              type="password"
-              placeholder="Sua senha"
-              className="input input-bordered w-full placeholder:opacity-60"
-              {...register('password')}
-              errorName={errors?.password?.message}
-            />
-          </div>
-
-          <button
-            className="btn btn-primary btn-block"
-            disabled={UseSignIn.isLoading}
-            type="submit"
-          >
-            {UseSignIn.isLoading && (
-              <span className="loading loading-spinner loading-xs"></span>
-            )}
-            Entrar
-          </button>
-          <Link href="/request-reset-password" className="link-hover link text-xs hover:text-blue-600">
-            Esqueci a senha
-          </Link>
-
-          <div className="text-left">
-            <Link href="/sign-up" className="link-hover link">
-              Criar conta
-            </Link>
-          </div>
-        </form>
-      </div>
-    </main>
+      <Button onClick={() => router.replace("/")} className="mt-4 w-96 space-x-2">
+        {/* <ArrowLeft className="h-8 w-8 text-white" /> */}
+        <h2>Voltar</h2>
+      </Button>
+    </div>
   );
 }

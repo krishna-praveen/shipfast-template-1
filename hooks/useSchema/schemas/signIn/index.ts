@@ -1,9 +1,9 @@
-import { z } from 'zod'
+import { z } from "zod";
 
 export const signInFormSchema = z.object({
   email: z
-    .string({ required_error: "O email é obrigatório." })
+    .string()
+    .min(1, "O email é obrigatório.")
     .email({ message: "E-mail inválido." }),
-  password: z
-    .string({ required_error: "A senha é obrigatória." })
+  password: z.string().min(1, "A senha é obrigatória."),
 });
