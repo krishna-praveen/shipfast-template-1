@@ -1,19 +1,21 @@
 "use client";
 
 import { zodResolver } from '@hookform/resolvers/zod';
-import Link from "next/link";
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form"
 import toast from "react-hot-toast";
 import { z } from 'zod';
 
+import { Button } from '@/components/ui/Button';
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/Card';
 import { Input } from "@/components/ui/Input";
+import { Label } from '@/components/ui/Label';
+import { Tabs, TabsList, TabsContent, TabsTrigger } from '@/components/ui/Tabs';
 import { useSchema } from '@/hooks/useSchema';
 
 import { useSignUp } from '@/services/hooks/useSignUp';
 
-import config from "@/config";
 type SignUpProps = Required<z.infer<typeof useSchema.signUp>>
 
 export default function Signup() {
@@ -22,7 +24,11 @@ export default function Signup() {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isDisabled, setIsDisabled] = useState<boolean>(false);
 
-  const { register, handleSubmit, formState: { errors } } = useForm<SignUpProps>({
+  const {
+    register,
+    handleSubmit,
+    formState: { errors }
+  } = useForm<SignUpProps>({
     resolver: zodResolver(useSchema.signUp),
   });
 
@@ -56,81 +62,123 @@ export default function Signup() {
   }
 
   return (
-    <main className="p-8 md:p-24" data-theme={config.colors.theme}>
+    <div className="flex h-screen flex-col items-center justify-center bg-zinc-900">
+      <Tabs defaultValue="sign-up" className="w-[400px]">
+        <TabsList className="grid w-full grid-cols-1">
+          <TabsTrigger value="sign-up">Registrar</TabsTrigger>
+        </TabsList>
+        <TabsContent value="sign-up">
+          <Card className="bg-zinc-900">
+            <CardHeader>
+              <CardTitle>Registrar</CardTitle>
+              <CardDescription>
+                Insira as informações necessárias para ter acesso a nossa
+                plataforma.
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-2">
+              <div className="space-y-1">
+                <Label className="block text-sm font-bold text-white" htmlFor="name">
+                  Nome
+                </Label>
+                <Input
+                  id="name"
+                  name="name"
+                  type="text"
+                  placeholder="Seu nome"
+                  className="mt-2 w-full rounded-lg border-2 bg-zinc-800 px-4 py-2 text-white focus:border-primary-600 focus:outline-none"
+                  {...register('name')}
+                  errorName={errors?.name?.message}
+                />
+              </div>
 
-      <div className="mb-4 text-center">
-        <Link href="/sign-in" className="btn btn-ghost btn-sm">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 20 20"
-            fill="currentColor"
-            className="h-5 w-5"
-          >
-            <path
-              fillRule="evenodd"
-              d="M15 10a.75.75 0 01-.75.75H7.612l2.158 1.96a.75.75 0 11-1.04 1.08l-3.5-3.25a.75.75 0 010-1.08l3.5-3.25a.75.75 0 111.04 1.08L7.612 9.25h6.638A.75.75 0 0115 10z"
-              clipRule="evenodd"
-            />
-          </svg>
-          Sign-in
-        </Link>
-      </div>
+              <div className="space-y-1">
+                <Label className="block text-sm font-bold text-white" htmlFor="surname">
+                  Sobrenome
+                </Label>
+                <Input
+                  id="surname"
+                  name="surname"
+                  type="text"
+                  placeholder="Seu sobrenome"
+                  className="mt-2 w-full rounded-lg border-2 bg-zinc-800 px-4 py-2 text-white focus:border-primary-600 focus:outline-none"
+                  {...register('surname')}
+                  errorName={errors?.surname?.message}
+                />
+              </div>
 
-      <h1 className="mb-12 text-center text-3xl font-extrabold tracking-tight md:text-4xl">
-        Cadastrar
-      </h1>
+              <div className="space-y-1">
+                <Label className="block text-sm font-bold text-white" htmlFor="birthDate">
+                  Data de Nascimento
+                </Label>
+                <Input
+                  id="birthDate"
+                  name="birthDate"
+                  type="text"
+                  placeholder="Sua data de nascimento"
+                  className="mt-2 w-full rounded-lg border-2 bg-zinc-800 px-4 py-2 text-white focus:border-primary-600 focus:outline-none"
+                  {...register('birthDate')}
+                  errorName={errors?.birthDate?.message}
+                />
+              </div>
 
-      <form
-        className="form-control w-full space-y-4"
-        onSubmit={handleSubmit((e) => handleSubmitSingUp(e))}
-      >
-        <Input
-          type="text"
-          placeholder="Seu nome"
-          errorName={errors.name?.message}
-          {...register('name')}
-        />
+              <div className="space-y-1">
+                <Label className="block text-sm font-bold text-white" htmlFor="phone">
+                  Número do Celular
+                </Label>
+                <Input
+                  id="phone"
+                  name="phone"
+                  type="text"
+                  placeholder="Seu número de celular"
+                  className="mt-2 w-full rounded-lg border-2 bg-zinc-800 px-4 py-2 text-white focus:border-primary-600 focus:outline-none"
+                  {...register('phone')}
+                  errorName={errors?.phone?.message}
+                />
+              </div>
 
-        <Input
-          type="text"
-          placeholder="Data de nascimento"
-          errorName={errors.birthDate?.message}
-          {...register('birthDate')}
-        />
+              <div className="space-y-1">
+                <Label className="block text-sm font-bold text-white" htmlFor="email">
+                  Email
+                </Label>
+                <Input
+                  id="email"
+                  name="email"
+                  type="email"
+                  placeholder="Seu e-mail"
+                  className="mt-2 w-full rounded-lg border-2 bg-zinc-800 px-4 py-2 text-white focus:border-primary-600 focus:outline-none"
+                  {...register('email')}
+                  errorName={errors?.email?.message}
+                />
+              </div>
 
-        <Input
-          type="text"
-          placeholder="Seu número (opcional)"
-          errorName={errors.phone?.message}
-          {...register('phone')}
-        />
-
-        <Input
-          type="email"
-          placeholder="Seu e-mail"
-          autoComplete="email"
-          errorName={errors.email?.message}
-          {...register('email')}
-        />
-
-        <Input
-          type="password"
-          placeholder="Sua senha"
-          errorName={errors.password?.message}
-          {...register('password')}
-        />
-
-        <button
-          className="btn btn-primary btn-block"
-          disabled={isLoading || isDisabled}
-          type="submit"
-        >
-          {isLoading && (
-            <span className="loading loading-spinner loading-xs"></span>
-          )}
-          Cadastrar
-        </button>
-      </form>
-    </main >
+              <div className="space-y-1">
+                <Label className="block text-sm font-bold text-white" htmlFor="password">
+                  Senha
+                </Label>
+                <Input
+                  id="password"
+                  name="password"
+                  type="password"
+                  placeholder="Sua senha"
+                  className="mt-2 w-full rounded-lg border-2 bg-zinc-800 px-4 py-2 text-white focus:border-primary-600 focus:outline-none"
+                  {...register('password')}
+                  errorName={errors?.password?.message}
+                />
+              </div>
+            </CardContent>
+            <CardFooter>
+              <form onSubmit={handleSubmit(handleSubmitSingUp)}>
+                <Button disabled={isLoading || isDisabled} type="submit">
+                  {isLoading && (
+                    <span className="loading loading-spinner loading-xs"></span>
+                  )} Registrar
+                </Button>
+              </form>
+            </CardFooter>
+          </Card>
+        </TabsContent>
+      </Tabs>
+    </div >
   );
 }

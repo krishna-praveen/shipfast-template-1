@@ -22,10 +22,12 @@ type SignInProps = Required<z.infer<typeof useSchema.singIn>>;
 type RequestResetPasswordProps = Required<z.infer<typeof useSchema.requestResetPassword>>;
 
 export default function SignIn() {
+  const router = useRouter();
+
   const {
-    register,
-    handleSubmit,
-    formState: { errors, },
+    register: signInRegister,
+    handleSubmit: handleSignInSubmit,
+    formState: { errors: signInErrors, },
   } = useForm<SignInProps>({
     resolver: zodResolver(useSchema.singIn),
   });
@@ -37,8 +39,6 @@ export default function SignIn() {
   } = useForm<RequestResetPasswordProps>({
     resolver: zodResolver(useSchema.requestResetPassword),
   });
-
-  const router = useRouter();
 
   const UseSignIn = useSignIn({
     options: {
@@ -70,7 +70,7 @@ export default function SignIn() {
     }
   });
 
-  const onSubmit: SubmitHandler<SignInProps> = async ({ email, password }) => {
+  const onSingInSubmit: SubmitHandler<SignInProps> = async ({ email, password }) => {
     try {
       await UseSignIn.mutateAsync({ email, password });
 
@@ -95,9 +95,9 @@ export default function SignIn() {
   return (
     <div className="flex h-screen flex-col items-center justify-center bg-zinc-900">
       <Tabs defaultValue="sign-in" className="w-[400px]">
-        <TabsList className="grid w-full grid-cols-2">
-          <TabsTrigger value="sign-in">Sign In</TabsTrigger>
-          <TabsTrigger value="request-reset-password">Esqueceu a senha</TabsTrigger>
+        <TabsList className="grid w-full grid-cols-3">
+          <TabsTrigger value="sign-in">Entrar</TabsTrigger>
+          <TabsTrigger className="px-4" value="request-reset-password">Nova Senha</TabsTrigger>
         </TabsList>
         <TabsContent value="sign-in">
           <Card className="bg-zinc-900">
@@ -116,8 +116,8 @@ export default function SignIn() {
                   type="email"
                   placeholder="Seu e-mail"
                   className="mt-2 w-full rounded-lg border-2 bg-zinc-800 px-4 py-2 text-white focus:border-primary-600 focus:outline-none"
-                  {...register('email')}
-                  errorName={errors?.email?.message}
+                  {...signInRegister('email')}
+                  errorName={signInErrors?.email?.message}
                 />
               </div>
               <div className="space-y-1">
@@ -128,13 +128,13 @@ export default function SignIn() {
                   type="password"
                   placeholder="Sua senha"
                   className="mt-2 w-full rounded-lg border-2 bg-zinc-800 px-4 py-2 text-white focus:border-primary-600 focus:outline-none"
-                  {...register('password')}
-                  errorName={errors?.password?.message}
+                  {...signInRegister('password')}
+                  errorName={signInErrors?.password?.message}
                 />
               </div>
             </CardContent>
             <CardFooter>
-              <form onSubmit={handleSubmit(onSubmit)}>
+              <form onSubmit={handleSignInSubmit(onSingInSubmit)}>
                 <Button type="submit">Entrar</Button>
               </form>
             </CardFooter>
@@ -178,8 +178,7 @@ export default function SignIn() {
       </Tabs>
 
       <Button onClick={() => router.replace("/")} className="mt-4 w-96 space-x-2">
-        {/* <ArrowLeft className="h-8 w-8 text-white" /> */}
-        <h2>Voltar</h2>
+        <h2>Voltar para landing page</h2>
       </Button>
     </div>
   );
