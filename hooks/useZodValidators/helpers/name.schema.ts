@@ -9,7 +9,7 @@ export const nameSchema = () => {
     .min(1, { message: "Nome é obrigatório!" })
     .max(40, { message: "Nome muito grande, máximo de 40 caracteres" })
     .refine((value) => notAllowNumbersRefine(value), {
-      message: "É necessário nome",
+      message: "Nomes com números não são permitidos",
       path: [],
     })
     .refine((value) => notAllowSpecialCharactersRefine(value), {

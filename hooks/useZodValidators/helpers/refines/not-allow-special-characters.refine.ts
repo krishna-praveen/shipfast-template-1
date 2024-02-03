@@ -8,6 +8,7 @@ export const notAllowSpecialCharactersRefine = (value: string) => {
           splittedValue
         )
       );
+
     return nameValid;
   }
 
