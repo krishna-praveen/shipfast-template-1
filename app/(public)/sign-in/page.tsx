@@ -95,7 +95,7 @@ export default function SignIn() {
   return (
     <div className="flex h-screen flex-col items-center justify-center bg-zinc-900">
       <Tabs defaultValue="sign-in" className="w-[400px]">
-        <TabsList className="grid w-full grid-cols-3">
+        <TabsList className="grid w-full grid-cols-2">
           <TabsTrigger value="sign-in">Entrar</TabsTrigger>
           <TabsTrigger className="px-4" value="request-reset-password">Nova Senha</TabsTrigger>
         </TabsList>
