@@ -4,7 +4,7 @@ import { NextResponse, NextRequest } from "next/server";
 
 import { mapKeysToCamelCase } from "@/libs/maps/mapKeysToCamelCase";
 
-export const getPagination = (page: number, size: number) => {
+const getPagination = (page: number, size: number) => {
   const limit = size ? +size : 3;
   const from = page ? (page - 1) * limit : 0;
   const to = from + limit - 1;

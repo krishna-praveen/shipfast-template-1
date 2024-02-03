@@ -1,13 +1,13 @@
-import type { Config } from "tailwindcss"
+import type { Config } from "tailwindcss";
 
 const config = {
   darkMode: ["class"],
   content: [
-    './pages/**/*.{ts,tsx}',
-    './components/**/*.{ts,tsx}',
-    './app/**/*.{ts,tsx}',
-    './src/**/*.{ts,tsx}',
-	],
+    "./pages/**/*.{ts,tsx}",
+    "./components/**/*.{ts,tsx}",
+    "./app/**/*.{ts,tsx}",
+    "./src/**/*.{ts,tsx}",
+  ],
   prefix: "",
   theme: {
     container: {
@@ -26,10 +26,26 @@ const config = {
         foreground: "hsl(var(--foreground))",
         primary: {
           DEFAULT: "hsl(var(--primary))",
+          "800": "hsl(var(--primary-800))",
+          "700": "hsl(var(--primary-700))",
+          "600": "hsl(var(--primary-600))",
+          "500": "hsl(var(--primary-500))",
+          "400": "hsl(var(--primary-400))",
+          "300": "hsl(var(--primary-300))",
+          "200": "hsl(var(--primary-200))",
+          "100": "hsl(var(--primary-100))",
           foreground: "hsl(var(--primary-foreground))",
         },
         secondary: {
           DEFAULT: "hsl(var(--secondary))",
+          "800": "hsl(var(--secondary-800))",
+          "700": "hsl(var(--secondary-700))",
+          "600": "hsl(var(--secondary-600))",
+          "500": "hsl(var(--secondary-500))",
+          "400": "hsl(var(--secondary-400))",
+          "300": "hsl(var(--secondary-300))",
+          "200": "hsl(var(--secondary-200))",
+          "100": "hsl(var(--secondary-100))",
           foreground: "hsl(var(--secondary-foreground))",
         },
         destructive: {
@@ -75,6 +91,6 @@ const config = {
     },
   },
   plugins: [require("tailwindcss-animate")],
-} satisfies Config
+} satisfies Config;
 
-export default config
+export default config;
