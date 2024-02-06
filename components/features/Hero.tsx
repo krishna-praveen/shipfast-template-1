@@ -1,30 +1,51 @@
-import Image from "next/image";
-import Link from "next/link";
+"use client"
+
+import { useEffect, useState } from "react";
+
+import { HeroLogo } from "@/public/HeroLogo";
+
+import { Button } from "../ui/Button";
 
 export const Hero = () => {
-  return (
-    <section className="mx-auto flex max-w-7xl flex-col items-center justify-center gap-16 bg-base-100 p-8 lg:flex-row lg:gap-20 lg:py-20">
-      <div className="flex flex-col items-center justify-center gap-10 text-center lg:items-start lg:gap-14 lg:text-left">
-        <h1 className="text-4xl font-extrabold tracking-tight md:-mb-4 lg:text-6xl">
-          A revolução no gerenciamento de treino personalizado
-        </h1>
-        <p className="text-lg leading-relaxed opacity-80">
-          Maximize o potencial dos seus alunos com ferramentas inteligentes de planejamento e acompanhamento
-        </p>
+  const [heroHeight, setHeroHeight] = useState('auto');
 
-        <Link href={`/#pricing`} className="btn btn-primary btn-wide">
-          Planos Disponíveis
-        </Link>
-      </div>
-      <div className="lg:w-full">
-        <Image
-          src="https://images.unsplash.com/photo-1517836357463-d25dfeac3438?q=80&w=2340&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-          alt="Product Demo"
-          className="w-full"
-          priority={true}
-          width={500}
-          height={500}
-        />
+  useEffect(() => {
+    const updateHeight = () => {
+      const headerHeight = document.querySelector('header')?.clientHeight || 0;
+      setHeroHeight(`calc(100vh - ${headerHeight}px)`);
+    };
+
+    window.addEventListener('resize', updateHeight);
+    updateHeight();
+
+    return () => window.removeEventListener('resize', updateHeight);
+  }, []);
+
+  return (
+    <section
+      className="flex flex-col items-center justify-center p-4 md:p-8 lg:py-20"
+      style={{ height: heroHeight }}
+    >
+      <div className="flex flex-col items-center space-y-12 md:space-y-24">
+        <HeroLogo className="h-[95px] w-[461px] sm:h-[62px] sm:w-[300px] md:h-[83px] md:w-[400px] lg:h-[95px] lg:w-[461px]" />
+
+        <div className="flex flex-col items-center space-y-4 text-center">
+          <h1 className="scroll-m-20 text-3xl font-extrabold tracking-tight md:text-4xl lg:text-5xl">
+            Gerencie. Organize. Potencialize.
+          </h1>
+          <div className="text-sm font-semibold md:text-base lg:text-lg">
+            A solução definitiva para gerenciar treinos e avaliações de seus alunos com facilidade.
+          </div>
+        </div>
+
+        <div className="flex flex-col items-center space-y-2">
+          <small className="text-xs font-medium leading-none md:text-sm">
+            Explore sem pagar nada por 7 dias!
+          </small>
+          <Button className="w-full bg-primary-600 text-sm hover:bg-primary-700 md:text-base">
+            Começar Gratuitamente
+          </Button>
+        </div>
       </div>
     </section>
   );

@@ -1,6 +1,5 @@
 "use client";
 
-import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
 
@@ -9,6 +8,7 @@ import apiClient from "@/services/api";
 import config from "@/config";
 
 import { Modal } from "../../ui/Modal";
+import { Button } from "../Button";
 
 const IS_PRODUCTION = process.env.VERCEL_ENV === "production"
 
@@ -57,25 +57,13 @@ export const ButtonCheckout = ({
         </div>
       </Modal>
 
-      <button
-        className="group btn btn-primary btn-block"
+      <Button
+        className="bg-secondary-500 text-secondary-foreground shadow hover:bg-secondary-600"
         onClick={IS_PRODUCTION ? () => null : () => handlePayment()}
         disabled={IS_PRODUCTION ? true : false}
       >
-        {isLoading ? (
-          <span className="loading loading-spinner loading-xs"></span>
-        ) : (
-          <Image
-            src='/images/logo/icon.png'
-            alt={`${config.appName} logo`}
-            priority={true}
-            className="h-6 w-6"
-            width={24}
-            height={24}
-          />
-        )}
         {IS_PRODUCTION ? "WIP 🚧" : "Adquirir " + config?.appName}
-      </button>
+      </Button>
     </>
   );
 };
