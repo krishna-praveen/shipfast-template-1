@@ -15,7 +15,7 @@ import { Input } from '@/components/ui/Input';
 import { Label } from '@/components/ui/Label';
 import { MaskedInput } from '@/components/ui/masked/MaskedInput';
 
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/Select';
 import { useSchema } from '@/hooks/useSchema';
 import { useRegisterStudents } from '@/services/hooks/useRegisterStudents';
 
