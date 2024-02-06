@@ -32,7 +32,7 @@ export const Modal = ({ isModalOpen, setIsModalOpen, title = "I'm a modal", isSt
           leaveFrom="opacity-100"
           leaveTo="opacity-0"
         >
-          <div className="fixed inset-0 bg-base-300 bg-opacity-80" />
+          <div className="bg-base-300 fixed inset-0 bg-opacity-80" />
         </Transition.Child>
 
         <div className="fixed inset-0 overflow-y-auto">
@@ -46,7 +46,7 @@ export const Modal = ({ isModalOpen, setIsModalOpen, title = "I'm a modal", isSt
               leaveFrom="opacity-100 scale-100"
               leaveTo="opacity-0 scale-95"
             >
-              <Dialog.Panel className="relative h-full w-full max-w-3xl overflow-visible rounded-xl bg-base-100 p-6 text-left align-middle shadow-xl transition-all md:p-8">
+              <Dialog.Panel className="bg-base-100 relative h-full w-full max-w-3xl overflow-visible rounded-xl p-6 text-left align-middle shadow-xl transition-all md:p-8">
                 <div className="mb-4 flex items-center justify-between">
                   <Dialog.Title as="h2" className="font-semibold">
                     {title}

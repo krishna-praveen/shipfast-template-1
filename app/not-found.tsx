@@ -6,7 +6,7 @@ import { ButtonSupport } from "@/components/ui/buttons/ButtonSupport";
 // Show a cute SVG with your primary color
 export default function Custom404() {
   return (
-    <section className="relative flex h-screen w-full flex-col items-center justify-center gap-8 bg-base-100 p-10 text-base-content">
+    <section className="bg-base-100 text-base-content relative flex h-screen w-full flex-col items-center justify-center gap-8 p-10">
       <div className="rounded-xl bg-white p-6">
         <svg
           xmlns="http://www.w3.org/2000/svg"

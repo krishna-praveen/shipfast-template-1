@@ -3,7 +3,7 @@ const TestimonialRating = () => {
     <div className="-gap-1 mt-auto flex items-center">
       <svg
         viewBox="0 0 773 1262"
-        className="w-8 rotate-12 fill-base-content/40"
+        className="fill-base-content/40 w-8 rotate-12"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
       >
@@ -22,7 +22,7 @@ const TestimonialRating = () => {
         <path d="M674.667 1147.47C637.867 1153.6 596.4 1177.73 550 1219.6L542.8 1226.27L552.667 1229.33C558.133 1231.07 561.6 1232.67 560.4 1232.93C557.333 1233.73 555.867 1239.33 557.733 1243.33C559.867 1248 567.733 1251.47 582.8 1254.53C658.533 1269.87 711.867 1259.47 749.467 1222.13C758.667 1212.93 764.133 1204.8 764.667 1199.33C765.333 1193.73 764.667 1190.53 763.067 1191.47C761.467 1192.53 761.467 1192.4 768.267 1181.73C770.667 1177.87 772.667 1174.27 772.667 1173.47C772.667 1171.47 766.133 1167.33 753.067 1160.8C725.467 1146.93 701.6 1142.8 674.667 1147.47Z" />
       </svg>
       <div>
-        <p className="text-center text-sm text-base-content/80">
+        <p className="text-base-content/80 text-center text-sm">
           1000+ happy users
         </p>
         <div className="flex flex-row justify-center gap-0 pt-1">
@@ -45,7 +45,7 @@ const TestimonialRating = () => {
         </div>
       </div>
       <svg
-        className="w-8 -rotate-12 fill-base-content/40"
+        className="fill-base-content/40 w-8 -rotate-12"
         viewBox="0 0 773 1262"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"

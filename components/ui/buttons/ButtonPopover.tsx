@@ -32,9 +32,9 @@ export const ButtonPopover = () => {
             leaveTo="transform scale-95 opacity-0"
           >
             <Popover.Panel className="absolute left-0 z-10 mt-3 w-screen max-w-full sm:max-w-sm lg:max-w-2xl">
-              <div className="overflow-hidden rounded-lg shadow-lg ring-1 ring-base-content ring-opacity-5">
-                <div className="relative grid gap-4 bg-base-100 p-4 lg:grid-cols-2">
-                  <div className="flex cursor-pointer items-center gap-3 rounded-lg p-2 text-sm duration-200 hover:bg-base-200">
+              <div className="ring-base-content overflow-hidden rounded-lg shadow-lg ring-1 ring-opacity-5">
+                <div className="bg-base-100 relative grid gap-4 p-4 lg:grid-cols-2">
+                  <div className="hover:bg-base-200 flex cursor-pointer items-center gap-3 rounded-lg p-2 text-sm duration-200">
                     <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-lg bg-orange-500/20">
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
@@ -63,7 +63,7 @@ export const ButtonPopover = () => {
                       </p>
                     </div>
                   </div>
-                  <div className="flex cursor-pointer items-center gap-3 rounded-lg p-2 text-sm duration-200 hover:bg-base-200">
+                  <div className="hover:bg-base-200 flex cursor-pointer items-center gap-3 rounded-lg p-2 text-sm duration-200">
                     <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-lg bg-yellow-500/20">
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
@@ -87,7 +87,7 @@ export const ButtonPopover = () => {
                       </p>
                     </div>
                   </div>
-                  <div className="flex cursor-pointer items-center gap-3 rounded-lg p-2 text-sm duration-200 hover:bg-base-200">
+                  <div className="hover:bg-base-200 flex cursor-pointer items-center gap-3 rounded-lg p-2 text-sm duration-200">
                     <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-lg bg-green-500/20">
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
