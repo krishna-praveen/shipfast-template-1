@@ -11,7 +11,8 @@
     "lint:debug": "eslint ./src --debug",
     "lint:fix": "eslint ./ --fix",
     "vercel": "vercel",
-    "supabase": "supabase"
+    "supabase": "supabase",
+    "prepare": "husky install"
   },
   "dependencies": {
     "@headlessui/react": "^1.7.17",
@@ -72,6 +73,7 @@
     "daisyui": "^4.4.23",
     "eslint-plugin-import": "^2.29.0",
     "eslint-plugin-tailwindcss": "^3.13.0",
+    "husky": "^8.0.0",
     "postcss": "^8.4.28",
     "supabase": "^1.131.5",
     "tailwindcss": "^3.3.3",
