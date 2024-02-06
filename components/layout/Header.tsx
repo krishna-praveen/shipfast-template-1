@@ -6,8 +6,11 @@ import { useSearchParams } from "next/navigation";
 import type { JSX } from "react";
 import { useState, useEffect } from "react";
 
+import { Icon } from "@/public/icon";
+
 import config from "@/config";
 
+import { Button } from "../ui/Button";
 import { ButtonSignIn } from "../ui/buttons";
 
 const links: {
@@ -24,15 +27,12 @@ const links: {
     },
   ];
 
-const cta: JSX.Element = <ButtonSignIn extraStyle="btn-primary" />;
+const cta: JSX.Element = <ButtonSignIn extraStyle="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 bg-primary-600 hover:bg-primary-700 text-primary-foreground shadow h-9 px-4 py-2" />;
 
-// A header with a logo on the left, links in the center (like Pricing, etc...), and a CTA (like Get Started or Login) on the right.
-// The header is responsive, and on mobile, the links are hidden behind a burger button.
 export const Header = () => {
   const searchParams = useSearchParams();
   const [isOpen, setIsOpen] = useState<boolean>(false);
 
-  // setIsOpen(false) when the route changes (i.e: when the user clicks on a link on mobile)
   useEffect(() => {
     setIsOpen(false);
   }, [searchParams]);
@@ -40,7 +40,7 @@ export const Header = () => {
   return (
     <header className="bg-base-200">
       <nav
-        className="container mx-auto flex items-center justify-between px-8 py-4"
+        className="container mx-auto flex items-center justify-between px-8 py-10"
         aria-label="Global"
       >
         {/* Your logo/name on large screens */}
@@ -50,20 +50,12 @@ export const Header = () => {
             href="/"
             title={`${config.appName} hompage`}
           >
-            <Image
-              src='/images/logo/icon.png'
-              alt={`${config.appName} logo`}
-              className="w-8"
-              priority={true}
-              width={32}
-              height={32}
-            />
-            <span className="text-lg font-extrabold">{config.appName}</span>
+            <Icon width={25} height={49} />
           </Link>
         </div>
         {/* Burger button to open menu on mobile */}
         <div className="flex lg:hidden">
-          <button
+          <Button
             type="button"
             className="-m-2.5 inline-flex items-center justify-center rounded-md p-2.5"
             onClick={() => setIsOpen(true)}
@@ -75,7 +67,7 @@ export const Header = () => {
               viewBox="0 0 24 24"
               strokeWidth={1.5}
               stroke="currentColor"
-              className="h-6 w-6 text-base-content"
+              className="text-base-content h-6 w-6"
             >
               <path
                 strokeLinecap="round"
@@ -83,7 +75,7 @@ export const Header = () => {
                 d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5"
               />
             </svg>
-          </button>
+          </Button>
         </div>
 
         {/* Your links on large screens */}
@@ -92,7 +84,7 @@ export const Header = () => {
             <Link
               href={link.href}
               key={link.href}
-              className="link-hover link"
+              className="link link-hover hover:text-primary-400"
               title={link.label}
             >
               {link.label}
@@ -108,9 +100,7 @@ export const Header = () => {
 
       {/* Mobile menu, show/hide based on menu state. */}
       <div className={`relative z-50 ${isOpen ? "" : "hidden"}`}>
-        <div
-          className={`fixed inset-y-0 right-0 z-10 w-full origin-right overflow-y-auto bg-base-200 px-8 py-4 transition duration-300 ease-in-out sm:max-w-sm sm:ring-1 sm:ring-neutral/10`}
-        >
+        <div className={`bg-base-200 sm:ring-neutral/10 fixed inset-y-0 right-0 z-10 w-full origin-right overflow-y-auto px-8 py-4 transition duration-300 ease-in-out sm:max-w-sm sm:ring-1`}>
           {/* Your logo/name on small screens */}
           <div className="flex items-center justify-between">
             <Link
@@ -129,7 +119,7 @@ export const Header = () => {
               {/* <LogoIcon /> */}
               <span className="text-lg font-extrabold">{config.appName}</span>
             </Link>
-            <button
+            <Button
               type="button"
               className="-m-2.5 rounded-md p-2.5"
               onClick={() => setIsOpen(false)}
@@ -149,7 +139,7 @@ export const Header = () => {
                   d="M6 18L18 6M6 6l12 12"
                 />
               </svg>
-            </button>
+            </Button>
           </div>
 
           {/* Your links on small screens */}

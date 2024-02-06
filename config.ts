@@ -26,7 +26,7 @@ const config = {
             ? process.env.STRIPE_PLAN_ESSENCIAL
             : "need_to_be_configured",
         //  REQUIRED - Name of the plan, displayed on the pricing page
-        name: "Plano Essencial",
+        name: "Essencial",
         // A friendly description of the plan, displayed on the pricing page. Tip: explain why this plan and not others
         description: "A mudança começa aqui!",
         // The price you want to display, the one user will be charged on Stripe.
@@ -34,12 +34,11 @@ const config = {
         // If you have an anchor price (i.e. $29) that you want to display crossed out, put it here. Otherwise, leave it empty
         priceAnchor: 99.9,
         features: [
-          { name: "Registro de alunos" },
-          { name: "Registro e avaliação de aluno" },
+          { name: "Registro de aluno" },
+          { name: "Registro de avaliação de aluno" },
           { name: "Registro de treino por aluno" },
-          { name: "Geração e download de PDF (avaliação/treino)" },
-          { name: "Envio de PDF por email" },
-          { name: "Suporte por WhatsApp" },
+          { name: "Donwload/envio de avaliação/treino por email" },
+          { name: "Suporte via WahtsApp 24h" },
         ],
       },
     ],

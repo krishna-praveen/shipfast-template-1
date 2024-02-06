@@ -1,10 +1,7 @@
 "use client";
 
 import type { JSX } from "react";
-import { useRef, useState } from "react";
-
-// <FAQ> component is a lsit of <Item> component
-// Just import the FAQ & add your FAQ content to the const faqList arrayy below.
+import { useEffect, useRef, useState } from "react";
 
 interface FAQItemProps {
   question: string;
@@ -20,7 +17,7 @@ const faqList: FAQItemProps[] = [
     question: "Posso obter um reembolso?",
     answer: (
       <p>
-        Sim! Você pode solicitar um reembolso no prazo de 7 dias após a compra. Contate-nos por email.
+        Não. Pois todos que adquirirem o Pump terão acesso a todos os recursos por 7 dias de forma gratuita.
       </p>
     ),
   },
@@ -39,7 +36,7 @@ const FaqItem = ({ item }: { item: FAQItemProps }) => {
   return (
     <li>
       <button
-        className="relative flex w-full items-center gap-2 border-t border-base-content/10 py-5 text-left text-base font-semibold md:text-lg"
+        className="border-base-content/10 relative flex w-full items-center gap-2 border-t py-5 text-left text-base font-semibold md:text-lg"
         onClick={(e) => {
           e.preventDefault();
           setIsOpen(!isOpen);
@@ -47,7 +44,7 @@ const FaqItem = ({ item }: { item: FAQItemProps }) => {
         aria-expanded={isOpen}
       >
         <span
-          className={`flex-1 text-base-content ${isOpen ? "text-primary" : ""}`}
+          className={`text-base-content flex-1 ${isOpen ? "text-secondary-500" : ""}`}
         >
           {item?.question}
         </span>
@@ -91,12 +88,30 @@ const FaqItem = ({ item }: { item: FAQItemProps }) => {
 };
 
 export const FAQ = () => {
+  const [heroHeight, setHeroHeight] = useState('auto');
+
+  useEffect(() => {
+    const updateHeight = () => {
+      const headerHeight = document.querySelector('footer')?.clientHeight || 0;
+      setHeroHeight(`calc(100vh - ${headerHeight}px)`);
+    };
+
+    window.addEventListener('resize', updateHeight);
+    updateHeight();
+
+    return () => window.removeEventListener('resize', updateHeight);
+  }, []);
+
   return (
-    <section className="bg-base-200" id="faq">
+    <section
+      id="faq"
+      className="bg-base-200"
+      style={{ height: heroHeight }}
+    >
       <div className="mx-auto flex max-w-7xl flex-col gap-12 px-8 py-24 md:flex-row">
-        <div className="flex basis-1/2 flex-col text-left">
-          <p className="mb-4 inline-block font-semibold text-primary">FAQ</p>
-          <p className="text-3xl font-extrabold text-base-content sm:text-4xl">
+        <div className="flex basis-1/2 flex-col space-y-4 text-left">
+          <p className="scroll-m-20 text-4xl font-extrabold tracking-tight text-secondary-500 lg:text-5xl">FAQ</p>
+          <p className="text-base-content text-3xl font-extrabold sm:text-4xl">
             Perguntas frequentes
           </p>
         </div>
