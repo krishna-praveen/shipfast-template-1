@@ -41,14 +41,18 @@ export async function GET(req: NextRequest) {
       );
     }
 
-    const { data, error } = await supabase
+    let query = supabase
       .from("students")
       .select("*", { count: "exact" })
       .order("name", { ascending: true })
       .eq("user_id", userId)
-      .textSearch("name", term)
-      .range(from, to)
-      .throwOnError();
+      .range(from, to);
+
+    if (term && term.trim() !== "") {
+      query = query.textSearch("name", term);
+    }
+
+    const { data, error } = await query.throwOnError();
 
     if (error) {
       return NextResponse.json(
