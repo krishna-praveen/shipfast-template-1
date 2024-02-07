@@ -27,6 +27,7 @@
     "@radix-ui/react-tabs": "^1.0.4",
     "@supabase/auth-helpers-nextjs": "^0.8.1",
     "@supabase/supabase-js": "^2.38.3",
+    "@tanstack/react-table": "^8.11.8",
     "axios": "^1.4.0",
     "chart.js": "^4.4.1",
     "class-variance-authority": "^0.7.0",

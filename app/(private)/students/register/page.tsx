@@ -30,7 +30,13 @@ enum NonGender {
 export default function Register() {
   const router = useRouter();
 
-  const { register, handleSubmit, formState: { errors } } = useForm<RegisterProps>({
+  const {
+    register,
+    handleSubmit,
+    setValue,
+    watch,
+    formState: { errors }
+  } = useForm<RegisterProps>({
     resolver: zodResolver(useSchema.registerStudents),
   });
 
@@ -70,11 +76,17 @@ export default function Register() {
     router.replace("/students")
   }
 
+  const genderValue = watch('gender');
+
+  const handleSelectGender = (selectedValue: string) => {
+    setValue('gender', selectedValue, { shouldValidate: true });
+  };
+
   return (
     <Layout>
       <div className="flex flex-row items-center justify-between space-y-4 md:space-x-4 md:space-y-0">
         <div className='flex flex-col space-y-4'>
-          <h1 className="text-xl font-extrabold md:text-3xl">Aluno</h1>
+          <h1 className="scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl">Aluno</h1>
           <small className="text-sm font-medium leading-none text-secondary-300">Registrando</small>
         </div>
         <Button onClick={handleBack} className='bg-secondary-500 hover:bg-secondary-600'>
@@ -127,14 +139,16 @@ export default function Register() {
 
             <div>
               <Label htmlFor="gender">Sexo</Label>
-              <Select {...register('gender')}>
+              <Select
+                value={genderValue}
+                onValueChange={(e) => handleSelectGender(e)}
+              >
                 <SelectTrigger id='gender' className="w-full focus:border-primary-600 focus:outline-none">
                   <SelectValue placeholder={NonGender.SEXO} />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value={NonGender.SEXO}>{NonGender.SEXO}</SelectItem>
-                  <SelectItem value="male">Masculino</SelectItem>
-                  <SelectItem value="female">Feminino</SelectItem>
+                  <SelectItem key="male" value="male">Masculino</SelectItem>
+                  <SelectItem key="female" value="female">Feminino</SelectItem>
                 </SelectContent>
               </Select>
               {errors?.gender?.message && (
