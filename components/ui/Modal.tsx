@@ -46,7 +46,7 @@ export const Modal = ({ isModalOpen, setIsModalOpen, title = "I'm a modal", isSt
               leaveFrom="opacity-100 scale-100"
               leaveTo="opacity-0 scale-95"
             >
-              <Dialog.Panel className="bg-base-100 relative h-full w-full max-w-3xl overflow-visible rounded-xl p-6 text-left align-middle shadow-xl transition-all md:p-8">
+              <Dialog.Panel className="bg-base-100 relative size-full max-w-3xl overflow-visible rounded-xl p-6 text-left align-middle shadow-xl transition-all md:p-8">
                 <div className="mb-4 flex items-center justify-between">
                   <Dialog.Title as="h2" className="font-semibold">
                     {title}
@@ -61,7 +61,7 @@ export const Modal = ({ isModalOpen, setIsModalOpen, title = "I'm a modal", isSt
                           xmlns="http://www.w3.org/2000/svg"
                           viewBox="0 0 20 20"
                           fill="currentColor"
-                          className="h-5 w-5"
+                          className="size-5"
                         >
                           <path d="M6.28 5.22a.75.75 0 00-1.06 1.06L8.94 10l-3.72 3.72a.75.75 0 101.06 1.06L10 11.06l3.72 3.72a.75.75 0 101.06-1.06L11.06 10l3.72-3.72a.75.75 0 00-1.06-1.06L10 8.94 6.28 5.22z" />
                         </svg>

@@ -26,7 +26,7 @@ const refTypes: {
       <svg
         xmlns="http://www.w3.org/2000/svg"
         viewBox="0 0 26.245 26.256"
-        className="h-[18px] w-[18px]"
+        className="size-[18px]"
       >
         <path
           d="M26.254 13.128c0 7.253-5.875 13.128-13.128 13.128S-.003 20.382-.003 13.128 5.872 0 13.125 0s13.128 5.875 13.128 13.128"
@@ -44,7 +44,7 @@ const refTypes: {
     ariaLabel: "See user post on Twitter",
     svg: (
       <svg
-        className="h-5 w-5 fill-[#00aCee]"
+        className="size-5 fill-[#00aCee]"
         xmlns="http://www.w3.org/2000/svg"
         viewBox="0 0 24 24"
       >
@@ -159,14 +159,14 @@ const Testimonial = ({ i }: { i: number }) => {
           <div className="bg-base-300 shrink-0 overflow-hidden rounded-full">
             {testimonial.img ? (
               <Image
-                className="h-10 w-10 rounded-full object-cover"
+                className="size-10 rounded-full object-cover"
                 src={list[i].img}
                 alt={`${list[i].name}'s testimonial for ${config.appName}`}
                 width={48}
                 height={48}
               />
             ) : (
-              <span className="bg-base-300 flex h-10 w-10 items-center justify-center rounded-full text-lg font-medium">
+              <span className="bg-base-300 flex size-10 items-center justify-center rounded-full text-lg font-medium">
                 {testimonial.name.charAt(0)}
               </span>
             )}
@@ -242,7 +242,7 @@ const Testimonials11 = () => {
                     <div className="bg-base-300 shrink-0 overflow-hidden rounded-full">
                       {list[list.length - 1].img ? (
                         <Image
-                          className="h-12 w-12 rounded-full object-cover"
+                          className="size-12 rounded-full object-cover"
                           src={list[list.length - 1].img}
                           alt={`${list[list.length - 1].name
                             }'s testimonial for MakeLanding`}
@@ -250,7 +250,7 @@ const Testimonials11 = () => {
                           height={48}
                         />
                       ) : (
-                        <span className="bg-base-300 flex h-12 w-12 items-center justify-center rounded-full text-xl font-medium">
+                        <span className="bg-base-300 flex size-12 items-center justify-center rounded-full text-xl font-medium">
                           {list[list.length - 1].name.charAt(0)}
                         </span>
                       )}

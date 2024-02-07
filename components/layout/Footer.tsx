@@ -21,7 +21,7 @@ export const Footer = () => {
                 src='/images/logo/icon.png'
                 alt={`${config.appName} logo`}
                 priority={true}
-                className="h-6 w-6"
+                className="size-6"
                 width={24}
                 height={24}
               />

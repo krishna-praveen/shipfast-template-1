@@ -17,7 +17,7 @@ export const TitleCard = ({ title, children }: TitleCardProps) => {
 
       <div className="divider mt-2"></div>
 
-      <div className='bg-base-100 h-full w-full pb-6'>
+      <div className='bg-base-100 size-full pb-6'>
         {children}
       </div>
     </div >

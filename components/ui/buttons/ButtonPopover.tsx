@@ -13,7 +13,7 @@ export const ButtonPopover = () => {
               xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 20 20"
               fill="currentColor"
-              className={`h-5 w-5 duration-200 ${open ? "rotate-180" : ""
+              className={`size-5 duration-200 ${open ? "rotate-180" : ""
                 }`}
             >
               <path
@@ -35,14 +35,14 @@ export const ButtonPopover = () => {
               <div className="ring-base-content overflow-hidden rounded-lg shadow-lg ring-1 ring-opacity-5">
                 <div className="bg-base-100 relative grid gap-4 p-4 lg:grid-cols-2">
                   <div className="hover:bg-base-200 flex cursor-pointer items-center gap-3 rounded-lg p-2 text-sm duration-200">
-                    <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-lg bg-orange-500/20">
+                    <span className="flex size-12 shrink-0 items-center justify-center rounded-lg bg-orange-500/20">
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
                         fill="none"
                         viewBox="0 0 24 24"
                         strokeWidth={1.5}
                         stroke="currentColor"
-                        className="h-6 w-6 stroke-orange-600"
+                        className="size-6 stroke-orange-600"
                       >
                         <path
                           strokeLinecap="round"
@@ -64,14 +64,14 @@ export const ButtonPopover = () => {
                     </div>
                   </div>
                   <div className="hover:bg-base-200 flex cursor-pointer items-center gap-3 rounded-lg p-2 text-sm duration-200">
-                    <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-lg bg-yellow-500/20">
+                    <span className="flex size-12 shrink-0 items-center justify-center rounded-lg bg-yellow-500/20">
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
                         fill="none"
                         viewBox="0 0 24 24"
                         strokeWidth={1.5}
                         stroke="currentColor"
-                        className="h-6 w-6 stroke-yellow-600"
+                        className="size-6 stroke-yellow-600"
                       >
                         <path
                           strokeLinecap="round"
@@ -88,14 +88,14 @@ export const ButtonPopover = () => {
                     </div>
                   </div>
                   <div className="hover:bg-base-200 flex cursor-pointer items-center gap-3 rounded-lg p-2 text-sm duration-200">
-                    <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-lg bg-green-500/20">
+                    <span className="flex size-12 shrink-0 items-center justify-center rounded-lg bg-green-500/20">
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
                         fill="none"
                         viewBox="0 0 24 24"
                         strokeWidth={1.5}
                         stroke="currentColor"
-                        className="h-6 w-6 stroke-green-600"
+                        className="size-6 stroke-green-600"
                       >
                         <path
                           strokeLinecap="round"

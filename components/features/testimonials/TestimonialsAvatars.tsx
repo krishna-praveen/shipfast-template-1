@@ -33,7 +33,7 @@ const TestimonialsAvatars = ({ priority }: { priority?: boolean }) => {
       {/* AVATARS */}
       <div className={`justy-start avatar-group -space-x-5`}>
         {avatars.map((image, i) => (
-          <div className="avatar h-12 w-12" key={i}>
+          <div className="avatar size-12" key={i}>
             <Image
               src={image.src}
               alt={image.alt}
@@ -53,7 +53,7 @@ const TestimonialsAvatars = ({ priority }: { priority?: boolean }) => {
               xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 20 20"
               fill="currentColor"
-              className="h-5 w-5 text-yellow-500"
+              className="size-5 text-yellow-500"
               key={i}
             >
               <path

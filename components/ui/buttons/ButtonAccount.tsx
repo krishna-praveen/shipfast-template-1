@@ -61,13 +61,13 @@ export const ButtonAccount = () => {
               <img
                 src={user?.user_metadata?.avatar_url}
                 alt={"Profile picture"}
-                className="h-6 w-6 shrink-0 rounded-full"
+                className="size-6 shrink-0 rounded-full"
                 referrerPolicy="no-referrer"
                 width={24}
                 height={24}
               />
             ) : (
-              <span className="bg-base-100 flex h-8 w-8 shrink-0 items-center justify-center rounded-full capitalize">
+              <span className="bg-base-100 flex size-8 shrink-0 items-center justify-center rounded-full capitalize">
                 {user?.email?.charAt(0)}
               </span>
             )}
@@ -83,7 +83,7 @@ export const ButtonAccount = () => {
                 xmlns="http://www.w3.org/2000/svg"
                 viewBox="0 0 20 20"
                 fill="currentColor"
-                className={`h-5 w-5 opacity-50 duration-200 ${open ? "rotate-180" : ""
+                className={`size-5 opacity-50 duration-200 ${open ? "rotate-180" : ""
                   }`}
               >
                 <path
@@ -113,7 +113,7 @@ export const ButtonAccount = () => {
                       xmlns="http://www.w3.org/2000/svg"
                       viewBox="0 0 20 20"
                       fill="currentColor"
-                      className="h-5 w-5"
+                      className="size-5"
                     >
                       <path
                         fillRule="evenodd"
@@ -131,7 +131,7 @@ export const ButtonAccount = () => {
                       xmlns="http://www.w3.org/2000/svg"
                       viewBox="0 0 20 20"
                       fill="currentColor"
-                      className="h-5 w-5"
+                      className="size-5"
                     >
                       <path
                         fillRule="evenodd"

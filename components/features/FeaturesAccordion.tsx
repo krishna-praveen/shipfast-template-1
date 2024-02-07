@@ -80,7 +80,7 @@ const Item = ({
           <h3 className="inline">{title}</h3>
         </span>
         <svg
-          className={`ml-auto h-4 w-4 shrink-0 fill-current ${isOpen ? "fill-primary" : ""
+          className={`ml-auto size-4 shrink-0 fill-current ${isOpen ? "fill-primary" : ""
             }`}
           viewBox="0 0 16 16"
           xmlns="http://www.w3.org/2000/svg"

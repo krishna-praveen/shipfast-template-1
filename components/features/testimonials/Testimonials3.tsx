@@ -62,14 +62,14 @@ const Testimonial = ({ i }: { i: number }) => {
             <div className="bg-base-300 shrink-0 overflow-hidden rounded-full">
               {testimonial.img ? (
                 <Image
-                  className="h-10 w-10 rounded-full object-cover md:h-12 md:w-12"
+                  className="size-10 rounded-full object-cover md:size-12"
                   src={list[i].img}
                   alt={`${list[i].name}'s testimonial for ${config.appName}`}
                   width={48}
                   height={48}
                 />
               ) : (
-                <span className="bg-base-300 flex h-10 w-10 items-center justify-center rounded-full text-lg font-medium md:h-12 md:w-12">
+                <span className="bg-base-300 flex size-10 items-center justify-center rounded-full text-lg font-medium md:size-12">
                   {testimonial.name.charAt(0)}
                 </span>
               )}
