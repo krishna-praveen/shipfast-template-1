@@ -26,7 +26,7 @@ const refTypes: {
       <svg
         xmlns="http://www.w3.org/2000/svg"
         viewBox="0 0 26.245 26.256"
-        className="h-[18px] w-[18px]"
+        className="size-[18px]"
       >
         <path
           d="M26.254 13.128c0 7.253-5.875 13.128-13.128 13.128S-.003 20.382-.003 13.128 5.872 0 13.125 0s13.128 5.875 13.128 13.128"
@@ -44,7 +44,7 @@ const refTypes: {
     ariaLabel: "See user post on Twitter",
     svg: (
       <svg
-        className="h-5 w-5 fill-[#00aCee]"
+        className="size-5 fill-[#00aCee]"
         xmlns="http://www.w3.org/2000/svg"
         viewBox="0 0 24 24"
       >
@@ -151,33 +151,33 @@ const Testimonial = ({ i }: { i: number }) => {
 
   return (
     <li key={i}>
-      <figure className="relative h-full rounded-lg bg-base-100 p-6">
+      <figure className="bg-base-100 relative h-full rounded-lg p-6">
         <blockquote className="relative">
-          <p className="text-sm text-base-content/80">{testimonial.text}</p>
+          <p className="text-base-content/80 text-sm">{testimonial.text}</p>
         </blockquote>
-        <figcaption className="relative mt-4 flex items-center justify-start gap-4 border-t border-base-content/5 pt-4">
-          <div className="shrink-0 overflow-hidden rounded-full bg-base-300">
+        <figcaption className="border-base-content/5 relative mt-4 flex items-center justify-start gap-4 border-t pt-4">
+          <div className="bg-base-300 shrink-0 overflow-hidden rounded-full">
             {testimonial.img ? (
               <Image
-                className="h-10 w-10 rounded-full object-cover"
+                className="size-10 rounded-full object-cover"
                 src={list[i].img}
                 alt={`${list[i].name}'s testimonial for ${config.appName}`}
                 width={48}
                 height={48}
               />
             ) : (
-              <span className="flex h-10 w-10 items-center justify-center rounded-full bg-base-300 text-lg font-medium">
+              <span className="bg-base-300 flex size-10 items-center justify-center rounded-full text-lg font-medium">
                 {testimonial.name.charAt(0)}
               </span>
             )}
           </div>
           <div className="flex w-full items-end justify-between gap-2">
             <div>
-              <div className="text-sm font-medium text-base-content">
+              <div className="text-base-content text-sm font-medium">
                 {testimonial.name}
               </div>
               {testimonial.username && (
-                <div className="mt-0.5 text-sm text-base-content/80">
+                <div className="text-base-content/80 mt-0.5 text-sm">
                   @{testimonial.username}
                 </div>
               )}
@@ -206,11 +206,11 @@ const Testimonials11 = () => {
       <div className="mx-auto max-w-7xl px-8 py-24">
         <div className="mb-20 flex w-full flex-col text-center">
           <div className="mb-8">
-            <h2 className="text-4xl font-extrabold text-base-content sm:text-5xl">
+            <h2 className="text-base-content text-4xl font-extrabold sm:text-5xl">
               212 makers are already shipping faster!
             </h2>
           </div>
-          <p className="mx-auto text-base leading-relaxed text-base-content/80 lg:w-2/3">
+          <p className="text-base-content/80 mx-auto text-base leading-relaxed lg:w-2/3">
             Don&apos;t take our word for it. Here&apos;s what they have to say
             about ShipFast.
           </p>
@@ -232,17 +232,17 @@ const Testimonials11 = () => {
             {/* BIG FEATURED TESTIMONIAL — THE LAST ONE IN THE LIST (11th) */}
             <ul className="col-span-2">
               <li>
-                <figure className="relative h-full rounded-lg bg-base-100 p-6">
+                <figure className="bg-base-100 relative h-full rounded-lg p-6">
                   <blockquote className="relative p-4">
-                    <p className="text-lg font-medium text-base-content">
+                    <p className="text-base-content text-lg font-medium">
                       {list[list.length - 1].text}
                     </p>
                   </blockquote>
-                  <figcaption className="relative mt-4 flex items-center justify-start gap-4 border-t border-base-content/5 pt-4">
-                    <div className="shrink-0 overflow-hidden rounded-full bg-base-300">
+                  <figcaption className="border-base-content/5 relative mt-4 flex items-center justify-start gap-4 border-t pt-4">
+                    <div className="bg-base-300 shrink-0 overflow-hidden rounded-full">
                       {list[list.length - 1].img ? (
                         <Image
-                          className="h-12 w-12 rounded-full object-cover"
+                          className="size-12 rounded-full object-cover"
                           src={list[list.length - 1].img}
                           alt={`${list[list.length - 1].name
                             }'s testimonial for MakeLanding`}
@@ -250,17 +250,17 @@ const Testimonials11 = () => {
                           height={48}
                         />
                       ) : (
-                        <span className="flex h-12 w-12 items-center justify-center rounded-full bg-base-300 text-xl font-medium">
+                        <span className="bg-base-300 flex size-12 items-center justify-center rounded-full text-xl font-medium">
                           {list[list.length - 1].name.charAt(0)}
                         </span>
                       )}
                     </div>
                     <div>
-                      <div className="text-base font-medium text-base-content">
+                      <div className="text-base-content text-base font-medium">
                         {list[list.length - 1].name}
                       </div>
                       {list[list.length - 1].username && (
-                        <div className="mt-1 text-base text-base-content/80">
+                        <div className="text-base-content/80 mt-1 text-base">
                           @{list[list.length - 1].username}
                         </div>
                       )}

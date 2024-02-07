@@ -116,7 +116,7 @@ export default function Assessments() {
     const renderBodyMeasurement = (assessment: any) => {
       return (
         <div className="mt-4">
-          <div className={`collapse collapse-arrow rounded-box bg-base-200 ${bodyMeasurementOpenAccordionId === assessment.id + "body-measurement" ? 'collapse-open' : ''}`}>
+          <div className={`collapse-arrow rounded-box bg-base-200 collapse ${bodyMeasurementOpenAccordionId === assessment.id + "body-measurement" ? 'collapse-open' : ''}`}>
             <input type="checkbox" className="peer" checked={bodyMeasurementOpenAccordionId === assessment.id + "body-measurement"} onChange={() => handleBodyMeasurementAccordion(assessment.id + "body-measurement")} />
             <div className="collapse-title text-xl font-medium">
               <div className="mb-2 grid grid-cols-1">
@@ -127,27 +127,27 @@ export default function Assessments() {
             <div className="collapse-content">
               <div className="space-y-2">
                 <div className="flex flex-row space-x-4">
-                  <div className="w-full rounded-md bg-base-100 p-2">
+                  <div className="bg-base-100 w-full rounded-md p-2">
                     <h2 className="text-2xl font-semibold">{assessment.bodyMeasurement.neck} cm</h2>
                     <p>Pescoço</p>
                   </div>
-                  <div className="w-full rounded-md bg-base-100 p-2">
+                  <div className="bg-base-100 w-full rounded-md p-2">
                     <h2 className="text-2xl font-semibold">{assessment.bodyMeasurement.shoulder} cm</h2>
                     <p>Ombros</p>
                   </div>
-                  <div className="w-full rounded-md bg-base-100 p-2">
+                  <div className="bg-base-100 w-full rounded-md p-2">
                     <h2 className="text-2xl font-semibold">{assessment.bodyMeasurement.chest} cm</h2>
                     <p>Peito</p>
                   </div>
-                  <div className="w-full rounded-md bg-base-100 p-2">
+                  <div className="bg-base-100 w-full rounded-md p-2">
                     <h2 className="text-2xl font-semibold">{assessment.bodyMeasurement.waist} cm</h2>
                     <p>Cintura</p>
                   </div>
-                  <div className="w-full rounded-md bg-base-100 p-2">
+                  <div className="bg-base-100 w-full rounded-md p-2">
                     <h2 className="text-2xl font-semibold">{assessment.bodyMeasurement.hip} cm</h2>
                     <p>Quadril</p>
                   </div>
-                  <div className="w-full rounded-md bg-base-100 p-2">
+                  <div className="bg-base-100 w-full rounded-md p-2">
                     <h2 className="text-2xl font-semibold">{assessment.bodyMeasurement.abdomen} cm</h2>
                     <p>Abdômen</p>
                   </div>
@@ -157,19 +157,19 @@ export default function Assessments() {
                   <div className="w-full rounded-md">
                     <h1 className="text-xl font-medium">Direito:</h1>
                     <div className="flex flex-row space-x-4">
-                      <div className="w-full rounded-md bg-base-100 p-2">
+                      <div className="bg-base-100 w-full rounded-md p-2">
                         <h2 className="text-2xl font-semibold">{assessment.bodyMeasurement.right.forearm} cm</h2>
                         <p>Antebraço</p>
                       </div>
-                      <div className="w-full rounded-md bg-base-100 p-2">
+                      <div className="bg-base-100 w-full rounded-md p-2">
                         <h2 className="text-2xl font-semibold">{assessment.bodyMeasurement.right.arm} cm</h2>
                         <p>Braço</p>
                       </div>
-                      <div className="w-full rounded-md bg-base-100 p-2">
+                      <div className="bg-base-100 w-full rounded-md p-2">
                         <h2 className="text-2xl font-semibold">{assessment.bodyMeasurement.right.thigh} cm</h2>
                         <p>Coxa</p>
                       </div>
-                      <div className="w-full rounded-md bg-base-100 p-2">
+                      <div className="bg-base-100 w-full rounded-md p-2">
                         <h2 className="text-2xl font-semibold">{assessment.bodyMeasurement.right.calf} cm</h2>
                         <p>Panturrilha</p>
                       </div>
@@ -179,19 +179,19 @@ export default function Assessments() {
                   <div className="w-full rounded-md">
                     <h1 className="text-xl font-medium">Esquerdo:</h1>
                     <div className="flex flex-row space-x-4">
-                      <div className="w-full rounded-md bg-base-100 p-2">
+                      <div className="bg-base-100 w-full rounded-md p-2">
                         <h2 className="text-2xl font-semibold">{assessment.bodyMeasurement.left.forearm} cm</h2>
                         <p>Antebraço</p>
                       </div>
-                      <div className="w-full rounded-md bg-base-100 p-2">
+                      <div className="bg-base-100 w-full rounded-md p-2">
                         <h2 className="text-2xl font-semibold">{assessment.bodyMeasurement.left.arm} cm</h2>
                         <p>Braço</p>
                       </div>
-                      <div className="w-full rounded-md bg-base-100 p-2">
+                      <div className="bg-base-100 w-full rounded-md p-2">
                         <h2 className="text-2xl font-semibold">{assessment.bodyMeasurement.left.thigh} cm</h2>
                         <p>Coxa</p>
                       </div>
-                      <div className="w-full rounded-md bg-base-100 p-2">
+                      <div className="bg-base-100 w-full rounded-md p-2">
                         <h2 className="text-2xl font-semibold">{assessment.bodyMeasurement.left.calf} cm</h2>
                         <p>Panturrilha</p>
                       </div>
@@ -208,7 +208,7 @@ export default function Assessments() {
     const renderAssessmentMeasurement = (assessment: any) => {
       return (
         <div className="mt-4">
-          <div className={`collapse collapse-arrow rounded-box bg-base-200 ${assessmentMeasurementOpenAccordionId === assessment.id + "assessment-measurement" ? 'collapse-open' : ''}`}>
+          <div className={`collapse-arrow rounded-box bg-base-200 collapse ${assessmentMeasurementOpenAccordionId === assessment.id + "assessment-measurement" ? 'collapse-open' : ''}`}>
             <input type="checkbox" className="peer" checked={assessmentMeasurementOpenAccordionId === assessment.id + "assessment-measurement"} onChange={() => handleAssessmentMeasurementAccordion(assessment.id + "assessment-measurement")} />
             <div className="collapse-title text-xl font-medium">
               <div className="mb-2 grid grid-cols-1">
@@ -218,23 +218,23 @@ export default function Assessments() {
 
             <div className="collapse-content">
               <div className="flex flex-row space-x-4">
-                <div className="w-full rounded-md bg-base-100 p-2">
+                <div className="bg-base-100 w-full rounded-md p-2">
                   <h2 className="text-2xl font-semibold">{assessment.assessmentMeasures.height}</h2>
                   <p>Altura</p>
                 </div>
-                <div className="w-full rounded-md bg-base-100 p-2">
+                <div className="bg-base-100 w-full rounded-md p-2">
                   <h2 className="text-2xl font-semibold">{assessment.assessmentMeasures.weight} kg</h2>
                   <p>Peso</p>
                 </div>
-                <div className="w-full rounded-md bg-base-100 p-2">
+                <div className="bg-base-100 w-full rounded-md p-2">
                   <h2 className="text-2xl font-semibold">{assessment.assessmentMeasures.thigh} cm</h2>
                   <p>Chest</p>
                 </div>
-                <div className="w-full rounded-md bg-base-100 p-2">
+                <div className="bg-base-100 w-full rounded-md p-2">
                   <h2 className="text-2xl font-semibold">{assessment.assessmentMeasures.thigh} cm</h2>
                   <p>Coxa</p>
                 </div>
-                <div className="w-full rounded-md bg-base-100 p-2">
+                <div className="bg-base-100 w-full rounded-md p-2">
                   <h2 className="text-2xl font-semibold">{assessment.assessmentMeasures.abdomen} cm</h2>
                   <p>Abdômen</p>
                 </div>
@@ -248,7 +248,7 @@ export default function Assessments() {
     const renderAssessmentResult = (assessment: any) => {
       return (
         <div className="mt-4">
-          <div className={`collapse collapse-arrow rounded-box bg-base-200 ${assessmentResultOpenAccordionId === assessment.id + "assessment-result" ? 'collapse-open' : ''}`}>
+          <div className={`collapse-arrow rounded-box bg-base-200 collapse ${assessmentResultOpenAccordionId === assessment.id + "assessment-result" ? 'collapse-open' : ''}`}>
             <input type="checkbox" className="peer" checked={assessmentResultOpenAccordionId === assessment.id + "assessment-result"} onChange={() => handleAssessmentResultAccordion(assessment.id + "assessment-result")} />
 
             <div className="collapse-title text-xl font-medium">
@@ -260,45 +260,45 @@ export default function Assessments() {
             <div className="collapse-content">
               <div className="flex flex-row place-content-between space-x-4">
                 <div className="flex w-full flex-col space-y-4">
-                  <div className="w-full rounded-md bg-base-100 p-2">
+                  <div className="bg-base-100 w-full rounded-md p-2">
                     <h2 className="text-2xl font-semibold">{formatNumber(assessment.assessmentMeasures.weight)} kg</h2>
                     <p>Peso Atual</p>
                   </div>
-                  <div className="w-full rounded-md bg-base-100 p-2">
+                  <div className="bg-base-100 w-full rounded-md p-2">
                     <h2 className="text-2xl font-semibold">{formatNumber(assessment.assessmentResult.idealWeightMax)} kg</h2>
                     <p>Peso Máximo Ideal</p>
                   </div>
-                  <div className="w-full rounded-md bg-base-100 p-2">
+                  <div className="bg-base-100 w-full rounded-md p-2">
                     <h2 className="text-2xl font-semibold">{formatNumber(assessment.assessmentResult.idealWeightMin)} kg</h2>
                     <p>Peso Mínimo Ideal</p>
                   </div>
                 </div>
 
                 <div className="flex w-full flex-col space-y-4">
-                  <div className="w-full rounded-md bg-base-100 p-2">
+                  <div className="bg-base-100 w-full rounded-md p-2">
                     <h2 className="text-2xl font-semibold">{formatNumber(assessment.assessmentResult.bodyFatPercentage)}%</h2>
                     <p>Massa Gorda Atual</p>
                   </div>
-                  <div className="w-full rounded-md bg-base-100 p-2">
+                  <div className="bg-base-100 w-full rounded-md p-2">
                     <h2 className="text-2xl font-semibold">{formatNumber(assessment.assessmentResult.idealBodyFatMax)}%</h2>
                     <p>Máximo de Massa Gorda Ideal</p>
                   </div>
-                  <div className="w-full rounded-md bg-base-100 p-2">
+                  <div className="bg-base-100 w-full rounded-md p-2">
                     <h2 className="text-2xl font-semibold">{formatNumber(assessment.assessmentResult.idealBodyFatMin)}%</h2>
                     <p>Mínimo de Massa Gorda Ideal</p>
                   </div>
                 </div>
 
                 <div className="flex w-full flex-col space-y-4">
-                  <div className="w-full rounded-md bg-base-100 p-2">
+                  <div className="bg-base-100 w-full rounded-md p-2">
                     <h2 className="text-2xl font-semibold">{formatNumber(assessment.assessmentResult.fatMass)} kg</h2>
                     <p>Massa Gorda</p>
                   </div>
-                  <div className="w-full rounded-md bg-base-100 p-2">
+                  <div className="bg-base-100 w-full rounded-md p-2">
                     <h2 className="text-2xl font-semibold">{formatNumber(assessment.assessmentResult.leanMass)} kg</h2>
                     <p>Massa Magra</p>
                   </div>
-                  <div className="w-full rounded-md bg-base-100 p-2">
+                  <div className="bg-base-100 w-full rounded-md p-2">
                     <h2 className="text-2xl font-semibold">{formatNumber(assessment.assessmentResult.bmr)} kcal</h2>
                     <p>Taxa Metabólica Basal</p>
                   </div>
@@ -394,7 +394,7 @@ export default function Assessments() {
           {
             assessmentId === '' ? (
               <div className="flex items-center justify-center">
-                <div className="card w-96 bg-base-200 shadow-xl">
+                <div className="card bg-base-200 w-96 shadow-xl">
                   <div className="card-body">
                     <h2 className="card-title">Atenção!</h2>
                     <p>Selecione um <strong>Aluno</strong> e uma <strong>Avaliação</strong> para visualizar os dados.</p>

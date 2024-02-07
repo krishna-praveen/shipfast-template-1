@@ -9,7 +9,7 @@ interface TitleCardProps {
 
 export const TitleCard = ({ title, children }: TitleCardProps) => {
   return (
-    <div className={"card mt-6 w-full bg-base-100 p-6 shadow-xl shadow-base-300"}>
+    <div className={"card bg-base-100 shadow-base-300 mt-6 w-full p-6 shadow-xl"}>
       < Subtitle styleClass="inline-block" >
         {title}
 
@@ -17,7 +17,7 @@ export const TitleCard = ({ title, children }: TitleCardProps) => {
 
       <div className="divider mt-2"></div>
 
-      <div className='h-full w-full bg-base-100 pb-6'>
+      <div className='bg-base-100 size-full pb-6'>
         {children}
       </div>
     </div >

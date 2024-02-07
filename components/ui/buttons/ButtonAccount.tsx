@@ -61,13 +61,13 @@ export const ButtonAccount = () => {
               <img
                 src={user?.user_metadata?.avatar_url}
                 alt={"Profile picture"}
-                className="h-6 w-6 shrink-0 rounded-full"
+                className="size-6 shrink-0 rounded-full"
                 referrerPolicy="no-referrer"
                 width={24}
                 height={24}
               />
             ) : (
-              <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-base-100 capitalize">
+              <span className="bg-base-100 flex size-8 shrink-0 items-center justify-center rounded-full capitalize">
                 {user?.email?.charAt(0)}
               </span>
             )}
@@ -83,7 +83,7 @@ export const ButtonAccount = () => {
                 xmlns="http://www.w3.org/2000/svg"
                 viewBox="0 0 20 20"
                 fill="currentColor"
-                className={`h-5 w-5 opacity-50 duration-200 ${open ? "rotate-180" : ""
+                className={`size-5 opacity-50 duration-200 ${open ? "rotate-180" : ""
                   }`}
               >
                 <path
@@ -103,17 +103,17 @@ export const ButtonAccount = () => {
             leaveTo="transform scale-95 opacity-0"
           >
             <Popover.Panel className="absolute left-0 z-10 mt-3 w-screen max-w-[16rem]">
-              <div className="overflow-hidden rounded-xl bg-base-100 p-1 shadow-xl ring-1 ring-base-content ring-opacity-5">
+              <div className="bg-base-100 ring-base-content overflow-hidden rounded-xl p-1 shadow-xl ring-1 ring-opacity-5">
                 <div className="space-y-0.5 text-sm">
                   <button
-                    className="flex w-full items-center gap-2 rounded-lg px-4 py-1.5 font-medium duration-200 hover:bg-base-300"
+                    className="hover:bg-base-300 flex w-full items-center gap-2 rounded-lg px-4 py-1.5 font-medium duration-200"
                     onClick={handleBilling}
                   >
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
                       viewBox="0 0 20 20"
                       fill="currentColor"
-                      className="h-5 w-5"
+                      className="size-5"
                     >
                       <path
                         fillRule="evenodd"
@@ -124,14 +124,14 @@ export const ButtonAccount = () => {
                     Plano
                   </button>
                   <button
-                    className="flex w-full items-center gap-2 rounded-lg px-4 py-1.5 font-medium duration-200 hover:bg-error/20 hover:text-error"
+                    className="hover:bg-error/20 hover:text-error flex w-full items-center gap-2 rounded-lg px-4 py-1.5 font-medium duration-200"
                     onClick={handleSignOut}
                   >
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
                       viewBox="0 0 20 20"
                       fill="currentColor"
-                      className="h-5 w-5"
+                      className="size-5"
                     >
                       <path
                         fillRule="evenodd"

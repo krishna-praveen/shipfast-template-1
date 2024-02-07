@@ -23,6 +23,7 @@ export const ButtonCheckout = ({
   priceId: string;
   mode?: "payment" | "subscription";
 }) => {
+  // eslint-disable-next-line no-unused-vars
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 

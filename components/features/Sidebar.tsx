@@ -38,7 +38,7 @@ export const Sidebar = () => {
       <div className="flex h-auto flex-col justify-between rounded-r-xl bg-zinc-800 p-5 pt-8 duration-300"> {/* Altura específica e estilo de flexbox */}
         <div>
           <div className="flex items-center p-2">
-            <Icon className="h-6 w-6 duration-500" />
+            <Icon className="size-6 duration-500" />
           </div>
           <ul className="pt-6">
             {Menus.map((menu, index) => (

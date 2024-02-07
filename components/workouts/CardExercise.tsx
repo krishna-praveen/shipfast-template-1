@@ -19,7 +19,7 @@ export const CardExercise = ({ name, sets, repetitions, observation, videoLink, 
   };
 
   return (
-    <div className="text-base-neutral-content font-text-size-4 relative box-border flex w-[243px] flex-col items-start justify-start gap-4 rounded-2xl bg-neutral p-4 text-left text-base">
+    <div className="text-base-neutral-content font-text-size-4 bg-neutral relative box-border flex w-[243px] flex-col items-start justify-start gap-4 rounded-2xl p-4 text-left text-base">
       {/* Let's remove this, for now */}
       {/* <embed className="relative aspect-video w-full max-w-full shrink-0 rounded-[10.87px] object-cover" src={videoLink} /> */}
       <div className="flex w-full flex-col items-start justify-start gap-2">
@@ -43,11 +43,11 @@ export const CardExercise = ({ name, sets, repetitions, observation, videoLink, 
             See Video
           </button>
 
-          <div className='dropdown-start dropdown dropdown-bottom rounded-lg border-2 border-base-content p-2'>
+          <div className='dropdown-start dropdown dropdown-bottom border-base-content rounded-lg border-2 p-2'>
             <div tabIndex={0} role="button" aria-label="dropdown" className="" >
               <MoreHorizontal className="to-base-content" />
             </div>
-            <ul tabIndex={0} className="menu dropdown-content z-[1] w-52 rounded-box bg-base-100 p-2 shadow">
+            <ul tabIndex={0} className="menu dropdown-content rounded-box bg-base-100 z-[1] w-52 p-2 shadow">
               <li><label htmlFor="editExercise" onClick={onEditExercise}>Edit</label></li>
               <li><a href='#' onClick={onDeleteExercise}>Remove</a></li>
             </ul>

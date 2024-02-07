@@ -66,7 +66,7 @@ export default function Workout({ params }: { params: { id: string } }) {
 
       <TopBar title="Treino" workout={workout} onChangeTabsType={(typeTabs: string) => setWorkoutTabs(typeTabs)} tabsType={workoutTabs} exercises={exercises} />
 
-      <div className="w-full bg-base-100">
+      <div className="bg-base-100 w-full">
         <div role="tablist" aria-label="Workouts" className="tabs block border-primary px-10">
           {
             workoutTabs.split('').map((workoutTab, index) => (

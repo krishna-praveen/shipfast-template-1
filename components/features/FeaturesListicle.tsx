@@ -28,7 +28,7 @@ const features: {
                   xmlns="http://www.w3.org/2000/svg"
                   viewBox="0 0 20 20"
                   fill="currentColor"
-                  className="inline h-[18px] w-[18px] shrink-0 opacity-80"
+                  className="inline size-[18px] shrink-0 opacity-80"
                 >
                   <path
                     fillRule="evenodd"
@@ -45,7 +45,7 @@ const features: {
                 xmlns="http://www.w3.org/2000/svg"
                 viewBox="0 0 20 20"
                 fill="currentColor"
-                className="inline h-[18px] w-[18px] shrink-0"
+                className="inline size-[18px] shrink-0"
               >
                 <path
                   fillRule="evenodd"
@@ -77,7 +77,7 @@ const features: {
                   xmlns="http://www.w3.org/2000/svg"
                   viewBox="0 0 20 20"
                   fill="currentColor"
-                  className="inline h-[18px] w-[18px] shrink-0 opacity-80"
+                  className="inline size-[18px] shrink-0 opacity-80"
                 >
                   <path
                     fillRule="evenodd"
@@ -94,7 +94,7 @@ const features: {
                 xmlns="http://www.w3.org/2000/svg"
                 viewBox="0 0 20 20"
                 fill="currentColor"
-                className="inline h-[18px] w-[18px] shrink-0"
+                className="inline size-[18px] shrink-0"
               >
                 <path
                   fillRule="evenodd"
@@ -126,7 +126,7 @@ const features: {
                   xmlns="http://www.w3.org/2000/svg"
                   viewBox="0 0 20 20"
                   fill="currentColor"
-                  className="inline h-[18px] w-[18px] shrink-0 opacity-80"
+                  className="inline size-[18px] shrink-0 opacity-80"
                 >
                   <path
                     fillRule="evenodd"
@@ -143,7 +143,7 @@ const features: {
                 xmlns="http://www.w3.org/2000/svg"
                 viewBox="0 0 20 20"
                 fill="currentColor"
-                className="inline h-[18px] w-[18px] shrink-0"
+                className="inline size-[18px] shrink-0"
               >
                 <path
                   fillRule="evenodd"

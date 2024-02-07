@@ -40,7 +40,7 @@ export default function Workouts() {
       <div className="overflow-x-auto pt-4">
         {!isLoading && workouts.map((studentWorkouts, key) => (
           <div key={key} className="mb-2">
-            <div className={`collapse collapse-arrow rounded-box bg-base-200 ${accordionOpened === key && 'collapse-open'}`}>
+            <div className={`collapse-arrow rounded-box bg-base-200 collapse ${accordionOpened === key && 'collapse-open'}`}>
               <input type="checkbox" className="peer" checked={accordionOpened === key} onChange={() => handleAccordion(key)} />
               <div className="collapse-title text-xl font-medium">
                 <div className="grid grid-cols-1 md:grid-cols-3">
@@ -51,7 +51,7 @@ export default function Workouts() {
               <div className="collapse-content">
                 <div className="grid grid-cols-1 gap-4">
                   {studentWorkouts.workouts.map((workout) => (
-                    <div key={workout.id} className="flex w-full flex-row place-content-between rounded-lg bg-base-300 p-4">
+                    <div key={workout.id} className="bg-base-300 flex w-full flex-row place-content-between rounded-lg p-4">
                       <p className="mb-1"><strong>{workout.description}</strong></p>
                       <Link href={`/workouts/${workout.id}`} className="mb-1 hover:underline"><strong>Ver Treino</strong></Link>
                     </div>

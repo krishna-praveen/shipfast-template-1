@@ -20,7 +20,7 @@ export default function Error({
           <svg
             xmlns="http://www.w3.org/2000/svg"
             data-name="Layer 1"
-            className="h-36 w-36 md:h-64 md:w-64"
+            className="size-36 md:size-64"
             viewBox="0 0 509.04617 507.58297"
           >
             <path
@@ -143,7 +143,7 @@ export default function Error({
               xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 20 20"
               fill="currentColor"
-              className="h-5 w-5"
+              className="size-5"
             >
               <path
                 fillRule="evenodd"
@@ -159,7 +159,7 @@ export default function Error({
               xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 20 20"
               fill="currentColor"
-              className="h-5 w-5"
+              className="size-5"
             >
               <path
                 fillRule="evenodd"
