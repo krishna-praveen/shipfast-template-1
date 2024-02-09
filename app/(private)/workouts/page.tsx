@@ -6,6 +6,7 @@ import { useState } from "react";
 
 import Layout from "@/components/layout/Layout";
 
+import { Button } from '@/components/ui/Button';
 import { useListWorkoutsStudents } from '@/services/hooks/useListWorkoutsStudents';
 
 export const dynamic = "force-dynamic";
@@ -32,9 +33,9 @@ export default function Workouts() {
       <h1 className="text-3xl font-extrabold md:text-4xl">Treinos</h1>
 
       <div className="mt-8 flex flex-row items-center space-x-2">
-        <button className="btn hover:bg-indigo-600 hover:text-white" onClick={handleRegister}>
+        <Button onClick={handleRegister} variant='default'>
           Registrar Treino
-        </button>
+        </Button>
       </div>
 
       <div className="overflow-x-auto pt-4">

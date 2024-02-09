@@ -17,13 +17,13 @@ const MenuItem = ({ title, Icon, href, currentPath }: any) => (
 
 export const Sidebar = () => {
   const [currentPath, setCurrentPath] = useState("");
-  const { theme, setTheme } = useTheme();
+  const { setTheme, resolvedTheme } = useTheme();
 
   useEffect(() => {
     setCurrentPath(window.location.pathname);
   }, []);
 
-  const handleThemeChange = () => setTheme(theme === 'dark' ? 'light' : 'dark');
+  const handleThemeChange = () => setTheme(resolvedTheme === 'dark' ? 'light' : 'dark');
 
   const Menus = [
     { title: "Home", Icon: Home, href: "/home" },
@@ -34,8 +34,8 @@ export const Sidebar = () => {
   ];
 
   return (
-    <div className="flex h-screen items-center justify-center"> {/* Alinhamento vertical ao centro */}
-      <div className="flex h-auto flex-col justify-between rounded-r-xl bg-zinc-800 p-5 pt-8 duration-300"> {/* Altura específica e estilo de flexbox */}
+    <aside className="flex h-screen items-center justify-center"> {/* Alinhamento vertical ao centro */}
+      <nav className="flex h-auto flex-col justify-between rounded-r-xl bg-zinc-800 p-5 pt-8 shadow-xl duration-300"> {/* Altura específica e estilo de flexbox */}
         <div>
           <div className="flex items-center p-2">
             <Icon className="size-6 duration-500" />
@@ -46,10 +46,10 @@ export const Sidebar = () => {
             ))}
           </ul>
         </div>
-        <div className="tooltip tooltip-right flex cursor-pointer items-center justify-center rounded-md p-2 text-sm text-gray-300 hover:text-secondary-600" data-tip="Tema" onClick={handleThemeChange}>
-          {theme === 'dark' ? <Sun /> : <Moon />}
+        <div className="tooltip tooltip-right flex cursor-pointer items-center justify-center rounded-md p-2 text-sm text-gray-300 hover:text-secondary-600" data-tip="Tema" onClick={handleThemeChange} suppressHydrationWarning>
+          {resolvedTheme === 'dark' || resolvedTheme === undefined ? <Sun /> : <Moon />}
         </div>
-      </div>
-    </div>
+      </nav>
+    </aside>
   );
 }
