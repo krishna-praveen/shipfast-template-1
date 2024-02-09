@@ -11,7 +11,7 @@ import Layout from "@/components/layout/Layout";
 
 import { Button } from '@/components/ui/Button';
 import { Input } from '@/components/ui/Input';
-import { Separator } from '@/components/ui/separator';
+import { Separator } from '@/components/ui/Separator';
 import { useSchema } from '@/hooks/useSchema';
 
 import { useBilling } from '@/services/hooks/useBilling';
