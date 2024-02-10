@@ -62,7 +62,7 @@ export function DataTable<TData, TValue>({
 
   const renderPaginationControls = () => (
     <div className="flex items-center justify-end py-4">
-      <div>
+      <div className="space-x-4">
         <Button
           variant="outline"
           size="sm"
