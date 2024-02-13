@@ -5,8 +5,6 @@ import { useRouter } from 'next/navigation'
 import React, { FC } from 'react'
 import { twMerge } from 'tailwind-merge'
 
-//import { Container } from './styles'
-
 interface TitleTopBarProps extends React.HTMLAttributes<HTMLElement> {
   ignoreKeyBack?: boolean
 }

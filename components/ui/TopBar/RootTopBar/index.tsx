@@ -1,8 +1,6 @@
 import React, { FC } from 'react'
 import { twMerge } from 'tailwind-merge'
 
-//import { Container } from './styles'
-
 interface RootTopBarProps extends React.HTMLAttributes<HTMLElement> {
 
 }
