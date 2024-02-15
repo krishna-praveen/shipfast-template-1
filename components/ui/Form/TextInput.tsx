@@ -12,18 +12,17 @@ interface CalendarInputProps {
   placeholder?: string;
   label?: string
   classNameContainer?: string
-  error?: string
 }
 
-export const TextInput: FC<CalendarInputProps> = ({ name, placeholder, label, classNameContainer, error }) => {
-  const { control } = useFormContext();
+export const TextInput: FC<CalendarInputProps> = ({ name, placeholder, label, classNameContainer }) => {
+  const { control, formState: { errors } } = useFormContext();
 
   return (
     <Controller
       control={control}
       name={name}
       render={({ field: { ...ControllerProps } }) => (
-        <Input placeholder={placeholder} label={label} errorName={error} classNameContainer={classNameContainer}  {...ControllerProps} />
+        <Input defaultValue='' placeholder={placeholder} label={label} errorName={errors?.[name]?.message?.toString() || ''} classNameContainer={classNameContainer}  {...ControllerProps} />
       )} />
   )
 }

@@ -43,7 +43,8 @@ export const ComboBoxInput: FC<ComboBoxInputProps> = ({ data, placeholder = 'sel
   const [open, setOpen] = React.useState(false)
   const allData = [...data, ...subData];
 
-  const { control } = useFormContext();
+  const { control, formState: { errors } } = useFormContext();
+  const existsError = !!errors?.[name];
 
   return (
     <div className={twMerge("w-full flex flex-col", classNameContainer)}>
@@ -58,14 +59,16 @@ export const ComboBoxInput: FC<ComboBoxInputProps> = ({ data, placeholder = 'sel
                 <Button
                   variant="outline"
                   role="combobox"
+                  type='button'
                   aria-expanded={open}
-                  className="justify-between"
+                  className={twMerge("justify-between ", existsError && 'border-red-500')}
                 >
                   {value
                     ? allData.find((item) => item.value === value)?.label
                     : placeholder}
                   <CaretSortIcon className="ml-2 size-4 shrink-0 opacity-50" />
                 </Button>
+                {existsError && <span className='text-red-500'>{errors?.[name]?.message?.toString()}</span>}
               </div>
             </PopoverTrigger>
             <PopoverContent className="p-0">
