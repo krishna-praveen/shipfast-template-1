@@ -1,3 +1,4 @@
+import { newWorkoutFormSchema } from './schemas/newWorkout';
 import { registerStudentsFormSchema } from './schemas/registerStudents';
 import { requestResetPasswordFormSchema } from './schemas/requestResetPassword';
 import { resetPasswordFormSchema } from './schemas/resetPassword';
@@ -9,5 +10,6 @@ export const useSchema = {
   singIn: signInFormSchema,
   resetPassword: resetPasswordFormSchema,
   requestResetPassword: requestResetPasswordFormSchema,
-  registerStudents: registerStudentsFormSchema
+  registerStudents: registerStudentsFormSchema,
+  newWorkout: newWorkoutFormSchema
 }
