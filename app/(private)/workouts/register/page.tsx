@@ -4,7 +4,8 @@
 
 import { zodResolver } from '@hookform/resolvers/zod';
 
-import { PlusCircle } from 'lucide-react';
+import { Info, PlusCircle } from 'lucide-react';
+import { useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 
 import { z } from 'zod';
@@ -14,8 +15,8 @@ import { Button } from '@/components/ui/Button';
 import { CalendarInput } from '@/components/ui/Form/CalendarInput';
 import { ComboBoxInput } from '@/components/ui/Form/ComboBoxInput';
 import { TextInput } from '@/components/ui/Form/TextInput';
-import { Input } from '@/components/ui/Input';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/TabsAlternative';
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/Tooltip';
 import { TopBar } from "@/components/ui/TopBar";
 import { DAYS_WORKOUT, DAYS_WORKOUT_RANGE } from '@/constants';
 import { useSchema } from '@/hooks/useSchema';
@@ -30,8 +31,11 @@ export interface ExerciseInterface {
   videoLink: string;
   observation: string;
 }
+const initalTabs = ['A', 'B', 'C'];
 
 export default function Register() {
+  const [workoutTabs, setWorkoutTabs] = useState(initalTabs);
+  const [selectedWorkoutTab, setSelectedWorkoutTab] = useState(initalTabs[0]);
 
   const { data: listStudents } = useListStudents({ refetchOnWindowFocus: false });
   const studentsData = listStudents?.map(student => {
@@ -71,7 +75,13 @@ export default function Register() {
   //   setEditingExercise({ exercise: null, tab: '', index: -1 });
   // };
 
-  const tabs = ['A', 'B', 'C']
+
+  const handleAddNewTabOnOrder = () => {
+    setWorkoutTabs(prevTabs => {
+      const asciiCodeLastPosition = prevTabs.at(-1).charCodeAt(0);
+      return [...prevTabs, String.fromCharCode(asciiCodeLastPosition + 1)];
+    });
+  }
 
   const methods = useForm<NewWorkoutProps>({
     resolver: zodResolver(useSchema.newWorkout),
@@ -151,19 +161,47 @@ export default function Register() {
 
       </form>
 
-      <Tabs defaultValue={tabs[0]} className="mt-8">
+      <Tabs defaultValue={workoutTabs[0]} className="mt-8" onValueChange={setSelectedWorkoutTab}>
         <TabsList className="">
           {
-            tabs.map((tab) => (
+            workoutTabs.map((tab) => (
               <TabsTrigger key={tab} className='mr-2 text-lg hover:border-b-2 hover:border-b-secondary ' value={tab}>Treino {tab}</TabsTrigger>
             ))
           }
 
-          <Button className='mr-2 flex items-center text-lg text-secondary hover:border hover:border-secondary' variant='clear'>
+          <Button
+            variant='clear'
+            onClick={handleAddNewTabOnOrder}
+            className='mr-2 flex items-center text-lg text-secondary hover:border hover:border-secondary'
+          >
             <PlusCircle className='mr-2' />
             Treino
           </Button>
         </TabsList>
+        <div className='mt-6 flex items-center justify-between'>
+          <div className='flex items-center'>
+            <Button variant='secondary' className='ml-2 mr-8'>Adicionar Exercício</Button>
+            <div className='flex items-center'>
+              <Button variant='outline_secundary' className='mr-3'>Adicionar Exercício da Biblioteca</Button>
+
+              <TooltipProvider>
+                <Tooltip>
+                  <TooltipTrigger><Info size={26} className='text-blue-400' /></TooltipTrigger>
+                  <TooltipContent className='flex max-w-lg items-start bg-slate-700'>
+                    <div >
+                      <Info size={26} className='text-blue-400' />
+                    </div>
+                    <p className='text-md px-2 '>Na Biblioteca Pump você encontra vários exercícios pré-definidos que te ajudarão a agilizar o processo de adicionar exercícios.
+                      O melhor de tudo é que, depois de adicionados, você pode editá-los ajustando o exercício como preferir.</p>
+                  </TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
+            </div>
+          </div>
+
+          <Button variant='destructive'>Excluir treino</Button>
+        </div>
+
         <TabsContent value="account">
           b
         </TabsContent>
@@ -172,6 +210,6 @@ export default function Register() {
         </TabsContent>
       </Tabs>
 
-    </Layout>
+    </Layout >
   )
 }
