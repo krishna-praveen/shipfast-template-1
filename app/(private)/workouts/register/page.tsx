@@ -3,6 +3,8 @@
 
 
 import { zodResolver } from '@hookform/resolvers/zod';
+
+import { PlusCircle } from 'lucide-react';
 import { FormProvider, useForm } from 'react-hook-form';
 
 import { z } from 'zod';
@@ -13,6 +15,7 @@ import { CalendarInput } from '@/components/ui/Form/CalendarInput';
 import { ComboBoxInput } from '@/components/ui/Form/ComboBoxInput';
 import { TextInput } from '@/components/ui/Form/TextInput';
 import { Input } from '@/components/ui/Input';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/TabsAlternative';
 import { TopBar } from "@/components/ui/TopBar";
 import { DAYS_WORKOUT, DAYS_WORKOUT_RANGE } from '@/constants';
 import { useSchema } from '@/hooks/useSchema';
@@ -68,6 +71,7 @@ export default function Register() {
   //   setEditingExercise({ exercise: null, tab: '', index: -1 });
   // };
 
+  const tabs = ['A', 'B', 'C']
 
   const methods = useForm<NewWorkoutProps>({
     resolver: zodResolver(useSchema.newWorkout),
@@ -144,9 +148,29 @@ export default function Register() {
             placeholder='Exemplo: Mobilidade todos os dias antes do treino'
             name='obs' />
         </FormProvider>
-        <button type="submit">Cadastrar</button>
 
       </form>
+
+      <Tabs defaultValue={tabs[0]} className="mt-8">
+        <TabsList className="">
+          {
+            tabs.map((tab) => (
+              <TabsTrigger key={tab} className='mr-2 text-lg hover:border-b-2 hover:border-b-secondary ' value={tab}>Treino {tab}</TabsTrigger>
+            ))
+          }
+
+          <Button className='mr-2 flex items-center text-lg text-secondary hover:border hover:border-secondary' variant='clear'>
+            <PlusCircle className='mr-2' />
+            Treino
+          </Button>
+        </TabsList>
+        <TabsContent value="account">
+          b
+        </TabsContent>
+        <TabsContent value="password">
+          a
+        </TabsContent>
+      </Tabs>
 
     </Layout>
   )
