@@ -184,18 +184,10 @@ export default function Register() {
             <div className='flex items-center'>
               <Button variant='outline_secundary' className='mr-3'>Adicionar Exercício da Biblioteca</Button>
 
-              <TooltipProvider>
-                <Tooltip>
-                  <TooltipTrigger><Info size={26} className='text-blue-400' /></TooltipTrigger>
-                  <TooltipContent className='flex max-w-lg items-start bg-slate-700'>
-                    <div >
-                      <Info size={26} className='text-blue-400' />
-                    </div>
-                    <p className='text-md px-2 '>Na Biblioteca Pump você encontra vários exercícios pré-definidos que te ajudarão a agilizar o processo de adicionar exercícios.
-                      O melhor de tudo é que, depois de adicionados, você pode editá-los ajustando o exercício como preferir.</p>
-                  </TooltipContent>
-                </Tooltip>
-              </TooltipProvider>
+              <Tooltip>
+                Na Biblioteca Pump você encontra vários exercícios pré-definidos que te ajudarão a agilizar o processo de adicionar exercícios.
+                O melhor de tudo é que, depois de adicionados, você pode editá-los ajustando o exercício como preferir.
+              </Tooltip>
             </div>
           </div>
 
