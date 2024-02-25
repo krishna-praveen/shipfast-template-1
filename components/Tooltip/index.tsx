@@ -17,10 +17,10 @@ export const Tooltip: FC<TooltipProps> = ({ children, classNameContent, classNam
       <TooltipUI>
         <TooltipTrigger><Info size={26} className='text-blue-400' /></TooltipTrigger>
         <TooltipContent className={twMerge('flex max-w-lg items-start bg-slate-700', classNameContent)}>
-          <div >
+          <div className='py-2' >
             <Info size={26} className='text-blue-400' />
           </div>
-          <p className={twMerge('text-md px-2', classNameChildren)}>{children}</p>
+          <p className={twMerge('text-md px-2 py-2', classNameChildren)}>{children}</p>
         </TooltipContent>
       </TooltipUI>
     </TooltipProvider>

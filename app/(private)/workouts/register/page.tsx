@@ -6,17 +6,17 @@ import { zodResolver } from '@hookform/resolvers/zod';
 
 import { Info, PlusCircle } from 'lucide-react';
 import { useState } from 'react';
-import { FormProvider, useForm } from 'react-hook-form';
+import { FormProvider, useForm, SubmitHandler } from 'react-hook-form';
 
 import { z } from 'zod';
 
 import Layout from "@/components/layout/Layout";
+import { Tooltip } from '@/components/Tooltip';
 import { Button } from '@/components/ui/Button';
 import { CalendarInput } from '@/components/ui/Form/CalendarInput';
 import { ComboBoxInput } from '@/components/ui/Form/ComboBoxInput';
 import { TextInput } from '@/components/ui/Form/TextInput';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/TabsAlternative';
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/Tooltip';
 import { TopBar } from "@/components/ui/TopBar";
 import { DAYS_WORKOUT, DAYS_WORKOUT_RANGE } from '@/constants';
 import { useSchema } from '@/hooks/useSchema';
@@ -79,7 +79,9 @@ export default function Register() {
   const handleAddNewTabOnOrder = () => {
     setWorkoutTabs(prevTabs => {
       const asciiCodeLastPosition = prevTabs.at(-1).charCodeAt(0);
-      return [...prevTabs, String.fromCharCode(asciiCodeLastPosition + 1)];
+      const nextCodeAlpha = String.fromCharCode(asciiCodeLastPosition + 1);
+      setSelectedWorkoutTab(nextCodeAlpha);
+      return [...prevTabs, nextCodeAlpha];
     });
   }
 
@@ -87,7 +89,7 @@ export default function Register() {
     resolver: zodResolver(useSchema.newWorkout),
   });
 
-  const onSubmit = (data: NewWorkoutProps) => {
+  const onSubmit: SubmitHandler<NewWorkoutProps> = (data) => {
     console.log(data);
   }
 
@@ -161,11 +163,11 @@ export default function Register() {
 
       </form>
 
-      <Tabs defaultValue={workoutTabs[0]} className="mt-8" onValueChange={setSelectedWorkoutTab}>
+      <Tabs defaultValue={workoutTabs[0]} value={selectedWorkoutTab} className="mt-8" onValueChange={setSelectedWorkoutTab}>
         <TabsList className="">
           {
             workoutTabs.map((tab) => (
-              <TabsTrigger key={tab} className='mr-2 text-lg hover:border-b-2 hover:border-b-secondary ' value={tab}>Treino {tab}</TabsTrigger>
+              <TabsTrigger key={tab} className='mr-2 text-lg hover:border-b-2 hover:border-b-secondary' value={tab}>Treino {tab}</TabsTrigger>
             ))
           }
 
