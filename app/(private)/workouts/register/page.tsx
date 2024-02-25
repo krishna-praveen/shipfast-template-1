@@ -4,7 +4,7 @@
 
 import { zodResolver } from '@hookform/resolvers/zod';
 
-import { Info, PlusCircle } from 'lucide-react';
+import { Lightbulb, PlusCircle } from 'lucide-react';
 import { useState } from 'react';
 import { FormProvider, useForm, SubmitHandler } from 'react-hook-form';
 
@@ -12,17 +12,23 @@ import { z } from 'zod';
 
 import Layout from "@/components/layout/Layout";
 import { Tooltip } from '@/components/Tooltip';
+import { Alert, AlertDescription } from '@/components/ui/Alert';
 import { Button } from '@/components/ui/Button';
+import { Checkbox } from '@/components/ui/Checkbox';
 import { CalendarInput } from '@/components/ui/Form/CalendarInput';
 import { ComboBoxInput } from '@/components/ui/Form/ComboBoxInput';
+import { TextAreaInput } from '@/components/ui/Form/TextAreaInput';
 import { TextInput } from '@/components/ui/Form/TextInput';
+import { Modal } from '@/components/ui/Modal';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/TabsAlternative';
 import { TopBar } from "@/components/ui/TopBar";
 import { DAYS_WORKOUT, DAYS_WORKOUT_RANGE } from '@/constants';
+import { useLocalStorage } from '@/hooks/useLocalStorage/useLocalStorage';
 import { useSchema } from '@/hooks/useSchema';
 import { useListStudents } from '@/services/hooks/useListStudents';
 
 type NewWorkoutProps = Required<z.infer<typeof useSchema.newWorkout>>;
+type NewExerciseProps = Required<z.infer<typeof useSchema.newExercise>>;
 
 export interface ExerciseInterface {
   name: string;
@@ -34,13 +40,24 @@ export interface ExerciseInterface {
 const initalTabs = ['A', 'B', 'C'];
 
 export default function Register() {
+  const dontShowTips = useLocalStorage.getDataByKey({ key: useLocalStorage.keys.DONT_SHOW_TIPS }) || false;
   const [workoutTabs, setWorkoutTabs] = useState(initalTabs);
+  const [isOpenModal, setIsOpenModal] = useState(true);
   const [selectedWorkoutTab, setSelectedWorkoutTab] = useState(initalTabs[0]);
+  const [exercisesDisplay, setExercisesDisplay] = useState<ExerciseInterface[]>();
 
   const { data: listStudents } = useListStudents({ refetchOnWindowFocus: false });
   const studentsData = listStudents?.map(student => {
     return { label: student.name + ' ' + student.surname, value: student.id }
   }) || [];
+
+
+  const workoutInfoMethods = useForm<NewWorkoutProps>({
+    resolver: zodResolver(useSchema.newWorkout),
+  });
+  const newExerciseMethods = useForm<NewExerciseProps>({
+    resolver: zodResolver(useSchema.newExercise),
+  });
   // const [workoutTabs, setWorkoutTabs] = useState<string>("ABC");
   // const [selectedWorkoutTab, setSelectedWorkoutTab] = useState<string>("A");
   // const [exercises, setExercises] = useState<{ [key: string]: ExerciseInterface[] }>({});
@@ -75,6 +92,14 @@ export default function Register() {
   //   setEditingExercise({ exercise: null, tab: '', index: -1 });
   // };
 
+  const handleOpenModal = () => {
+    newExerciseMethods.reset({});
+    setIsOpenModal(true);
+  }
+  const handleCloseModal = () => {
+    newExerciseMethods.clearErrors();
+    setIsOpenModal(false);
+  }
 
   const handleAddNewTabOnOrder = () => {
     setWorkoutTabs(prevTabs => {
@@ -85,12 +110,15 @@ export default function Register() {
     });
   }
 
-  const methods = useForm<NewWorkoutProps>({
-    resolver: zodResolver(useSchema.newWorkout),
-  });
 
-  const onSubmit: SubmitHandler<NewWorkoutProps> = (data) => {
+
+  const handleOnSubmitWorkoutInfo: SubmitHandler<NewWorkoutProps> = (data) => {
     console.log(data);
+  }
+  const handleOnSubmitNewExercise: SubmitHandler<NewExerciseProps> = (data) => {
+    console.log(data);
+    handleCloseModal();
+
   }
 
   return (
@@ -106,8 +134,8 @@ export default function Register() {
         </TopBar.Action>
       </TopBar.Root>
 
-      <form onSubmit={methods.handleSubmit(onSubmit)} className="mt-10 grid grid-cols-2 gap-4 lg:grid-cols-6">
-        <FormProvider {...methods}>
+      <form onSubmit={workoutInfoMethods.handleSubmit(handleOnSubmitWorkoutInfo)} className="mt-10 grid grid-cols-2 gap-4 lg:grid-cols-6">
+        <FormProvider {...workoutInfoMethods}>
           <TextInput
             label='Descrição do treino'
             placeholder='Exemplo: Semana 1'
@@ -147,7 +175,6 @@ export default function Register() {
             placeholder='Selecione uma opção'
           />
 
-
           <TextInput
             label='Objetivo'
             classNameContainer='col-span-2'
@@ -160,7 +187,6 @@ export default function Register() {
             placeholder='Exemplo: Mobilidade todos os dias antes do treino'
             name='obs' />
         </FormProvider>
-
       </form>
 
       <Tabs defaultValue={workoutTabs[0]} value={selectedWorkoutTab} className="mt-8" onValueChange={setSelectedWorkoutTab}>
@@ -170,7 +196,6 @@ export default function Register() {
               <TabsTrigger key={tab} className='mr-2 text-lg hover:border-b-2 hover:border-b-secondary' value={tab}>Treino {tab}</TabsTrigger>
             ))
           }
-
           <Button
             variant='clear'
             onClick={handleAddNewTabOnOrder}
@@ -180,9 +205,9 @@ export default function Register() {
             Treino
           </Button>
         </TabsList>
-        <div className='mt-6 flex items-center justify-between'>
+        <div className='mb-5 mt-6 flex items-center justify-between'>
           <div className='flex items-center'>
-            <Button variant='secondary' className='ml-2 mr-8'>Adicionar Exercício</Button>
+            <Button variant='secondary' className='ml-2 mr-8' onClick={handleOpenModal}>Adicionar Exercício</Button>
             <div className='flex items-center'>
               <Button variant='outline_secundary' className='mr-3'>Adicionar Exercício da Biblioteca</Button>
 
@@ -195,15 +220,88 @@ export default function Register() {
 
           <Button variant='destructive'>Excluir treino</Button>
         </div>
-
-        <TabsContent value="account">
-          b
-        </TabsContent>
-        <TabsContent value="password">
-          a
-        </TabsContent>
+        {
+          workoutTabs.map((tab) => (
+            <TabsContent value={tab} key={tab} className='min-h-[360px] rounded-md bg-zinc-800 p-5'>
+              {tab}
+            </TabsContent>
+          ))
+        }
       </Tabs>
+      <Modal
+        isStatic
+        isModalOpen={isOpenModal}
+        setIsModalOpen={() => { }}
+        title='Novo Exercício'
+        subtitle='Informe os dados abaixo:'
+      >
+        <form onSubmit={newExerciseMethods.handleSubmit(handleOnSubmitNewExercise)} className='grid gap-3'>
+          <FormProvider {...newExerciseMethods}>
+            <TextInput
+              label='Exercício'
+              classNameLabel='w-full'
+              className='w-full'
+              name='exercise'
+            />
+            <TextInput
+              label='Séries'
+              classNameLabel='w-full'
+              className='w-full'
+              name='series'
+            />
+            <TextInput
+              label='Repetições'
+              classNameLabel='w-full'
+              className='w-full'
+              name='reps'
+            />
+            <TextInput
+              label='Descanso'
+              placeholder='Ex: "45s" ou "2m"'
+              classNameLabel='w-full'
+              className='w-full'
+              name='rest'
+            />
+            <TextInput
+              label='Link do Vídeo'
+              placeholder='https://www.youtube...'
+              classNameLabel='w-full'
+              className='w-full'
+              name='link'
+            />
+            <TextAreaInput
+              label='Observação'
+              placeholder='Digite aqui sua observação...'
+              classNameLabel='w-full'
+              className='w-full'
+              name='obs'
+            />
 
-    </Layout >
+            {!dontShowTips && <Alert className="bg-slate-700">
+              <Lightbulb className='size-5 text-yellow-500' />
+              <AlertDescription>
+                É possível personalizar a quantidade de repetições para o seu treino, separando-as por vírgulas.
+                Por exemplo, em um Drop set, você pode especificar 12, 10, 8 repetições para diferentes conjuntos.
+
+                <div className='mt-4 flex items-center'>
+                  <Checkbox id="tips" onCheckedChange={() => useLocalStorage.setDataByKey({ key: useLocalStorage.keys.DONT_SHOW_TIPS, value: true })} />
+                  <label
+                    htmlFor="tips"
+                    className="ml-2 text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                  >
+                    Não mostrar novamente
+                  </label>
+                </div>
+              </AlertDescription>
+            </Alert>}
+
+            <div className='flex justify-end'>
+              <Button variant='outline_secundary' type='button' className='mr-4' onClick={handleCloseModal}>Cancelar</Button>
+              <Button variant='secondary' type='submit' className='py-5'>Salvar</Button>
+            </div>
+          </FormProvider>
+        </form>
+      </Modal>
+    </Layout>
   )
 }
