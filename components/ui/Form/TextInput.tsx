@@ -15,10 +15,9 @@ interface CalendarInputProps {
   classNameLabel?: string;
   className?: string;
   type?: string;
-  defaultValue?: string;
 }
 
-export const TextInput: FC<CalendarInputProps> = ({ name, placeholder, defaultValue = '', className, classNameLabel, type = 'text', label, classNameContainer }) => {
+export const TextInput: FC<CalendarInputProps> = ({ name, placeholder, className, classNameLabel, type = 'text', label, classNameContainer }) => {
   const { control, formState: { errors } } = useFormContext();
 
   return (
@@ -26,7 +25,7 @@ export const TextInput: FC<CalendarInputProps> = ({ name, placeholder, defaultVa
       control={control}
       name={name}
       render={({ field: { ...ControllerProps } }) => (
-        <Input defaultValue={defaultValue} className={className} classNameLabel={classNameLabel} type={type} placeholder={placeholder} label={label} errorName={errors?.[name]?.message?.toString() || ''} classNameContainer={classNameContainer}  {...ControllerProps} />
+        <Input className={className} classNameLabel={classNameLabel} type={type} placeholder={placeholder} label={label} errorName={errors?.[name]?.message?.toString() || ''} classNameContainer={classNameContainer}  {...ControllerProps} />
       )} />
   )
 }

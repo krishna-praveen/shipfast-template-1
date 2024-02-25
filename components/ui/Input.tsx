@@ -12,7 +12,7 @@ export interface InputProps
 }
 
 const Input = React.forwardRef<HTMLInputElement, InputProps>(
-  ({ errorName, className, type, name, label, classNameLabel, classNameContainer, ...props }, ref) => {
+  ({ errorName, className, type, name, label, classNameLabel, classNameContainer, value, ...props }, ref) => {
     return (
       <div className={classNameContainer}>
         {label &&
@@ -24,10 +24,11 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
           type={type}
           id={name}
           className={cn(
-            `flex h-10  w-full rounded-md border border-input bg-transparent px-3 py-2 text-sm shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50 ${errorName ? 'input-error' : ''}`,
+            `flex h-10  w-full rounded-md border border-input bg-transparent px-3 py-2 text-sm shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50 ${errorName ? 'input-error' : ''}`,
             className
           )}
           ref={ref}
+          value={value || ''}
           {...props}
         />
         {errorName && <p className="text-sm text-red-500">{errorName}</p>}

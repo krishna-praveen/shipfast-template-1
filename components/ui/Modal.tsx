@@ -9,17 +9,18 @@ interface ModalProps {
   setIsModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
   isStatic?: boolean;
   title?: string;
+  subtitle?: string;
   children?: ReactNode;
 }
 
 // A simple modal component which can be shown/hidden with a boolean and a function
 // Because of the setIsModalOpen function, you can't use it in a server component.
-export const Modal = ({ isModalOpen, setIsModalOpen, title = "I'm a modal", isStatic = false, children }: ModalProps) => {
+export const Modal = ({ isModalOpen, setIsModalOpen, title = "I'm a modal", subtitle, isStatic = false, children }: ModalProps) => {
   return (
     <Transition appear show={isModalOpen} as={Fragment}>
       <Dialog
         as="div"
-        className="relative z-50"
+        className="relative z-50 "
         static={isStatic}
         onClose={() => isStatic ? null : setIsModalOpen(false)}
       >
@@ -35,7 +36,7 @@ export const Modal = ({ isModalOpen, setIsModalOpen, title = "I'm a modal", isSt
           <div className="bg-base-300 fixed inset-0 bg-opacity-80" />
         </Transition.Child>
 
-        <div className="fixed inset-0 overflow-y-auto">
+        <div className="fixed inset-0 overflow-y-auto ">
           <div className="flex min-h-full items-start justify-center overflow-hidden p-2 md:items-center">
             <Transition.Child
               as={Fragment}
@@ -46,10 +47,11 @@ export const Modal = ({ isModalOpen, setIsModalOpen, title = "I'm a modal", isSt
               leaveFrom="opacity-100 scale-100"
               leaveTo="opacity-0 scale-95"
             >
-              <Dialog.Panel className="bg-base-100 relative size-full max-w-3xl overflow-visible rounded-xl p-6 text-left align-middle shadow-xl transition-all md:p-8">
+              <Dialog.Panel className="bg-base-100 relative size-full max-w-xl overflow-visible rounded-xl border border-gray-700  bg-zinc-900 p-4 text-left align-middle shadow-xl transition-all">
                 <div className="mb-4 flex items-center justify-between">
-                  <Dialog.Title as="h2" className="font-semibold">
+                  <Dialog.Title as="h2" className='flex flex-col'>
                     {title}
+                    {subtitle && <span className='mt-1 font-light text-gray-400'>{subtitle}</span>}
                   </Dialog.Title>
                   {
                     isStatic ? null : (
