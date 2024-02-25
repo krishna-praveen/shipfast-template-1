@@ -111,7 +111,7 @@ export default function SignIn() {
                       type='email'
                       label='E-mail'
                       placeholder="Seu e-mail"
-                      className="mt-2 w-full rounded-lg border-2 bg-zinc-800 px-4 py-2 text-white focus:border-primary-600 focus:outline-none"
+                      className="mt-2 w-full rounded-lg"
                     />
                   </div>
                   <div className="space-y-1">
@@ -120,7 +120,7 @@ export default function SignIn() {
                       type='password'
                       label='Senha'
                       placeholder="Sua senha"
-                      className="mt-2 w-full rounded-lg border-2 bg-zinc-800 px-4 py-2 text-white focus:border-primary-600 focus:outline-none"
+                      className="mt-2 w-full rounded-lg"
                     />
 
                   </div>
@@ -150,7 +150,7 @@ export default function SignIn() {
                       type='email'
                       label='Seu e-mail'
                       placeholder='Seu e-mail'
-                      className="mt-2 w-full rounded-lg border-2 bg-zinc-800 px-4 py-2 text-white focus:border-primary-600 focus:outline-none"
+                      className="mt-2 w-full rounded-lg"
                     />
                   </div>
                 </CardContent>
