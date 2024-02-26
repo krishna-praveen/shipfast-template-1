@@ -3,6 +3,7 @@
 import { Dialog, Transition } from "@headlessui/react";
 import { Fragment, ReactNode } from "react";
 import React from "react";
+import { twMerge } from 'tailwind-merge';
 
 interface ModalProps {
   isModalOpen: boolean;
@@ -11,11 +12,12 @@ interface ModalProps {
   title?: string;
   subtitle?: string;
   children?: ReactNode;
+  classNamePanel?: string;
 }
 
 // A simple modal component which can be shown/hidden with a boolean and a function
 // Because of the setIsModalOpen function, you can't use it in a server component.
-export const Modal = ({ isModalOpen, setIsModalOpen, title = "I'm a modal", subtitle, isStatic = false, children }: ModalProps) => {
+export const Modal = ({ isModalOpen, setIsModalOpen, title = "I'm a modal", subtitle, isStatic = false, children, classNamePanel }: ModalProps) => {
   return (
     <Transition appear show={isModalOpen} as={Fragment}>
       <Dialog
@@ -47,7 +49,7 @@ export const Modal = ({ isModalOpen, setIsModalOpen, title = "I'm a modal", subt
               leaveFrom="opacity-100 scale-100"
               leaveTo="opacity-0 scale-95"
             >
-              <Dialog.Panel className="bg-base-100 relative size-full max-w-xl overflow-visible rounded-xl border border-gray-700  bg-zinc-900 p-4 text-left align-middle shadow-xl transition-all">
+              <Dialog.Panel className={twMerge("bg-base-100 relative size-full max-w-min overflow-visible rounded-xl border border-gray-700  bg-zinc-900 p-4 text-left align-middle shadow-xl transition-all", classNamePanel)}>
                 <div className="mb-4 flex items-center justify-between">
                   <Dialog.Title as="h2" className='flex flex-col'>
                     {title}

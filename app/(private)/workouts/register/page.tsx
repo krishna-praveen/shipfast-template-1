@@ -4,7 +4,7 @@
 
 import { zodResolver } from '@hookform/resolvers/zod';
 
-import { Lightbulb, Pencil, PlusCircle, Trash2 } from 'lucide-react';
+import { Lightbulb, PlusCircle } from 'lucide-react';
 import { useState } from 'react';
 import { FormProvider, useForm, SubmitHandler } from 'react-hook-form';
 
@@ -20,6 +20,7 @@ import { ComboBoxInput } from '@/components/ui/Form/ComboBoxInput';
 import { TextAreaInput } from '@/components/ui/Form/TextAreaInput';
 import { TextInput } from '@/components/ui/Form/TextInput';
 import { Modal } from '@/components/ui/Modal';
+import { ModalDestructive } from '@/components/ui/ModalDestructive';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/TabsAlternative';
 import { TopBar } from "@/components/ui/TopBar";
 import { ExerciseDisplay } from '@/components/workouts/ExerciseDisplay';
@@ -46,7 +47,8 @@ const initalTabs = ['A', 'B', 'C'];
 export default function Register() {
   const dontShowTips = useLocalStorage.getDataByKey({ key: useLocalStorage.keys.DONT_SHOW_TIPS }) || false;
   const [workoutTabs, setWorkoutTabs] = useState(initalTabs);
-  const [isOpenModal, setIsOpenModal] = useState(true);
+  const [isOpenModal, setIsOpenModal] = useState(false);
+  const [openAlert, setOpenAlert] = useState(false);
   const [selectedWorkoutTab, setSelectedWorkoutTab] = useState(initalTabs[0]);
   const [exercisesDisplay, setExercisesDisplay] = useState<{ [key: string]: ExerciseInterface[] }>();
 
@@ -105,20 +107,45 @@ export default function Register() {
     setIsOpenModal(false);
   }
 
+  const onOpenAlert = () => {
+    setOpenAlert(true)
+  }
+
+  const onConfirmAlert = () => {
+    handleRemoveTab(selectedWorkoutTab);
+    setOpenAlert(false);
+  }
+
+  const onCloseAlert = () => {
+    setOpenAlert(false)
+  }
+
+
   const handleAddNewTabOnOrder = () => {
     setWorkoutTabs(prevTabs => {
       const asciiCodeLastPosition = prevTabs.at(-1).charCodeAt(0);
       const nextCodeAlpha = String.fromCharCode(asciiCodeLastPosition + 1);
+
       setSelectedWorkoutTab(nextCodeAlpha);
       return [...prevTabs, nextCodeAlpha];
     });
   }
 
+  const handleRemoveTab = (tab: string) => {
+    if (workoutTabs.length === 1) return
+    const filteredTabs = workoutTabs.filter(t => t !== tab);
+    const lastTab = filteredTabs.at(-1);
+
+    setWorkoutTabs(filteredTabs);
+    setSelectedWorkoutTab(lastTab);
+  }
 
 
   const handleOnSubmitWorkoutInfo: SubmitHandler<NewWorkoutProps> = (data) => {
     console.log(data);
   }
+
+
   const handleOnSubmitNewExercise: SubmitHandler<NewExerciseProps> = ({ name, observation, repetitions, rest, sets, videoLink }) => {
     setExercisesDisplay(prevState => ({
       ...prevState,
@@ -137,6 +164,13 @@ export default function Register() {
 
   return (
     <Layout>
+      <ModalDestructive
+        title={`Excluir Treino ${selectedWorkoutTab}`}
+        message={`Excluindo o Treino ${selectedWorkoutTab} você perde os exercícios vinculados a este treino. Tem certeza de que deseja excluir?`}
+        isOpen={openAlert}
+        onAccept={() => onConfirmAlert()}
+        onCancel={() => onCloseAlert()}
+      />
 
       <TopBar.Root>
         <TopBar.Title>
@@ -232,11 +266,11 @@ export default function Register() {
             </div>
           </div>
 
-          <Button variant='destructive'>Excluir treino</Button>
+          {workoutTabs.length > 1 && <Button variant='destructive' onClick={onOpenAlert}>Excluir treino</Button>}
         </div>
         {
           workoutTabs.map((tab) => (
-            <TabsContent value={tab} key={tab} className='h-full min-h-[400px] rounded-md bg-zinc-800 p-5'>
+            <TabsContent value={tab} key={tab} className='h-full min-h-[360px] rounded-md bg-zinc-800 p-5'>
               {
                 !exercisesDisplay?.[tab] && <NoResults >Nenhum exercício foi registrado por enquanto.</NoResults>
               }
