@@ -7,13 +7,15 @@ import { useTheme } from 'next-themes';
 
 import { Icon } from '@/public/icon';
 
-const MenuItem = ({ title, Icon, href, currentPath }: any) => (
-  <Link href={href} title={title} prefetch>
-    <li className={`tooltip tooltip-right flex cursor-pointer items-center justify-center rounded-md p-2 text-sm text-gray-300 hover:text-secondary-600 ${currentPath === href ? 'text-secondary-500' : ''} ${title === "Alunos" || title === "Configurações" ? "mt-9" : "mt-2"}`} data-tip={title}>
-      <Icon />
-    </li>
-  </Link>
-);
+const MenuItem = ({ title, Icon, href, currentPath }: any) => {
+  return (
+    <Link href={href} title={title} prefetch >
+      <li className={`tooltip tooltip-right flex cursor-pointer items-center justify-center rounded-md p-2 text-sm text-gray-300 hover:text-secondary-600 ${currentPath.includes(href) ? 'text-secondary-500' : ''} ${title === "Alunos" || title === "Configurações" ? "mt-9" : "mt-2"}`} data-tip={title}>
+        <Icon />
+      </li>
+    </Link >
+  )
+};
 
 export const Sidebar = () => {
   const { setTheme, resolvedTheme } = useTheme();
