@@ -4,7 +4,7 @@
 
 import { zodResolver } from '@hookform/resolvers/zod';
 
-import { Lightbulb, PlusCircle } from 'lucide-react';
+import { Lightbulb, Pencil, PlusCircle, Trash2 } from 'lucide-react';
 import { useState } from 'react';
 import { FormProvider, useForm, SubmitHandler } from 'react-hook-form';
 
@@ -22,6 +22,8 @@ import { TextInput } from '@/components/ui/Form/TextInput';
 import { Modal } from '@/components/ui/Modal';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/TabsAlternative';
 import { TopBar } from "@/components/ui/TopBar";
+import { ExerciseDisplay } from '@/components/workouts/ExerciseDisplay';
+import { NoResults } from '@/components/workouts/NoResults';
 import { DAYS_WORKOUT, DAYS_WORKOUT_RANGE } from '@/constants';
 import { useLocalStorage } from '@/hooks/useLocalStorage/useLocalStorage';
 import { useSchema } from '@/hooks/useSchema';
@@ -36,7 +38,9 @@ export interface ExerciseInterface {
   repetitions: Array<number>;
   videoLink: string;
   observation: string;
+  rest: string;
 }
+
 const initalTabs = ['A', 'B', 'C'];
 
 export default function Register() {
@@ -44,7 +48,7 @@ export default function Register() {
   const [workoutTabs, setWorkoutTabs] = useState(initalTabs);
   const [isOpenModal, setIsOpenModal] = useState(true);
   const [selectedWorkoutTab, setSelectedWorkoutTab] = useState(initalTabs[0]);
-  const [exercisesDisplay, setExercisesDisplay] = useState<ExerciseInterface[]>();
+  const [exercisesDisplay, setExercisesDisplay] = useState<{ [key: string]: ExerciseInterface[] }>();
 
   const { data: listStudents } = useListStudents({ refetchOnWindowFocus: false });
   const studentsData = listStudents?.map(student => {
@@ -115,10 +119,20 @@ export default function Register() {
   const handleOnSubmitWorkoutInfo: SubmitHandler<NewWorkoutProps> = (data) => {
     console.log(data);
   }
-  const handleOnSubmitNewExercise: SubmitHandler<NewExerciseProps> = (data) => {
-    console.log(data);
-    handleCloseModal();
+  const handleOnSubmitNewExercise: SubmitHandler<NewExerciseProps> = ({ name, observation, repetitions, rest, sets, videoLink }) => {
+    setExercisesDisplay(prevState => ({
+      ...prevState,
+      [selectedWorkoutTab]: [...(prevState?.[selectedWorkoutTab] || []), {
+        name: name,
+        sets: Number(sets.replace(/\s/g, '')),
+        repetitions: repetitions ? repetitions.split(",").map(Number) : [],
+        rest: rest,
+        videoLink: videoLink,
+        observation: observation
+      }]
+    }));
 
+    handleCloseModal();
   }
 
   return (
@@ -222,8 +236,20 @@ export default function Register() {
         </div>
         {
           workoutTabs.map((tab) => (
-            <TabsContent value={tab} key={tab} className='min-h-[360px] rounded-md bg-zinc-800 p-5'>
-              {tab}
+            <TabsContent value={tab} key={tab} className='h-full min-h-[400px] rounded-md bg-zinc-800 p-5'>
+              {
+                !exercisesDisplay?.[tab] && <NoResults >Nenhum exercício foi registrado por enquanto.</NoResults>
+              }
+              {exercisesDisplay?.[tab] && exercisesDisplay?.[tab]?.map((exercise, index) => (
+                <ExerciseDisplay
+                  key={exercise.name + '_' + index}
+                  name={exercise.name}
+                  sets={exercise.sets}
+                  repetitions={exercise.repetitions}
+                  observation={exercise.observation}
+                  rest={exercise.rest}
+                />
+              ))}
             </TabsContent>
           ))
         }
@@ -241,19 +267,20 @@ export default function Register() {
               label='Exercício'
               classNameLabel='w-full'
               className='w-full'
-              name='exercise'
+              name='name'
             />
             <TextInput
               label='Séries'
+              type='number'
               classNameLabel='w-full'
               className='w-full'
-              name='series'
+              name='sets'
             />
             <TextInput
               label='Repetições'
               classNameLabel='w-full'
               className='w-full'
-              name='reps'
+              name='repetitions'
             />
             <TextInput
               label='Descanso'
@@ -267,14 +294,14 @@ export default function Register() {
               placeholder='https://www.youtube...'
               classNameLabel='w-full'
               className='w-full'
-              name='link'
+              name='videoLink'
             />
             <TextAreaInput
               label='Observação'
               placeholder='Digite aqui sua observação...'
               classNameLabel='w-full'
               className='w-full'
-              name='obs'
+              name='observation'
             />
 
             {!dontShowTips && <Alert className="bg-slate-700">
