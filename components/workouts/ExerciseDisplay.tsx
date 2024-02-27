@@ -9,21 +9,23 @@ interface ExerciseDisplayProps {
   repetitions: Array<number>;
   observation: string;
   rest: string;
+  onDeleteExercise: () => void;
+  onEditExercise: () => void;
 }
 
-export const ExerciseDisplay: FC<ExerciseDisplayProps> = ({ name, sets, observation, repetitions, rest }) => {
+export const ExerciseDisplay: FC<ExerciseDisplayProps> = ({ name, sets, observation, repetitions, rest, onDeleteExercise, onEditExercise }) => {
   return (
-    <div className='mb-4 grid grid-cols-9 items-center rounded-md border border-gray-500 bg-zinc-900 p-5'>
-      <b className='col-span-2'>{name}</b>
-      <div className='flex flex-col'>
+    <div className='mb-4 grid grid-cols-4 items-center gap-4 rounded-md border border-gray-500 bg-zinc-900 p-5 lg:grid-cols-9'>
+      <b className='col-span-4 text-center lg:col-span-2 lg:text-start'>{name}</b>
+      <div className='col-span-2 flex flex-col lg:col-span-1'>
         <b>Séries</b>
         <span className='text-gray-400'>{sets}</span>
       </div>
-      <div className='flex flex-col'>
+      <div className='col-span-2 flex h-full flex-col lg:col-span-1'>
         <b>Repetições</b>
-        <span className='text-gray-400'>{repetitions.join(', ')}</span>
+        <span className='h-full text-gray-400'>{repetitions.join(', ')}</span>
       </div>
-      <div className='flex h-full flex-col'>
+      <div className='col-span-2 flex h-full flex-col lg:col-span-1'>
         <b>Descanso</b>
         <span className='h-full text-gray-400'>{rest}</span>
       </div>
@@ -31,9 +33,9 @@ export const ExerciseDisplay: FC<ExerciseDisplayProps> = ({ name, sets, observat
         <b>Observação</b>
         <span className='h-full text-gray-400'>{observation}</span>
       </div>
-      <div className='col-span-2 flex justify-end'>
-        <Button variant='ghost' className='mr-1 md:mr-2'><Pencil /></Button>
-        <Button variant='ghost'><Trash2 className=' stroke-red-600' /></Button>
+      <div className='col-span-4 flex justify-center lg:col-span-2 lg:justify-end'>
+        <Button variant='ghost' className='mr-1 md:mr-2' onClick={onEditExercise}><Pencil /></Button>
+        <Button variant='ghost' onClick={onDeleteExercise}><Trash2 className=' stroke-red-600' /></Button>
       </div>
     </div>
   )

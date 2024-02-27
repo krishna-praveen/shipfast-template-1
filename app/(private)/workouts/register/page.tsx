@@ -1,6 +1,4 @@
 'use client';
-// import { useState } from "react";
-
 
 import { zodResolver } from '@hookform/resolvers/zod';
 
@@ -47,8 +45,18 @@ const initalTabs = ['A', 'B', 'C'];
 export default function Register() {
   const dontShowTips = useLocalStorage.getDataByKey({ key: useLocalStorage.keys.DONT_SHOW_TIPS }) || false;
   const [workoutTabs, setWorkoutTabs] = useState(initalTabs);
-  const [isOpenModal, setIsOpenModal] = useState(false);
-  const [openAlert, setOpenAlert] = useState(false);
+  const [modalController, setModalController] = useState({
+    isOpen: false,
+    isEditing: false,
+    keyEditing: -1
+  });
+  const [openAlert, setOpenAlert] = useState({
+    isOpen: false,
+    title: '',
+    message: '',
+    onConfirm: () => { },
+    onCancel: () => { }
+  });
   const [selectedWorkoutTab, setSelectedWorkoutTab] = useState(initalTabs[0]);
   const [exercisesDisplay, setExercisesDisplay] = useState<{ [key: string]: ExerciseInterface[] }>();
 
@@ -57,67 +65,54 @@ export default function Register() {
     return { label: student.name + ' ' + student.surname, value: student.id }
   }) || [];
 
-
   const workoutInfoMethods = useForm<NewWorkoutProps>({
     resolver: zodResolver(useSchema.newWorkout),
   });
   const newExerciseMethods = useForm<NewExerciseProps>({
     resolver: zodResolver(useSchema.newExercise),
   });
-  // const [workoutTabs, setWorkoutTabs] = useState<string>("ABC");
-  // const [selectedWorkoutTab, setSelectedWorkoutTab] = useState<string>("A");
-  // const [exercises, setExercises] = useState<{ [key: string]: ExerciseInterface[] }>({});
-  // const [editingExercise, setEditingExercise] = useState({ exercise: null, tab: '', index: -1 });
-
-  // const addExercise = (exercise: ExerciseInterface) => {
-  //   setExercises(prevExercises => ({
-  //     ...prevExercises,
-  //     [selectedWorkoutTab]: [...(prevExercises[selectedWorkoutTab] || []), exercise]
-  //   }));
-  // };
-
-  // const deleteExercise = (tab: string, index: number) => {
-  //   setExercises(prevExercises => ({
-  //     ...prevExercises,
-  //     [tab]: prevExercises[tab].filter((_, i) => i !== index),
-  //   }));
-  // };
-
-  // const editExercise = (exercise: ExerciseInterface, tab: string, index: number) => {
-  //   setEditingExercise({ exercise, tab, index });
-  // };
-
-  // const saveEditedExercise = (type: string, editedExercise: ExerciseInterface) => {
-  //   setExercises(prevExercises => ({
-  //     ...prevExercises,
-  //     [type]: prevExercises[type].map((ex, i) =>
-  //       i === editingExercise.index ? editedExercise : ex
-  //     ),
-  //   }));
-
-  //   setEditingExercise({ exercise: null, tab: '', index: -1 });
-  // };
 
   const handleOpenModal = () => {
     newExerciseMethods.reset({});
-    setIsOpenModal(true);
+    setModalController({
+      isOpen: true,
+      isEditing: false,
+      keyEditing: -1
+    });
   }
   const handleCloseModal = () => {
     newExerciseMethods.clearErrors();
-    setIsOpenModal(false);
+    newExerciseMethods.reset({});
+    setModalController({
+      isOpen: false,
+      isEditing: false,
+      keyEditing: -1
+    });
   }
 
-  const onOpenAlert = () => {
-    setOpenAlert(true)
+  const onOpenAlert = (title: string, message: string, onConfirm: () => void, onCancel: () => void) => {
+    setOpenAlert({
+      isOpen: true,
+      title,
+      message,
+      onConfirm,
+      onCancel,
+    })
   }
 
-  const onConfirmAlert = () => {
+  const onConfirmAlert = (selectedWorkoutTab: string) => {
     handleRemoveTab(selectedWorkoutTab);
-    setOpenAlert(false);
+    onCloseAlert();
   }
 
   const onCloseAlert = () => {
-    setOpenAlert(false)
+    setOpenAlert(prevState => ({
+      isOpen: false,
+      title: prevState.title,
+      message: prevState.message,
+      onConfirm: () => { },
+      onCancel: () => { }
+    }))
   }
 
 
@@ -140,13 +135,25 @@ export default function Register() {
     setSelectedWorkoutTab(lastTab);
   }
 
+  const handleSaveEditedExercise = ({ name, observation, repetitions, rest, sets, videoLink }: NewExerciseProps) => {
+    handleCloseModal();
 
-  const handleOnSubmitWorkoutInfo: SubmitHandler<NewWorkoutProps> = (data) => {
-    console.log(data);
-  }
+    setExercisesDisplay(prevExercises => ({
+      ...prevExercises,
+      [selectedWorkoutTab]: prevExercises[selectedWorkoutTab].map((ex, i) =>
+        i === modalController.keyEditing ? {
+          name: name,
+          sets: Number(sets.replace(/\s/g, '')),
+          repetitions: repetitions.split(",").map(Number),
+          observation: observation,
+          rest: rest,
+          videoLink: videoLink
+        } : ex
+      ),
+    }));
+  };
 
-
-  const handleOnSubmitNewExercise: SubmitHandler<NewExerciseProps> = ({ name, observation, repetitions, rest, sets, videoLink }) => {
+  const handleNewExercise = ({ name, observation, repetitions, rest, sets, videoLink }: NewExerciseProps) => {
     setExercisesDisplay(prevState => ({
       ...prevState,
       [selectedWorkoutTab]: [...(prevState?.[selectedWorkoutTab] || []), {
@@ -158,18 +165,40 @@ export default function Register() {
         observation: observation
       }]
     }));
+  };
 
+  const handleRemoveExercise = (tab: string, index: number) => {
+    setExercisesDisplay(prevExercises => ({
+      ...prevExercises,
+      [tab]: prevExercises[tab].filter((_, i) => i !== index),
+    }));
+    onCloseAlert();
+  }
+
+
+  const handleOnSubmitWorkoutInfo: SubmitHandler<NewWorkoutProps> = (data) => {
+    console.log(data);
+  }
+
+
+  const handleOnSubmitNewExercise: SubmitHandler<NewExerciseProps> = ({ name, observation, repetitions, rest, sets, videoLink }) => {
     handleCloseModal();
+
+    if (modalController.isEditing) {
+      handleSaveEditedExercise({ name, observation, repetitions, rest, sets, videoLink })
+    } else {
+      handleNewExercise({ name, observation, repetitions, rest, sets, videoLink })
+    }
   }
 
   return (
     <Layout>
       <ModalDestructive
-        title={`Excluir Treino ${selectedWorkoutTab}`}
-        message={`Excluindo o Treino ${selectedWorkoutTab} você perde os exercícios vinculados a este treino. Tem certeza de que deseja excluir?`}
-        isOpen={openAlert}
-        onAccept={() => onConfirmAlert()}
-        onCancel={() => onCloseAlert()}
+        title={openAlert.title}
+        message={openAlert.message}
+        isOpen={openAlert.isOpen}
+        onAccept={openAlert.onConfirm}
+        onCancel={openAlert.onCancel}
       />
 
       <TopBar.Root>
@@ -253,8 +282,8 @@ export default function Register() {
             Treino
           </Button>
         </TabsList>
-        <div className='mb-5 mt-6 flex items-center justify-between'>
-          <div className='flex items-center'>
+        <div className='mb-5 mt-6 grid grid-cols-2 items-center justify-between md:flex-row'>
+          <div className='col-span-2 flex items-center lg:col-span-1'>
             <Button variant='secondary' className='ml-2 mr-8' onClick={handleOpenModal}>Adicionar Exercício</Button>
             <div className='flex items-center'>
               <Button variant='outline_secundary' className='mr-3'>Adicionar Exercício da Biblioteca</Button>
@@ -266,7 +295,16 @@ export default function Register() {
             </div>
           </div>
 
-          {workoutTabs.length > 1 && <Button variant='destructive' onClick={onOpenAlert}>Excluir treino</Button>}
+          {workoutTabs.length > 1 && <div className='col-span-2 mr-2 mt-4 flex items-center justify-end lg:col-span-1 lg:mr-0 lg:mt-0'><Button
+            variant='destructive'
+            onClick={() => onOpenAlert(
+              `Excluir Treino ${selectedWorkoutTab}`,
+              `Excluindo o Treino ${selectedWorkoutTab} você perde os exercícios vinculados a este treino. Tem certeza de que deseja excluir?`,
+              () => onConfirmAlert(selectedWorkoutTab),
+              () => onCloseAlert())
+            }>
+            Excluir treino
+          </Button></div>}
         </div>
         {
           workoutTabs.map((tab) => (
@@ -282,6 +320,27 @@ export default function Register() {
                   repetitions={exercise.repetitions}
                   observation={exercise.observation}
                   rest={exercise.rest}
+                  onDeleteExercise={() => onOpenAlert(
+                    `Excluir Exercício ${exercise.name}`,
+                    `Tem certeza que deseja remover o exercício ${exercise.name}?`,
+                    () => handleRemoveExercise(tab, index),
+                    () => onCloseAlert())
+                  }
+                  onEditExercise={() => {
+                    setModalController({
+                      isOpen: true,
+                      isEditing: true,
+                      keyEditing: index
+                    });
+                    newExerciseMethods.reset({
+                      name: exercise.name,
+                      sets: exercise.sets.toString(),
+                      repetitions: exercise.repetitions.toString(),
+                      observation: exercise.observation,
+                      rest: exercise.rest,
+                      videoLink: exercise.videoLink
+                    });
+                  }}
                 />
               ))}
             </TabsContent>
@@ -290,10 +349,11 @@ export default function Register() {
       </Tabs>
       <Modal
         isStatic
-        isModalOpen={isOpenModal}
+        isModalOpen={modalController.isOpen}
         setIsModalOpen={() => { }}
         title='Novo Exercício'
         subtitle='Informe os dados abaixo:'
+        classNamePanel='max-w-md'
       >
         <form onSubmit={newExerciseMethods.handleSubmit(handleOnSubmitNewExercise)} className='grid gap-3'>
           <FormProvider {...newExerciseMethods}>
@@ -358,11 +418,11 @@ export default function Register() {
 
             <div className='flex justify-end'>
               <Button variant='outline_secundary' type='button' className='mr-4' onClick={handleCloseModal}>Cancelar</Button>
-              <Button variant='secondary' type='submit' className='py-5'>Salvar</Button>
+              <Button variant='secondary' type='submit' className='py-5'>{modalController.isEditing ? 'Salvar Alterações' : 'Salvar'}</Button>
             </div>
           </FormProvider>
         </form>
       </Modal>
-    </Layout>
+    </Layout >
   )
 }
