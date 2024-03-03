@@ -22,7 +22,7 @@ export const Modal = ({ isModalOpen, setIsModalOpen, title = "I'm a modal", subt
     <Transition appear show={isModalOpen} as={Fragment}>
       <Dialog
         as="div"
-        className="relative z-50 "
+        className="z-50 fixed "
         static={isStatic}
         onClose={() => isStatic ? null : setIsModalOpen(false)}
       >
@@ -51,9 +51,9 @@ export const Modal = ({ isModalOpen, setIsModalOpen, title = "I'm a modal", subt
             >
               <Dialog.Panel className={twMerge("bg-base-100 relative size-full max-w-min overflow-visible rounded-xl border border-gray-700  bg-zinc-900 p-4 text-left align-middle shadow-xl transition-all", classNamePanel)}>
                 <div className="mb-4 flex items-center justify-between">
-                  <Dialog.Title as="h2" className='flex flex-col'>
+                  <Dialog.Title as="h2" className='flex flex-col font-semibold'>
                     {title}
-                    {subtitle && <span className='mt-1 font-light text-gray-400'>{subtitle}</span>}
+                    {subtitle && <span className='mt-1 text-sm font-light text-gray-400'>{subtitle}</span>}
                   </Dialog.Title>
                   {
                     isStatic ? null : (

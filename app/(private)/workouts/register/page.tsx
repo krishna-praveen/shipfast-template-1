@@ -3,6 +3,7 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 
 import { Lightbulb, PlusCircle } from 'lucide-react';
+import Image from 'next/image';
 import { useState } from 'react';
 import { FormProvider, useForm, SubmitHandler } from 'react-hook-form';
 
@@ -23,10 +24,12 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/TabsAl
 import { TopBar } from "@/components/ui/TopBar";
 import { ExerciseDisplay } from '@/components/workouts/ExerciseDisplay';
 import { NoResults } from '@/components/workouts/NoResults';
-import { DAYS_WORKOUT, DAYS_WORKOUT_RANGE } from '@/constants';
+import { DAYS_WORKOUT, DAYS_WORKOUT_RANGE, BODY_PART, EQUIPAMENT, TARGET } from '@/constants';
 import { useLocalStorage } from '@/hooks/useLocalStorage/useLocalStorage';
 import { useSchema } from '@/hooks/useSchema';
+import { useListPumpLibExercises } from '@/services/hooks/useListPumpLibExercises';
 import { useListStudents } from '@/services/hooks/useListStudents';
+import { useRegisterWorkout } from '@/services/hooks/useRegisterWorkout';
 
 type NewWorkoutProps = Required<z.infer<typeof useSchema.newWorkout>>;
 type NewExerciseProps = Required<z.infer<typeof useSchema.newExercise>>;
@@ -45,6 +48,7 @@ const initalTabs = ['A', 'B', 'C'];
 export default function Register() {
   const dontShowTips = useLocalStorage.getDataByKey({ key: useLocalStorage.keys.DONT_SHOW_TIPS }) || false;
   const [workoutTabs, setWorkoutTabs] = useState(initalTabs);
+  const [showAdvancedFilters, setShowAdvancedFilters] = useState(false);
   const [modalController, setModalController] = useState({
     isOpen: false,
     isEditing: false,
@@ -59,6 +63,14 @@ export default function Register() {
   });
   const [selectedWorkoutTab, setSelectedWorkoutTab] = useState(initalTabs[0]);
   const [exercisesDisplay, setExercisesDisplay] = useState<{ [key: string]: ExerciseInterface[] }>();
+  const UseRegisterWorkout = useRegisterWorkout({})
+  const { data: listPumpExercises } = useListPumpLibExercises({
+    payload: {
+      target: TARGET[4].value,
+    }, options: { refetchOnWindowFocus: false }
+  })
+
+  console.log(listPumpExercises)
 
   const { data: listStudents } = useListStudents({ refetchOnWindowFocus: false });
   const studentsData = listStudents?.map(student => {
@@ -176,8 +188,36 @@ export default function Register() {
   }
 
 
-  const handleOnSubmitWorkoutInfo: SubmitHandler<NewWorkoutProps> = (data) => {
-    console.log(data);
+  const handleOnSubmitWorkoutInfo: SubmitHandler<NewWorkoutProps> = async (data) => {
+    const workoutTabsFilter = workoutTabs.filter(exists => exists)
+    const exerciseKeys = Object.keys(exercisesDisplay);
+    const validTabs = exerciseKeys.filter(key => workoutTabsFilter.includes(key));
+    const payload = new Array();
+
+    const test = validTabs.forEach(tab => {
+      const results = {
+        [tab]: exercisesDisplay[tab].map(exercise => ({
+          ...exercise,
+          type: workoutTabsFilter
+        }))
+      }
+      payload.push({ ...results })
+    })
+
+    console.log('test', payload)
+
+    try {
+      // await UseRegisterWorkout.mutateAsync({
+      //   assessmentId: data.student,
+      //   description: data.descriptionWorkout,
+      //   goal: data.goal,
+      //   type: workoutTabsFilter,
+      //   phase: 0,
+      //   exercises: ,
+      // })
+    } catch (error) {
+      console.log(error)
+    }
   }
 
 
@@ -207,11 +247,11 @@ export default function Register() {
         </TopBar.Title>
         <TopBar.Action className='flex items-center'>
           <Button variant='outline_secundary' className='mr-4'>Cancelar</Button>
-          <Button variant='secondary' className='py-5'>Salvar</Button>
+          <Button variant='secondary' onClick={workoutInfoMethods.handleSubmit(handleOnSubmitWorkoutInfo)} className='py-5'>Salvar</Button>
         </TopBar.Action>
       </TopBar.Root>
 
-      <form onSubmit={workoutInfoMethods.handleSubmit(handleOnSubmitWorkoutInfo)} className="mt-10 grid grid-cols-2 gap-4 lg:grid-cols-6">
+      <form className="mt-10 grid grid-cols-2 gap-4 lg:grid-cols-6">
         <FormProvider {...workoutInfoMethods}>
           <TextInput
             label='Descrição do treino'
@@ -256,7 +296,7 @@ export default function Register() {
             label='Objetivo'
             classNameContainer='col-span-2'
             placeholder='Exemplo: Hipertrofia'
-            name='objective' />
+            name='goal' />
 
           <TextInput
             label='Observação'
@@ -351,9 +391,9 @@ export default function Register() {
         isStatic
         isModalOpen={modalController.isOpen}
         setIsModalOpen={() => { }}
-        title='Novo Exercício'
-        subtitle='Informe os dados abaixo:'
-        classNamePanel='max-w-md'
+        title='Selecione um ou mais exercícios'
+        subtitle='Você poderá buscar por filtros ou nomes. Após selecionar, você ainda poderá editá-los.'
+        classNamePanel='max-w-[60vw]'
       >
         <form onSubmit={newExerciseMethods.handleSubmit(handleOnSubmitNewExercise)} className='grid gap-3'>
           <FormProvider {...newExerciseMethods}>
@@ -362,67 +402,68 @@ export default function Register() {
               classNameLabel='w-full'
               className='w-full'
               name='name'
+              placeholder='Digite o nome do exercício'
             />
-            <TextInput
-              label='Séries'
-              type='number'
-              classNameLabel='w-full'
-              className='w-full'
-              name='sets'
-            />
-            <TextInput
-              label='Repetições'
-              classNameLabel='w-full'
-              className='w-full'
-              name='repetitions'
-            />
-            <TextInput
-              label='Descanso'
-              placeholder='Ex: "45s" ou "2m"'
-              classNameLabel='w-full'
-              className='w-full'
-              name='rest'
-            />
-            <TextInput
-              label='Link do Vídeo'
-              placeholder='https://www.youtube...'
-              classNameLabel='w-full'
-              className='w-full'
-              name='videoLink'
-            />
-            <TextAreaInput
-              label='Observação'
-              placeholder='Digite aqui sua observação...'
-              classNameLabel='w-full'
-              className='w-full'
-              name='observation'
-            />
-
-            {!dontShowTips && <Alert className="bg-slate-700">
-              <Lightbulb className='size-5 text-yellow-500' />
-              <AlertDescription>
-                É possível personalizar a quantidade de repetições para o seu treino, separando-as por vírgulas.
-                Por exemplo, em um Drop set, você pode especificar 12, 10, 8 repetições para diferentes conjuntos.
-
-                <div className='mt-4 flex items-center'>
-                  <Checkbox id="tips" onCheckedChange={() => useLocalStorage.setDataByKey({ key: useLocalStorage.keys.DONT_SHOW_TIPS, value: true })} />
-                  <label
-                    htmlFor="tips"
-                    className="ml-2 text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-                  >
-                    Não mostrar novamente
-                  </label>
+            {showAdvancedFilters &&
+              <div>
+                <div className='mb-3 mt-2 border-t border-zinc-800'></div>
+                <div className='grid grid-cols-1 gap-3 lg:grid-cols-3'>
+                  <ComboBoxInput
+                    name='bodyPart'
+                    label='Partes do corpo'
+                    data={BODY_PART}
+                    placeholder='Selecione uma opção'
+                  />
+                  <ComboBoxInput
+                    name='equipament'
+                    label='Equipamento'
+                    data={EQUIPAMENT}
+                    placeholder='Selecione uma opção'
+                  />
+                  <ComboBoxInput
+                    name='target'
+                    label='Alvo muscular'
+                    data={TARGET}
+                    placeholder='Selecione uma opção'
+                  />
                 </div>
-              </AlertDescription>
-            </Alert>}
+              </div>
+            }
+            <div className='flex items-center justify-end'>
+              <Button variant={showAdvancedFilters ? 'outline_secundary' : 'secondary'} type='button' onClick={() => setShowAdvancedFilters(!showAdvancedFilters)}>{showAdvancedFilters ? 'Escolher Filtros' : 'Filtros Avançados'}</Button>
+            </div>
+            <div className='mt-1.5 grid max-h-[60vh] grid-cols-1 items-center justify-center gap-5 overflow-y-auto md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4'>
+              {
+                (listPumpExercises || []).map((exercise) => (
+                  <div key={exercise.name} className='mx-4 flex cursor-pointer flex-col items-center justify-center bg-zinc-900'>
+                    <Image
+                      src={exercise.gif}
+                      width={225}
+                      height={225}
+                      className='rounded-lg'
+                      alt={`pic: ${exercise.name}`}
+                    />
+                    <Tooltip label={exercise.name} showIcon={false} classNameLabel='overflow-hidden truncate hover:overflow-visible hover:truncate w-[8rem] md:w-[8.5rem] lg:w-[10rem] xl:w-[13rem] text-white'>
+                      {exercise.name}
+                    </Tooltip>
+                  </div>
+                ))
+              }
+            </div>
+            <div className='fixed bottom-0 z-fixed -ml-4 mb-5 flex w-full  justify-center '>
+              <div className='relative w-full bg-red-900'>
 
-            <div className='flex justify-end'>
-              <Button variant='outline_secundary' type='button' className='mr-4' onClick={handleCloseModal}>Cancelar</Button>
-              <Button variant='secondary' type='submit' className='py-5'>{modalController.isEditing ? 'Salvar Alterações' : 'Salvar'}</Button>
+                teste
+              </div>
             </div>
           </FormProvider>
         </form>
       </Modal>
+      {/* {modalController.isOpen && <div className='fixed bottom-0 z-fixed  mb-5 flex w-[87.5vw] justify-center'>
+        <div className='w-full max-w-[58vw] bg-zinc-700'>
+          teste
+        </div>
+      </div>} */}
     </Layout >
   )
 }

@@ -8,6 +8,6 @@ export const newWorkoutFormSchema = z.object({
   revaluation: z.date().optional(),
   daysOfWorkout: z.string().optional(),
   student: z.string({ required_error: "Informe um aluno" }),
-  objective: z.string().optional(),
+  goal: z.string().optional(),
   obs: z.string().optional(),
 });

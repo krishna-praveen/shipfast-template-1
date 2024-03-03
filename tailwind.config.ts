@@ -17,6 +17,9 @@ const config = {
         "2xl": "1400px",
       },
     },
+    zIndex: {
+      "fixed": "999",
+    },
     extend: {
       colors: {
         border: "hsl(var(--border))",
