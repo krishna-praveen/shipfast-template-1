@@ -430,7 +430,7 @@ export default function Register() {
               </div>
             }
             <div className='flex items-center justify-end'>
-              <Button variant={showAdvancedFilters ? 'outline_secundary' : 'secondary'} type='button' onClick={() => setShowAdvancedFilters(!showAdvancedFilters)}>{showAdvancedFilters ? 'Escolher Filtros' : 'Filtros Avançados'}</Button>
+              <Button variant={showAdvancedFilters ? 'outline_secundary' : 'secondary'} type='button' onClick={() => setShowAdvancedFilters(!showAdvancedFilters)}>{showAdvancedFilters ? 'Esconder Filtros' : 'Filtros Avançados'}</Button>
             </div>
             <div className='mt-1.5 grid max-h-[60vh] grid-cols-1 items-center justify-center gap-5 overflow-y-auto md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4'>
               {
