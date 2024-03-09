@@ -4,7 +4,7 @@ import { Popover, Transition } from "@headlessui/react";
 
 export const ButtonPopover = () => {
   return (
-    <Popover className="relative z-10">
+    <Popover className="z-10 relative">
       {({ open }) => (
         <>
           <Popover.Button className="btn">
@@ -31,7 +31,7 @@ export const ButtonPopover = () => {
             leaveFrom="transform scale-100 opacity-100"
             leaveTo="transform scale-95 opacity-0"
           >
-            <Popover.Panel className="absolute left-0 z-10 mt-3 w-screen max-w-full sm:max-w-sm lg:max-w-2xl">
+            <Popover.Panel className="z-10 absolute left-0 mt-3 w-screen max-w-full sm:max-w-sm lg:max-w-2xl">
               <div className="ring-base-content overflow-hidden rounded-lg shadow-lg ring-1 ring-opacity-5">
                 <div className="bg-base-100 relative grid gap-4 p-4 lg:grid-cols-2">
                   <div className="hover:bg-base-200 flex cursor-pointer items-center gap-3 rounded-lg p-2 text-sm duration-200">

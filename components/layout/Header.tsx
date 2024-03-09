@@ -99,8 +99,8 @@ export const Header = () => {
       </nav>
 
       {/* Mobile menu, show/hide based on menu state. */}
-      <div className={`relative z-50 ${isOpen ? "" : "hidden"}`}>
-        <div className={`bg-base-200 sm:ring-neutral/10 fixed inset-y-0 right-0 z-10 w-full origin-right overflow-y-auto px-8 py-4 transition duration-300 ease-in-out sm:max-w-sm sm:ring-1`}>
+      <div className={`z-50 relative ${isOpen ? "" : "hidden"}`}>
+        <div className={`bg-base-200 sm:ring-neutral/10 z-10 fixed inset-y-0 right-0 w-full origin-right overflow-y-auto px-8 py-4 transition duration-300 ease-in-out sm:max-w-sm sm:ring-1`}>
           {/* Your logo/name on small screens */}
           <div className="flex items-center justify-between">
             <Link

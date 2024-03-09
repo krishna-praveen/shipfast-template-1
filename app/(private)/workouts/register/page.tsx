@@ -27,7 +27,7 @@ import { NoResults } from '@/components/workouts/NoResults';
 import { DAYS_WORKOUT, DAYS_WORKOUT_RANGE, BODY_PART, EQUIPAMENT, TARGET } from '@/constants';
 import { useLocalStorage } from '@/hooks/useLocalStorage/useLocalStorage';
 import { useSchema } from '@/hooks/useSchema';
-import { useListPumpLibExercises } from '@/services/hooks/useListPumpLibExercises';
+import { useListRiftLibExercises } from '@/services/hooks/useListRiftLibExercises';
 import { useListStudents } from '@/services/hooks/useListStudents';
 import { useRegisterWorkout } from '@/services/hooks/useRegisterWorkout';
 
@@ -64,13 +64,13 @@ export default function Register() {
   const [selectedWorkoutTab, setSelectedWorkoutTab] = useState(initalTabs[0]);
   const [exercisesDisplay, setExercisesDisplay] = useState<{ [key: string]: ExerciseInterface[] }>();
   const UseRegisterWorkout = useRegisterWorkout({})
-  const { data: listPumpExercises } = useListPumpLibExercises({
+  const { data: listRiftExercises } = useListRiftLibExercises({
     payload: {
-      target: TARGET[4].value,
+      term: 'Supino',
     }, options: { refetchOnWindowFocus: false }
   })
 
-  console.log(listPumpExercises)
+  console.log(listRiftExercises)
 
   const { data: listStudents } = useListStudents({ refetchOnWindowFocus: false });
   const studentsData = listStudents?.map(student => {
@@ -434,7 +434,7 @@ export default function Register() {
             </div>
             <div className='mt-1.5 grid max-h-[60vh] grid-cols-1 items-center justify-center gap-5 overflow-y-auto md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4'>
               {
-                (listPumpExercises || []).map((exercise) => (
+                (listRiftExercises || []).map((exercise) => (
                   <div key={exercise.name} className='mx-4 flex cursor-pointer flex-col items-center justify-center bg-zinc-900'>
                     <Image
                       src={exercise.gif}

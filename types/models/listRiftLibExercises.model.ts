@@ -1,12 +1,12 @@
 
-export type IListPumpLibExercisesPayload = {
+export type IListRiftLibExercisesPayload = {
   bodyPart?: string;
   equipment?: string;
   target?: string;
   term?: string;
 }
 
-type PumpExercises = {
+type RiftExercises = {
   bodyPart: string;
   equipment: string;
   gif: string;
@@ -17,4 +17,4 @@ type PumpExercises = {
   secundaryMuscles: string[] | null;
 }
 
-export type IListPumpLibExercisesResponse = PumpExercises[]
+export type IListRiftLibExercisesResponse = RiftExercises[]
