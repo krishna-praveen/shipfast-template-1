@@ -22,7 +22,7 @@ export const Modal = ({ isModalOpen, setIsModalOpen, title = "I'm a modal", subt
     <Transition appear show={isModalOpen} as={Fragment}>
       <Dialog
         as="div"
-        className="z-50 fixed "
+        className="fixed z-50"
         static={isStatic}
         onClose={() => isStatic ? null : setIsModalOpen(false)}
       >

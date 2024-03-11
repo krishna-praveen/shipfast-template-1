@@ -1,12 +1,12 @@
 export const BODY_PART = [
-  { value: 'upper_arms', label: 'Bracos (superiores)' },
-  { value: 'lower_arms', label: 'Bracos (inferiores)' },
+  { value: 'upper_arms', label: 'Braços (superiores)' },
+  { value: 'lower_arms', label: 'Braços (inferiores)' },
   { value: 'back', label: 'Costas' },
   { value: 'cardio', label: 'Cárdio' },
   { value: 'upper_legs', label: 'Pernas (superiores)' },
   { value: 'lower_legs', label: 'Pernas (inferiores)' },
   { value: 'chest', label: 'Peito' },
-  { value: 'neck', label: 'Pescoco' },
+  { value: 'neck', label: 'Pescoço' },
   { value: 'waist', label: 'Quadril' },
   { value: 'shoulders', label: 'Ombros' },
 ]

@@ -75,7 +75,7 @@ export const ComboBoxInput: FC<ComboBoxInputProps> = ({ data, placeholder = 'sel
               <Command>
                 <CommandInput placeholder={placeholder} className="h-9" />
                 <CommandEmpty>{noResultText}</CommandEmpty>
-                <CommandGroup>
+                <CommandGroup className='max-h-[45vh] overflow-y-auto'>
 
                   {useSubData && subData.map((item) => (
                     <CommandItem
