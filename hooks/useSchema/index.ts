@@ -5,6 +5,7 @@ import { requestResetPasswordFormSchema } from './schemas/requestResetPassword';
 import { resetPasswordFormSchema } from './schemas/resetPassword';
 import { signInFormSchema } from './schemas/signIn';
 import { signUpFormSchema } from './schemas/signUp';
+import { smartExerciseSearchFormSchema } from './schemas/smartExerciseSearch';
 
 export const useSchema = {
   signUp: signUpFormSchema,
@@ -13,5 +14,6 @@ export const useSchema = {
   requestResetPassword: requestResetPasswordFormSchema,
   registerStudents: registerStudentsFormSchema,
   newWorkout: newWorkoutFormSchema,
-  newExercise: newExerciseFormSchema
+  newExercise: newExerciseFormSchema,
+  smartExerciseSearch: smartExerciseSearchFormSchema
 }
