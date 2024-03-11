@@ -53,7 +53,7 @@ export const ButtonAccount = () => {
   };
 
   return (
-    <Popover className="z-10 relative">
+    <Popover className="relative z-10">
       {({ open }) => (
         <>
           <Popover.Button className="btn">
@@ -102,7 +102,7 @@ export const ButtonAccount = () => {
             leaveFrom="transform scale-100 opacity-100"
             leaveTo="transform scale-95 opacity-0"
           >
-            <Popover.Panel className="z-10 absolute left-0 mt-3 w-screen max-w-[16rem]">
+            <Popover.Panel className="absolute left-0 z-10 mt-3 w-screen max-w-[16rem]">
               <div className="bg-base-100 ring-base-content overflow-hidden rounded-xl p-1 shadow-xl ring-1 ring-opacity-5">
                 <div className="space-y-0.5 text-sm">
                   <button

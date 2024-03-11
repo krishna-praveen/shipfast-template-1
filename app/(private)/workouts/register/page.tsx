@@ -51,8 +51,6 @@ export interface ExerciseInterface {
 
 const initalTabs = ['A', 'B', 'C'];
 
-//https://github.com/thiagoadsix/pump/commit/da5d61f8a1e7f10806abd62ed05e66e3f8ae0720
-
 export default function Register() {
   const dontShowTips = useLocalStorage.getDataByKey({ key: useLocalStorage.keys.DONT_SHOW_TIPS }) || false;
 

@@ -24,7 +24,7 @@ export const Pricing = () => {
         <div className="relative flex flex-col items-center justify-center gap-8 lg:flex-row lg:items-stretch">
           {config.stripe.plans.map((plan) => (
             <div key={plan.priceId} className="relative w-full max-w-lg">
-              <div className="z-10 relative flex h-full flex-col items-center gap-5 rounded-2xl border-4 border-secondary-500 p-8 lg:gap-8">
+              <div className="relative z-10 flex h-full flex-col items-center gap-5 rounded-2xl border-4 border-secondary-500 p-8 lg:gap-8">
                 <div className="flex items-center justify-between gap-4">
                   <div className="flex w-full flex-col items-center">
                     <h4 className="scroll-m-20 text-xl font-semibold tracking-tight text-secondary-500">

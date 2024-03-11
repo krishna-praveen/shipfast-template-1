@@ -7,8 +7,8 @@ const Testimonial = () => {
       className="bg-base-100 relative isolate overflow-hidden px-8 py-24 sm:py-32"
       id="testimonials"
     >
-      <div className="-z-10 absolute inset-0 bg-[radial-gradient(45rem_50rem_at_top,theme(colors.base-300),theme(colors.base-100))] opacity-20" />
-      <div className="bg-base-100 ring-base-content/10 -z-10 absolute inset-y-0 right-1/2 mr-16 w-[200%] origin-bottom-left skew-x-[-30deg] shadow-lg ring-1 sm:mr-28 lg:mr-0 xl:mr-16 xl:origin-center" />
+      <div className="absolute inset-0 -z-10 bg-[radial-gradient(45rem_50rem_at_top,theme(colors.base-300),theme(colors.base-100))] opacity-20" />
+      <div className="bg-base-100 ring-base-content/10 absolute inset-y-0 right-1/2 -z-10 mr-16 w-[200%] origin-bottom-left skew-x-[-30deg] shadow-lg ring-1 sm:mr-28 lg:mr-0 xl:mr-16 xl:origin-center" />
       <div className="mx-auto max-w-2xl lg:max-w-5xl">
         <figure className="mt-10">
           <div className="flex flex-col items-center gap-12 lg:flex-row">
