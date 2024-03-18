@@ -1,9 +1,9 @@
 import { useSession } from '@/services/hooks/useSession';
 import apiServer from '@/services/serverApi';
 
-import { IListRiftLibExercisesResponse, IListRiftLibExercisesPayload } from '@/types/models/listRiftLibExercises.model';
+import { IListRyftLibExercisesResponse, IListRyftLibExercisesPayload } from '@/types/models/listRyftLibExercises.model';
 
-export const listRiftLibExercisesPayloadRequest = async (payload: IListRiftLibExercisesPayload): Promise<IListRiftLibExercisesResponse> => {
+export const listRyftLibExercisesPayloadRequest = async (payload: IListRyftLibExercisesPayload): Promise<IListRyftLibExercisesResponse> => {
   const session = await useSession()
 
   let data = await apiServer.get("exercises/search", {

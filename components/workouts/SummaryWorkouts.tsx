@@ -7,13 +7,13 @@ interface SummaryWorkoutsProps extends HtmlHTMLAttributes<HTMLDivElement> {
   isOpen?: boolean;
 }
 
-export const SummaryWorkouts: FC<SummaryWorkoutsProps> = ({ workouts, isOpen, children, className, ...props }) => {
+export const SummaryWorkouts: FC<SummaryWorkoutsProps> = ({ workouts, isOpen, children, className, onClick, ...props }) => {
   const contentElement = useRef<HTMLDivElement>(null)
   const height = isOpen ? `${contentElement ? contentElement?.current?.scrollHeight && contentElement?.current?.scrollHeight || '0' : '0'}px` : "0px"
 
   return (
     <div className={twMerge(' w-full cursor-pointer justify-between rounded-md bg-zinc-700 px-4 py-2', className)} {...props}>
-      <div className='flex justify-between'>
+      <div className='flex justify-between' onClick={onClick}>
         <div className='flex flex-col'>
           <span>
             <b>{workouts}</b> {workouts > 1 ? 'treinos adicionados' : 'treino adicionado'}

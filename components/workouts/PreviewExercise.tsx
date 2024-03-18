@@ -1,24 +1,24 @@
 import { CheckCircle } from 'lucide-react';
 import Image from 'next/image'
-import React, { FC } from 'react'
+import React, { FC, HtmlHTMLAttributes } from 'react'
 
 import { twMerge } from 'tailwind-merge';
 
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/Tooltip';
 
-interface PreviewExerciseProps {
+interface PreviewExerciseProps extends HtmlHTMLAttributes<HTMLDivElement> {
   imageUrl: string;
   name: string;
   selected: boolean;
 }
 
-export const PreviewExercise: FC<PreviewExerciseProps> = ({ imageUrl, name, selected }) => {
+export const PreviewExercise: FC<PreviewExerciseProps> = ({ imageUrl, name, selected, ...props }) => {
   return (
-    <div className={twMerge('flex cursor-pointer flex-col items-center justify-center ')}>
+    <div className={twMerge('flex cursor-pointer flex-col items-center justify-center')} {...props}>
       <TooltipProvider data-side='bottom'>
         <Tooltip data-side='bottom'>
           <TooltipTrigger asChild data-side='bottom'>
-            <div className={twMerge('flex flex-col items-center justify-center ', selected && 'border-2 border-secondary-500 rounded-md')}>
+            <div className={twMerge('flex flex-col items-center justify-center ', selected ? 'border-2 border-secondary-500 rounded-md' : 'hover:scale-105')}>
               {selected &&
                 <div className='z-10 flex w-full items-center justify-end'>
                   <div className='rounded-bl-md bg-secondary p-1.5'>

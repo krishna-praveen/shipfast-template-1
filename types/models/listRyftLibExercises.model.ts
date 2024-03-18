@@ -1,12 +1,12 @@
 
-export type IListRiftLibExercisesPayload = {
+export type IListRyftLibExercisesPayload = {
   bodyPart?: string;
   equipment?: string;
   target?: string;
   term?: string;
 }
 
-type RiftExercises = {
+export type RyftExercise = {
   bodyPart: string;
   equipment: string;
   gif: string;
@@ -17,4 +17,4 @@ type RiftExercises = {
   secundaryMuscles: string[] | null;
 }
 
-export type IListRiftLibExercisesResponse = RiftExercises[]
+export type IListRyftLibExercisesResponse = RyftExercise[]
