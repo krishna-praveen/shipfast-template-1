@@ -39,9 +39,10 @@ interface ComboBoxInputProps {
   useSubData?: boolean;
   placeholder?: string;
   noResultText?: string;
+  disabled?: boolean;
 }
 
-export const ComboBoxInput: FC<ComboBoxInputProps> = ({ data, placeholder = 'select', noResultText = 'Sem resultados', subData = [], name, useSubData, classNameContainer, classNameContent, label }) => {
+export const ComboBoxInput: FC<ComboBoxInputProps> = ({ data, disabled, placeholder = 'select', noResultText = 'Sem resultados', subData = [], name, useSubData, classNameContainer, classNameContent, label }) => {
   const [open, setOpen] = React.useState(false)
   const allData = [...data, ...subData];
 
@@ -54,9 +55,9 @@ export const ComboBoxInput: FC<ComboBoxInputProps> = ({ data, placeholder = 'sel
         control={control}
         name={name}
         render={({ field: { onChange, value } }) => (
-          <Popover open={open} onOpenChange={setOpen}>
+          <Popover open={disabled ? false : open} onOpenChange={setOpen}>
             <PopoverTrigger asChild>
-              <div className={twMerge("w-full flex flex-col", classNameContent)}  >
+              <div className={twMerge("w-full flex flex-col", classNameContent, disabled && 'cursor-not-allowed')}  >
                 {label && <span>{label}</span>}
                 <Button
                   variant="outline"
@@ -64,6 +65,7 @@ export const ComboBoxInput: FC<ComboBoxInputProps> = ({ data, placeholder = 'sel
                   type='button'
                   aria-expanded={open}
                   className={twMerge("justify-between ", existsError && 'border-red-500')}
+                  disabled={disabled}
                 >
                   {value
                     ? allData.find((item) => item.value === value)?.label

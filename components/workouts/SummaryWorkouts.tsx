@@ -33,6 +33,6 @@ export const SummaryWorkouts: FC<SummaryWorkoutsProps> = ({ workouts, isOpen, ch
         {children}
       </div>
 
-    </div>
+    </div >
   )
 }

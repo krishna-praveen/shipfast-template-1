@@ -10,4 +10,5 @@ export const newWorkoutFormSchema = z.object({
   student: z.string({ required_error: "Informe um aluno" }),
   goal: z.string().optional(),
   obs: z.string().optional(),
+  assessmentId: z.string({ required_error: "A avaliação é obrigatória." }).min(1, "A descrição é obrigatória."),
 });

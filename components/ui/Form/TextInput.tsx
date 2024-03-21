@@ -15,9 +15,11 @@ interface CalendarInputProps {
   classNameLabel?: string;
   className?: string;
   type?: string;
+  disabled?: boolean;
+  autoFocus?: boolean;
 }
 
-export const TextInput: FC<CalendarInputProps> = ({ name, placeholder, className, classNameLabel, type = 'text', label, classNameContainer }) => {
+export const TextInput: FC<CalendarInputProps> = ({ name, placeholder, className, classNameLabel, type = 'text', autoFocus, label, classNameContainer, disabled }) => {
   const { control, formState: { errors } } = useFormContext();
 
   return (
@@ -25,7 +27,7 @@ export const TextInput: FC<CalendarInputProps> = ({ name, placeholder, className
       control={control}
       name={name}
       render={({ field: { ...ControllerProps } }) => (
-        <Input className={className} classNameLabel={classNameLabel} type={type} placeholder={placeholder} label={label} errorName={errors?.[name]?.message?.toString() || ''} classNameContainer={classNameContainer}  {...ControllerProps} />
+        <Input autoFocus={autoFocus} className={className} classNameLabel={classNameLabel} readOnly={disabled} disabled={disabled} type={type} placeholder={placeholder} label={label} errorName={errors?.[name]?.message?.toString() || ''} classNameContainer={classNameContainer}  {...ControllerProps} />
       )} />
   )
 }

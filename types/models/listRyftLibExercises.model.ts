@@ -10,7 +10,7 @@ export type RyftExercise = {
   bodyPart: string;
   equipment: string;
   gif: string;
-  id: string;
+  id: number;
   name: string;
   target: string;
   instructions: string | null;
