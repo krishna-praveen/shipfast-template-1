@@ -107,3 +107,13 @@
 //     </Layout>
 //   )
 // }
+
+import React, { FC } from 'react'
+
+export const page: FC = () => {
+  return (
+    <div>
+      page
+    </div>
+  )
+}
