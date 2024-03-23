@@ -7,7 +7,6 @@ import { Controller, useFormContext } from 'react-hook-form'
 
 import { twMerge } from 'tailwind-merge'
 
-
 import { Button } from "@/components/ui/Button"
 import {
   Command,
@@ -36,13 +35,12 @@ interface ComboBoxInputProps {
   label?: string;
   classNameContainer?: string;
   classNameContent?: string;
-  useSubData?: boolean;
   placeholder?: string;
   noResultText?: string;
   disabled?: boolean;
 }
 
-export const ComboBoxInput: FC<ComboBoxInputProps> = ({ data, disabled, placeholder = 'select', noResultText = 'Sem resultados', subData = [], name, useSubData, classNameContainer, classNameContent, label }) => {
+export const ComboBoxInput: FC<ComboBoxInputProps> = ({ data, disabled, placeholder = 'select', noResultText = 'Sem resultados', subData = [], name, classNameContainer, classNameContent, label }) => {
   const [open, setOpen] = React.useState(false)
   const allData = [...data, ...subData];
 
@@ -79,45 +77,24 @@ export const ComboBoxInput: FC<ComboBoxInputProps> = ({ data, disabled, placehol
               <Command>
                 <CommandInput placeholder={placeholder} className="h-9" />
                 <CommandEmpty>{noResultText}</CommandEmpty>
-                <CommandGroup className='max-h-[45vh] overflow-y-auto'>
-
-                  {useSubData && subData.map((item) => (
+                <CommandGroup>
+                  {allData.map((framework) => (
                     <CommandItem
-                      key={item.value}
-                      value={item.value}
+                      key={framework.value}
+                      value={framework.label}
                       onSelect={(currentValue) => {
-                        const valueToSet = (currentValue === value ? "" : currentValue);
+                        const valueLabel = allData.find((item) => item.label.toLowerCase().normalize('NFC') === currentValue.normalize('NFC'))
+                        const valueToSet = valueLabel.value === value ? "" : valueLabel.value
+
                         onChange(valueToSet)
                         setOpen(false)
                       }}
                     >
-                      {item.label}
+                      {framework.label}
                       <CheckIcon
                         className={cn(
                           "ml-auto h-4 w-4",
-                          value === item.value ? "opacity-100" : "opacity-0"
-                        )}
-                      />
-                    </CommandItem>
-                  ))}
-
-                  {useSubData && <div className='my-2 border-b' />}
-
-                  {data.map((item) => (
-                    <CommandItem
-                      key={item.value}
-                      value={item.value}
-                      onSelect={(currentValue) => {
-                        const valueToSet = (currentValue === value ? "" : currentValue);
-                        onChange(valueToSet)
-                        setOpen(false)
-                      }}
-                    >
-                      {item.label}
-                      <CheckIcon
-                        className={cn(
-                          "ml-auto h-4 w-4",
-                          value === item.value ? "opacity-100" : "opacity-0"
+                          value === framework.value ? "opacity-100" : "opacity-0"
                         )}
                       />
                     </CommandItem>

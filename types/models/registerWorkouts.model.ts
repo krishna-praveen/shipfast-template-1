@@ -1,19 +1,21 @@
+type ExerciseType = {
+  id: number,
+  sets: string,
+  repetitions: Array<number>;
+  observation: string;
+}
+
 
 type Exercise = {
-  name: string;
-  sets: number;
-  repetitions: number[];
-  videoLink: string;
-  observation: string
-  type: string
+  type: string,
+  data: ExerciseType[]
 }
 
 export type IRegisterWorkoutsPayload = {
   description: string;
-  phase: number;
   goal: string;
-  type: string;
-  exercises: { [key: string]: Exercise[] };
+  observation: string;
+  exercises: Exercise[];
   assessmentId: string;
 }
 

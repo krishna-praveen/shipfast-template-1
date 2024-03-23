@@ -4,6 +4,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 
 import { Lightbulb, PlusCircle, Loader2Icon } from 'lucide-react';
 import Image from 'next/image';
+import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { FormProvider, useForm, SubmitHandler } from 'react-hook-form';
 
@@ -56,6 +57,7 @@ export interface ExerciseInterface {
 const initalTabs = ['A', 'B', 'C'];
 
 export default function Register() {
+  const router = useRouter()
   const dontShowTips = useLocalStorage.getDataByKey({ key: useLocalStorage.keys.DONT_SHOW_TIPS }) || false;
 
   const workoutInfoMethods = useForm<NewWorkoutProps>({
@@ -97,7 +99,7 @@ export default function Register() {
 
   const [selectedWorkoutTab, setSelectedWorkoutTab] = useState(initalTabs[0]);
   const [exercisesDisplay, setExercisesDisplay] = useState<{ [key: string]: ExerciseInterface[] }>();
-  // const UseRegisterWorkout = useRegisterWorkout({})
+  const UseRegisterWorkout = useRegisterWorkout({})
   const objNewExercise = smartExerciseSearch.watch() || {}
   const objNewExerciseFilled = Object.values(objNewExercise).filter(exercise => exercise).length > 0
 
@@ -120,6 +122,13 @@ export default function Register() {
     },
     options: {
       refetchOnWindowFocus: false,
+      onSuccess: (data) => {
+        if (data.length > 0) {
+          workoutInfoMethods.setValue('assessmentId', data[0].id, { shouldValidate: true })
+        } else {
+          workoutInfoMethods.resetField('assessmentId')
+        }
+      },
       enabled: !!workoutInfoMethods.watch('student')
     }
   });
@@ -265,29 +274,29 @@ export default function Register() {
     const workoutTabsFilter = workoutTabs.filter(exists => exists)
     const exerciseKeys = Object.keys(exercisesDisplay);
     const validTabs = exerciseKeys.filter(key => workoutTabsFilter.includes(key));
-    const payload = new Array();
-
-    const test = validTabs.forEach(tab => {
-      const results = {
-        [tab]: exercisesDisplay[tab].map(exercise => ({
-          ...exercise,
-          type: workoutTabsFilter
+    const payload = new Array()
+    const exercisePayload = validTabs.map(tab => {
+      const objToSend = {
+        type: tab,
+        data: exercisesDisplay[tab].map(exercise => ({
+          id: exercise.id,
+          sets: exercise.sets,
+          repetitions: exercise.repetitions,
+          observation: exercise?.observation || '',
         }))
       }
-      payload.push({ ...results })
+      payload.push({ ...objToSend })
+      return { ...objToSend }
     })
-
-    console.log('test', payload)
-
+    console.log('payload', payload)
     try {
-      // await UseRegisterWorkout.mutateAsync({
-      //   assessmentId: data.student,
-      //   description: data.descriptionWorkout,
-      //   goal: data.goal,
-      //   type: workoutTabsFilter,
-      //   phase: 0,
-      //   exercises: ,
-      // })
+      await UseRegisterWorkout.mutateAsync({
+        assessmentId: data.student,
+        description: data.descriptionWorkout,
+        goal: data.goal,
+        observation: data.obs,
+        exercises: payload,
+      })
     } catch (error) {
       console.log(error)
     }
@@ -325,54 +334,56 @@ export default function Register() {
         onCancel={openAlert.onCancel}
       />
 
-      <TopBar.Root>
-        <TopBar.Title>
-          Novo Treino
-        </TopBar.Title>
-        <TopBar.Action className='flex items-center'>
-          <Button variant='outline_secundary' className='mr-4'>Cancelar</Button>
-          <Button variant='secondary' onClick={workoutInfoMethods.handleSubmit(handleOnSubmitWorkoutInfo)} className='py-5'>Salvar</Button>
-        </TopBar.Action>
-      </TopBar.Root>
-
-      <form className="mt-10 grid grid-cols-2 gap-4 lg:grid-cols-6">
+      <form onSubmit={workoutInfoMethods.handleSubmit(handleOnSubmitWorkoutInfo)}>
         <FormProvider {...workoutInfoMethods}>
-          <ComboBoxInput
-            name='student'
-            label='Aluno'
-            data={studentsData}
-            classNameContainer='col-span-2'
-            placeholder='Selecione uma opção'
-          />
+          <TopBar.Root>
+            <TopBar.Title>
+              Novo Treino
+            </TopBar.Title>
+            <TopBar.Action className='flex items-center'>
+              <Button variant='outline_secundary' className='mr-4' onClick={() => router.back()}>Cancelar</Button>
+              <Button variant='secondary' type='submit' className='py-5' disabled={(Object.values(exercisesDisplay || {})?.length || 0) === 0}>Salvar</Button>
+            </TopBar.Action>
+          </TopBar.Root>
 
-          <ComboBoxInput
-            name='assessmentId'
-            label='Avaliação'
-            data={assessmentsData}
-            classNameContainer='col-span-2'
-            noResultText='Sem avaliação para o aluno selecionado'
-            placeholder='Selecione uma opção'
-            disabled={assessmentsData.length === 0}
-          />
+          <div className="mt-10 grid grid-cols-2 gap-4 lg:grid-cols-6">
+            <ComboBoxInput
+              name='student'
+              label='Aluno'
+              data={studentsData}
+              classNameContainer='col-span-2'
+              placeholder='Selecione uma opção'
+            />
 
-          <TextInput
-            label='Descrição do treino'
-            placeholder='Exemplo: Semana 1'
-            classNameContainer='col-span-2'
-            name='descriptionWorkout'
-          />
+            <ComboBoxInput
+              name='assessmentId'
+              label='Avaliação'
+              data={assessmentsData}
+              classNameContainer='col-span-2'
+              noResultText='Sem avaliação para o aluno selecionado'
+              placeholder='Selecione uma opção'
+              disabled={assessmentsData.length === 0}
+            />
 
-          <TextInput
-            label='Objetivo'
-            classNameContainer='col-span-2'
-            placeholder='Exemplo: Hipertrofia'
-            name='goal' />
+            <TextInput
+              label='Descrição do treino'
+              placeholder='Exemplo: Semana 1'
+              classNameContainer='col-span-2'
+              name='descriptionWorkout'
+            />
 
-          <TextInput
-            label='Observação'
-            classNameContainer='col-span-2 lg:col-span-4'
-            placeholder='Exemplo: Mobilidade todos os dias antes do treino'
-            name='obs' />
+            <TextInput
+              label='Objetivo'
+              classNameContainer='col-span-2'
+              placeholder='Exemplo: Hipertrofia'
+              name='goal' />
+
+            <TextInput
+              label='Observação'
+              classNameContainer='col-span-2 lg:col-span-4'
+              placeholder='Exemplo: Mobilidade todos os dias antes do treino'
+              name='obs' />
+          </div>
         </FormProvider>
       </form>
 
