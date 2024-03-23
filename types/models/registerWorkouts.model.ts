@@ -1,6 +1,6 @@
 type ExerciseType = {
   id: number,
-  sets: string,
+  sets: number,
   repetitions: Array<number>;
   observation: string;
 }

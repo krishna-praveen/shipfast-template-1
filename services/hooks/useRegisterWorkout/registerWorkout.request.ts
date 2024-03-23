@@ -20,9 +20,7 @@ export const registerWorkoutsRequest = async ({ assessmentId, description, goal,
     }
   });
 
-  await apiServer.post(`/workouts/${assessmentId}/exercises`, {
-    ...exercises
-  }, {
+  await apiServer.post(`/workouts/${assessmentId}/exercises`, exercises, {
     headers: {
       Authorization: `${session.access_token}`,
     }

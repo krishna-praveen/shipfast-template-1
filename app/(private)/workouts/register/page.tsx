@@ -275,18 +275,17 @@ export default function Register() {
     const exerciseKeys = Object.keys(exercisesDisplay);
     const validTabs = exerciseKeys.filter(key => workoutTabsFilter.includes(key));
     const payload = new Array()
-    const exercisePayload = validTabs.map(tab => {
+    validTabs.forEach(tab => {
       const objToSend = {
         type: tab,
         data: exercisesDisplay[tab].map(exercise => ({
           id: exercise.id,
-          sets: exercise.sets,
+          sets: Number(exercise.sets),
           repetitions: exercise.repetitions,
           observation: exercise?.observation || '',
         }))
       }
       payload.push({ ...objToSend })
-      return { ...objToSend }
     })
     console.log('payload', payload)
     try {
@@ -653,6 +652,7 @@ export default function Register() {
                 classNameLabel='w-full'
                 className='w-full'
                 name='repetitions'
+                useRegex={/[^0-9,.]/g}
               />
               <TextInput
                 label='Descanso'
@@ -723,6 +723,7 @@ export default function Register() {
                 classNameLabel='w-full'
                 className='w-full'
                 name='repetitions'
+                useRegex={/[^0-9,.]/g}
               />
               <TextInput
                 label='Series'
