@@ -1,4 +1,3 @@
-import apiClient from '@/services/api'
 import apiServer from '@/services/serverApi';
 
 import { IRegisterWorkoutsPayload, IRegisterWorkoutsResponse } from '@/types/models/registerWorkouts.model'
