@@ -11,8 +11,6 @@ import { z } from "zod";
 import { Button } from "@/components/ui/Button";
 import { Card, CardContent, CardFooter, CardDescription, CardHeader, CardTitle } from "@/components/ui/Card";
 import { TextInput } from '@/components/ui/Form/TextInput';
-import { Input } from "@/components/ui/Input";
-import { Label } from "@/components/ui/Label";
 import { Tabs, TabsList, TabsContent, TabsTrigger } from "@/components/ui/Tabs";
 
 import { useSchema } from '@/hooks/useSchema';

@@ -23,9 +23,6 @@ import apiClient from "@/services/api";
 import { AssessmentTypeEnum } from "@/libs/enums/assessment-type-enum";
 import { FormDataSchema } from "@/libs/schema";
 
-import { AssessmentInterface } from "@/components/workouts/TopBar";
-
-
 export const dynamic = "force-dynamic";
 
 type Inputs = z.infer<typeof FormDataSchema>

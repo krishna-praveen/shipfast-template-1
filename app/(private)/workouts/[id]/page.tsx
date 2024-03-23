@@ -108,12 +108,13 @@
 //   )
 // }
 
-import React, { FC } from 'react'
+import React from 'react'
 
-export const page: FC = () => {
+export default function page({ params }: { params: { id: string } }) {
+  const { id: workoutId } = params
   return (
     <div>
-      page
+      page {workoutId}
     </div>
   )
 }
