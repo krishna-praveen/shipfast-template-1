@@ -24,6 +24,11 @@ const nextConfig = {
         hostname: 'logos-world.net',
         port: '',
       },
+      {
+        protocol: 'https',
+        hostname: 'jasygrizbyxfpoegmali.supabase.co',
+        port: '',
+      },
     ],
   },
 };

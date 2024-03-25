@@ -2,26 +2,24 @@
 
 import { Settings, Home, Users, BookText, Dumbbell, Moon, Sun } from 'lucide-react';
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import { useTheme } from 'next-themes';
-import { useEffect, useState } from "react";
 
 import { Icon } from '@/public/icon';
 
-const MenuItem = ({ title, Icon, href, currentPath }: any) => (
-  <Link href={href}>
-    <li className={`tooltip tooltip-right flex cursor-pointer items-center justify-center rounded-md p-2 text-sm text-gray-300 hover:text-secondary-600 ${currentPath === href ? 'text-secondary-500' : ''} ${title === "Alunos" || title === "Configurações" ? "mt-9" : "mt-2"}`} data-tip={title}>
-      <Icon />
-    </li>
-  </Link>
-);
+const MenuItem = ({ title, Icon, href, currentPath }: any) => {
+  return (
+    <Link href={href} title={title} prefetch >
+      <li className={`tooltip tooltip-right flex cursor-pointer items-center justify-center rounded-md p-2 text-sm text-gray-300 hover:text-secondary-600 ${currentPath.includes(href) ? 'text-secondary-500' : ''} ${title === "Alunos" || title === "Configurações" ? "mt-9" : "mt-2"}`} data-tip={title}>
+        <Icon />
+      </li>
+    </Link >
+  )
+};
 
 export const Sidebar = () => {
-  const [currentPath, setCurrentPath] = useState("");
   const { setTheme, resolvedTheme } = useTheme();
-
-  useEffect(() => {
-    setCurrentPath(window.location.pathname);
-  }, []);
+  const currentPath = usePathname();
 
   const handleThemeChange = () => setTheme(resolvedTheme === 'dark' ? 'light' : 'dark');
 
@@ -34,7 +32,7 @@ export const Sidebar = () => {
   ];
 
   return (
-    <aside className="flex h-screen items-center justify-center"> {/* Alinhamento vertical ao centro */}
+    <aside className="absolute flex h-screen items-center justify-center "> {/* Alinhamento vertical ao centro */}
       <nav className="flex h-auto flex-col justify-between rounded-r-xl bg-zinc-800 p-5 pt-8 shadow-xl duration-300"> {/* Altura específica e estilo de flexbox */}
         <div>
           <div className="flex items-center p-2">

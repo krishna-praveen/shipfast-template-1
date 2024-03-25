@@ -8,8 +8,8 @@ const Layout = ({ children }: { children: ReactNode }) => {
   return (
     <div className="flex">
       <Sidebar />
-
-      <main className="h-screen flex-1 overflow-y-auto px-28 py-20">
+      {/** TODO: Add mobile menu */}
+      <main className="h-screen flex-1 overflow-y-auto md:px-28 md:py-20">
         {children}
       </main>
     </div>

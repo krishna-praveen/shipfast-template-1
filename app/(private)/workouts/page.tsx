@@ -17,7 +17,7 @@ export default function Workouts() {
 
   const { data: workouts, isLoading } = useListWorkoutsStudents({ refetchOnWindowFocus: false })
   const handleRegister = () => {
-    router.replace("/workouts/register")
+    router.push("/workouts/register")
   }
 
   const handleAccordion = (studentId: number) => {
