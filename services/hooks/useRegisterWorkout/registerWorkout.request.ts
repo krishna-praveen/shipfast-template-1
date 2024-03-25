@@ -25,9 +25,5 @@ export const registerWorkoutsRequest = async ({ assessmentId, description, goal,
     }
   });
 
-
-
-
-
   return result.data
 }
