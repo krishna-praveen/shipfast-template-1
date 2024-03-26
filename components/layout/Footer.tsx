@@ -8,7 +8,7 @@ import config from "@/config";
 
 export const Footer = () => {
   return (
-    <footer className="border-t border-base-content/10 bg-base-200">
+    <footer className="border-t bg-zinc-800">
       <div className="mx-auto max-w-7xl px-8 py-24">
         <div className=" flex flex-col flex-wrap md:flex-row md:flex-nowrap lg:items-start">
           <div className="mx-auto w-64 shrink-0 text-center md:mx-0 md:text-left">
@@ -21,7 +21,7 @@ export const Footer = () => {
                 src='/images/logo/icon.png'
                 alt={`${config.appName} logo`}
                 priority={true}
-                className="h-6 w-6"
+                className="size-6"
                 width={24}
                 height={24}
               />
@@ -30,16 +30,16 @@ export const Footer = () => {
               </strong>
             </Link>
 
-            <p className="mt-3 text-sm text-base-content/80">
+            <p className="text-base-content/80 mt-3 text-sm">
               {config.appDescription}
             </p>
-            <p className="mt-3 text-sm text-base-content/60">
+            <p className="text-base-content/60 mt-3 text-sm">
               Copyright © {new Date().getFullYear()} - Todos os direitos reservados
             </p>
           </div>
           <div className="-mb-10 mt-10 flex grow flex-wrap justify-center text-center md:mt-0">
             <div className="w-full px-4 md:w-1/2 lg:w-1/3">
-              <div className="footer-title mb-3 text-sm font-semibold tracking-widest text-base-content md:text-left">
+              <div className="footer-title text-base-content mb-3 text-sm font-semibold tracking-widest md:text-left">
                 LINKS
               </div>
 
@@ -61,7 +61,7 @@ export const Footer = () => {
             </div>
 
             <div className="w-full px-4 md:w-1/2 lg:w-1/3">
-              <div className="footer-title mb-3 text-sm font-semibold tracking-widest text-base-content md:text-left">
+              <div className="footer-title text-base-content mb-3 text-sm font-semibold tracking-widest md:text-left">
                 LEGAL
               </div>
 

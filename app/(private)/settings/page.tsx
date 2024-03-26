@@ -7,25 +7,22 @@ import { useForm, SubmitHandler } from 'react-hook-form';
 import toast from "react-hot-toast";
 import { z } from 'zod';
 
-
 import Layout from "@/components/layout/Layout";
 
+import { Button } from '@/components/ui/Button';
+import { Input } from '@/components/ui/Input';
+import { Separator } from '@/components/ui/Separator';
 import { useSchema } from '@/hooks/useSchema';
 
 import { useBilling } from '@/services/hooks/useBilling';
 import { useResetPassword } from '@/services/hooks/useResetPassword';
 import { useSignOut } from '@/services/hooks/useSignOut';
 
-
 export const dynamic = "force-dynamic";
 
 type ResetPasswordProps = Required<z.infer<typeof useSchema.resetPassword>>;
 
-// This is a private page: It's protected by the layout.js component which ensures the user is authenticated.
-// It's a server compoment which means you can fetch data (like the user profile) before the page is rendered.
-// See https://shipfa.st/docs/tutorials/private-page
 export default function Settings() {
-
   const {
     register,
     handleSubmit,
@@ -92,45 +89,50 @@ export default function Settings() {
 
   return (
     <Layout>
-      <div className="flex flex-row justify-between">
-        <h1 className="text-3xl font-extrabold md:text-4xl">Configurações</h1>
+      <div className="flex flex-row items-center justify-between space-y-4 md:space-x-4 md:space-y-0">
+        <div className='flex flex-col space-y-4'>
+          <h1 className="scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl">Aluno</h1>
+        </div>
+
         <div className="flex flex-col space-y-4">
-          <button className="btn hover:btn-error" onClick={handleSignOut}>
+          <Button className="bg-secondary-500 hover:bg-secondary-600" onClick={handleSignOut}>
             Sair
-            <LogOut />
-          </button>
-          <button className="btn hover:btn-primary" onClick={handleBilling}>
+            <LogOut className='ml-2 size-4' />
+          </Button>
+          <Button className="bg-secondary-500 hover:bg-secondary-600" onClick={handleBilling}>
             Plano
-            <CreditCard />
-          </button>
+            <CreditCard className='ml-2 size-4' />
+          </Button>
         </div>
       </div>
 
-      <div className="divider" />
+      <Separator className='my-8 border-2 border-secondary-500' />
 
       <div>
-        <h1 className="text-3xl font-extrabold md:text-4xl">Alterar senha</h1>
+        <h2 className="scroll-m-20 pb-2 text-3xl font-semibold tracking-tight first:mt-0">
+          Alterar senha
+        </h2>
 
-        <form className="mt-4 flex flex-col space-y-4" onSubmit={handleSubmit(handleOnSubmit)}>
-          <input
+        <form className="mt-4 flex flex-col space-y-2" onSubmit={handleSubmit(handleOnSubmit)}>
+          <Input
             required
             lang="pt"
             type="password"
             placeholder="Nova senha"
-            className="input input-bordered w-full max-w-xs placeholder:opacity-60"
+            className="input-bordered w-full max-w-xs border-secondary-500 placeholder:opacity-60"
             {...register("password")}
           />
           <p className="text-xs">{errors.password?.message}</p>
 
-          <button
-            className="btn btn-primary w-full max-w-xs"
+          <Button
+            className="w-full max-w-xs bg-secondary-500 hover:bg-secondary-600"
             type="submit"
           >
             {UseResetPassword.isLoading && (
               <span className="loading loading-spinner loading-xs"></span>
             )}
             Alterar
-          </button>
+          </Button>
         </form>
       </div>
     </Layout>

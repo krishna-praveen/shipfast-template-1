@@ -7,7 +7,7 @@ import { listAssessmentsRequest } from './listAssessmentsRequest.request';
 export function useListAssessments(options: UseQueryOptions<IAssessmentsResponse, unknown, IAssessmentsResponse, string[]>) {
   const key = JSON.stringify(1);
 
-  return useQuery(['useAssessments', key], () => listAssessmentsRequest(), {
+  return useQuery(['useListAssessments', key], () => listAssessmentsRequest(), {
     staleTime: 600,
     retry: false,
     ...options,

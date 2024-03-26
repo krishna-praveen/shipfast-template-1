@@ -66,7 +66,7 @@ const Item = ({
   return (
     <li>
       <button
-        className="relative flex w-full items-center gap-2 border-t border-base-content/10 py-5 text-left text-base font-medium md:text-lg"
+        className="border-base-content/10 relative flex w-full items-center gap-2 border-t py-5 text-left text-base font-medium md:text-lg"
         onClick={(e) => {
           e.preventDefault();
           setFeatureSelected();
@@ -74,13 +74,13 @@ const Item = ({
         aria-expanded={isOpen}
       >
         <span
-          className={`flex-1 text-base-content ${isOpen ? "text-primary" : ""}`}
+          className={`text-base-content flex-1 ${isOpen ? "text-primary" : ""}`}
         >
           <span className={`mr-2`}>{index + 1}.</span>
           <h3 className="inline">{title}</h3>
         </span>
         <svg
-          className={`ml-auto h-4 w-4 shrink-0 fill-current ${isOpen ? "fill-primary" : ""
+          className={`ml-auto size-4 shrink-0 fill-current ${isOpen ? "fill-primary" : ""
             }`}
           viewBox="0 0 16 16"
           xmlns="http://www.w3.org/2000/svg"
@@ -167,7 +167,7 @@ export const FeaturesAccordion = () => {
 
   return (
     <section
-      className="mx-auto max-w-7xl space-y-24 bg-base-100 py-24 md:space-y-32 md:py-32 "
+      className="bg-base-100 mx-auto max-w-7xl space-y-24 py-24 md:space-y-32 md:py-32 "
       id="features"
     >
       <div className="px-8">
@@ -176,7 +176,7 @@ export const FeaturesAccordion = () => {
         </p>
         <h2 className="mb-12 text-4xl font-extrabold tracking-tight md:mb-24 lg:text-6xl">
           All you need to ship your startup in days,
-          <span className="ml-1 whitespace-nowrap bg-neutral px-2 leading-relaxed text-neutral-content md:ml-1.5 md:px-4">
+          <span className="bg-neutral text-neutral-content ml-1 whitespace-nowrap px-2 leading-relaxed md:ml-1.5 md:px-4">
             not months
           </span>
         </h2>

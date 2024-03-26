@@ -1,33 +1,36 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import Link from "next/link";
 import { useRouter } from "next/navigation";
 import React from "react";
-import { SubmitHandler, useForm } from "react-hook-form";
+import { FormProvider, SubmitHandler, useForm } from 'react-hook-form';
+
 import toast from "react-hot-toast";
 import { z } from "zod";
 
-import { Input } from "@/components/ui/Input";
+import { Button } from "@/components/ui/Button";
+import { Card, CardContent, CardFooter, CardDescription, CardHeader, CardTitle } from "@/components/ui/Card";
+import { TextInput } from '@/components/ui/Form/TextInput';
+import { Tabs, TabsList, TabsContent, TabsTrigger } from "@/components/ui/Tabs";
 
 import { useSchema } from '@/hooks/useSchema';
 
+import { useRequestResetPassword } from "@/services/hooks/useRequestResetPassword";
 import { useSignIn } from '@/services/hooks/useSingIn';
 
-import config from "@/config";
-
 type SignInProps = Required<z.infer<typeof useSchema.singIn>>;
+type RequestResetPasswordProps = Required<z.infer<typeof useSchema.requestResetPassword>>;
 
 export default function SignIn() {
-  const {
-    register,
-    handleSubmit,
-    formState: { errors, },
-  } = useForm<SignInProps>({
+  const router = useRouter();
+
+  const methodsSignIn = useForm<SignInProps>({
     resolver: zodResolver(useSchema.singIn),
   });
 
-  const router = useRouter();
+  const methodsRequestResetPassword = useForm<RequestResetPasswordProps>({
+    resolver: zodResolver(useSchema.requestResetPassword),
+  });
 
   const UseSignIn = useSignIn({
     options: {
@@ -45,7 +48,21 @@ export default function SignIn() {
     }
   });
 
-  const onSubmit: SubmitHandler<SignInProps> = async ({ email, password }) => {
+  const UseRequestResetPassword = useRequestResetPassword({
+    options: {
+      onSuccess: () => {
+        toast.success("Email para realizar restauração da senha enviado!", { position: "top-right" });
+        router.push("/sign-in")
+      },
+      onError: (error) => {
+        if (process.env.NODE_ENV === "development") {
+          console.error(error);
+        }
+      }
+    }
+  });
+
+  const onSingInSubmit: SubmitHandler<SignInProps> = async ({ email, password }) => {
     try {
       await UseSignIn.mutateAsync({ email, password });
 
@@ -56,79 +73,105 @@ export default function SignIn() {
     }
   };
 
+  const onRequestResetPasswordSubmit: SubmitHandler<RequestResetPasswordProps> = async ({ email }) => {
+    try {
+      await UseRequestResetPassword.mutateAsync({ email });
+
+    } catch (e) {
+      if (process.env.NODE_ENV === "development") {
+        console.error(e);
+      }
+    }
+  };
+
   return (
-    <main className="p-8 md:p-24" data-theme={config.colors.theme}>
+    <div className="flex h-screen flex-col items-center justify-center bg-zinc-900">
+      <Tabs defaultValue="sign-in" className="w-[400px]">
+        <TabsList className="grid w-full grid-cols-2">
+          <TabsTrigger value="sign-in">Entrar</TabsTrigger>
+          <TabsTrigger className="px-4" value="request-reset-password">Nova Senha</TabsTrigger>
+        </TabsList>
 
-      <div className="mb-4 text-center">
-        <Link href="/" className="btn btn-ghost btn-sm">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 20 20"
-            fill="currentColor"
-            className="h-5 w-5"
-          >
-            <path
-              fillRule="evenodd"
-              d="M15 10a.75.75 0 01-.75.75H7.612l2.158 1.96a.75.75 0 11-1.04 1.08l-3.5-3.25a.75.75 0 010-1.08l3.5-3.25a.75.75 0 111.04 1.08L7.612 9.25h6.638A.75.75 0 0115 10z"
-              clipRule="evenodd"
-            />
-          </svg>
-          Home
-        </Link>
-      </div>
+        <TabsContent value="sign-in">
+          <form onSubmit={methodsSignIn.handleSubmit(onSingInSubmit)}>
+            <FormProvider {...methodsSignIn}>
+              <Card className="bg-zinc-900">
+                <CardHeader>
+                  <CardTitle>Entrar</CardTitle>
+                  <CardDescription>
+                    Insira seu e-mail e senha para acessar sua conta.
+                  </CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-2">
+                  <div className="space-y-1">
+                    <TextInput
+                      name="email"
+                      type='email'
+                      label='E-mail'
+                      placeholder="Seu e-mail"
+                      className="mt-2 w-full rounded-lg"
+                    />
+                  </div>
+                  <div className="space-y-1">
+                    <TextInput
+                      name="password"
+                      type='password'
+                      label='Senha'
+                      placeholder="Sua senha"
+                      className="mt-2 w-full rounded-lg"
+                    />
 
-      <h1 className="mb-12 text-center text-3xl font-extrabold tracking-tight md:text-4xl">
-        Entrar no {config.appName}{" "}
-      </h1>
+                  </div>
+                </CardContent>
+                <CardFooter>
+                  <Button type="submit">Entrar</Button>
+                </CardFooter>
+              </Card>
+            </FormProvider>
+          </form>
+        </TabsContent>
 
-      <div className="mx-auto max-w-xl space-y-8">
-        <form
-          className="form-control w-full space-y-4"
-          onSubmit={handleSubmit(onSubmit)}
-        >
-          <div>
-            <Input
-              name="email"
-              type="email"
-              placeholder="Seu e-mail"
-              className="input input-bordered w-full placeholder:opacity-60"
-              {...register('email')}
-              errorName={errors?.email?.message}
-            />
-          </div>
+        <TabsContent value="request-reset-password">
+          <form onSubmit={methodsRequestResetPassword.handleSubmit(onRequestResetPasswordSubmit)}>
+            <FormProvider {...methodsSignIn}>
+              <Card className="bg-zinc-900">
+                <CardHeader>
+                  <CardTitle>Nova senha</CardTitle>
+                  <CardDescription>
+                    Insira o seu e-mail para receber um link de recuperação de senha.
+                  </CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-2">
+                  <div className="space-y-1">
+                    <TextInput
+                      name='email'
+                      type='email'
+                      label='Seu e-mail'
+                      placeholder='Seu e-mail'
+                      className="mt-2 w-full rounded-lg"
+                    />
+                  </div>
+                </CardContent>
+                <CardFooter>
+                  <Button
+                    type="submit"
+                    disabled={UseRequestResetPassword.isLoading}
+                  >
+                    {UseRequestResetPassword.isLoading && (
+                      <span className="loading loading-spinner loading-xs"></span>
+                    )}
+                    Solicitar
+                  </Button>
+                </CardFooter>
+              </Card>
+            </FormProvider>
+          </form>
+        </TabsContent>
+      </Tabs>
 
-          <div>
-            <Input
-              name="password"
-              type="password"
-              placeholder="Sua senha"
-              className="input input-bordered w-full placeholder:opacity-60"
-              {...register('password')}
-              errorName={errors?.password?.message}
-            />
-          </div>
-
-          <button
-            className="btn btn-primary btn-block"
-            disabled={UseSignIn.isLoading}
-            type="submit"
-          >
-            {UseSignIn.isLoading && (
-              <span className="loading loading-spinner loading-xs"></span>
-            )}
-            Entrar
-          </button>
-          <Link href="/request-reset-password" className="link-hover link text-xs hover:text-blue-600">
-            Esqueci a senha
-          </Link>
-
-          <div className="text-left">
-            <Link href="/sign-up" className="link-hover link">
-              Criar conta
-            </Link>
-          </div>
-        </form>
-      </div>
-    </main>
+      <Button onClick={() => router.replace("/")} className="mt-4 w-96 space-x-2">
+        <h2>Voltar para página inicial</h2>
+      </Button>
+    </div>
   );
 }

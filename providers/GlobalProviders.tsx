@@ -13,7 +13,7 @@ export const GlobalProviders: FC<GlobalProvidersProps> = ({ children }) => {
   return (
     <QueryClientProvider client={queryClient}>
       {children}
-      <ReactQueryDevtools />
+      <ReactQueryDevtools position='bottom-right' />
     </QueryClientProvider>
   )
 }

@@ -8,7 +8,7 @@ export const surnameSchema = () => {
     .string()
     .min(1, { message: "Sobrenome é obrigatório!" })
     .refine((value) => notAllowNumbersRefine(value), {
-      message: "É necessário o sobrenome",
+      message: "Sobrenomes com números não são permitidos",
       path: [],
     })
     .refine((value) => notAllowSpecialCharactersRefine(value), {

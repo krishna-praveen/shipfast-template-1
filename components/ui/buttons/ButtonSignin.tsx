@@ -43,13 +43,13 @@ export const ButtonSignIn = ({
           <img
             src={user?.user_metadata?.avatar_url}
             alt={user?.user_metadata?.name || "Conta"}
-            className="h-6 w-6 shrink-0 rounded-full"
+            className="size-6 shrink-0 rounded-full"
             referrerPolicy="no-referrer"
             width={24}
             height={24}
           />
         ) : (
-          <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-base-300">
+          <span className="bg-base-300 flex size-6 shrink-0 items-center justify-center rounded-full">
             {user?.user_metadata?.name?.charAt(0) || user?.email?.charAt(0)}
           </span>
         )}
