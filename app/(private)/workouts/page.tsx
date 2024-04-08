@@ -7,6 +7,7 @@ import { useState } from "react";
 import Layout from "@/components/layout/Layout";
 
 import { Button } from '@/components/ui/Button';
+import { useListWorkouts } from '@/services/hooks/useListWorkouts';
 import { useListWorkoutsStudents } from '@/services/hooks/useListWorkoutsStudents';
 
 export const dynamic = "force-dynamic";
@@ -14,6 +15,11 @@ export const dynamic = "force-dynamic";
 export default function Workouts() {
   const [accordionOpened, serAccordionOpened] = useState(-1);
   const router = useRouter()
+
+  const { data } = useListWorkouts({
+    refetchOnWindowFocus: false
+  });
+
 
   const { data: workouts, isLoading } = useListWorkoutsStudents({ refetchOnWindowFocus: false })
   const handleRegister = () => {

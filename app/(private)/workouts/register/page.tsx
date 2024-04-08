@@ -336,9 +336,13 @@ export default function Register() {
       <form onSubmit={workoutInfoMethods.handleSubmit(handleOnSubmitWorkoutInfo)}>
         <FormProvider {...workoutInfoMethods}>
           <TopBar.Root>
-            <TopBar.Title>
-              Novo Treino
-            </TopBar.Title>
+            <TopBar.Navigation>
+              <TopBar.Group>
+                <TopBar.Title>
+                  Novo Treino
+                </TopBar.Title>
+              </TopBar.Group>
+            </TopBar.Navigation>
             <TopBar.Action className='flex items-center'>
               <Button variant='outline_secundary' className='mr-4' onClick={() => router.back()}>Cancelar</Button>
               <Button variant='secondary' type='submit' className='py-5' disabled={(Object.values(exercisesDisplay || {})?.length || 0) === 0}>Salvar</Button>
@@ -351,7 +355,7 @@ export default function Register() {
               label='Aluno'
               data={studentsData}
               classNameContainer='col-span-2'
-              placeholder='Selecione uma opção'
+              placeholder='Selecione um aluno'
             />
 
             <ComboBoxInput

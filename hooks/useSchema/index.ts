@@ -1,3 +1,7 @@
+import { newAssessmentsFormSchema } from './schemas/assessments/newAssessments';
+import { pollock_3FormSchema } from './schemas/assessments/pollock_3';
+import { pollock_7FormSchema } from './schemas/assessments/pollock_7';
+
 import { newExerciseFormSchema } from './schemas/newExercise';
 import { newExerciseSmartFormSchema } from './schemas/newExerciseSmart';
 import { newWorkoutFormSchema } from './schemas/newWorkout';
@@ -17,5 +21,11 @@ export const useSchema = {
   newWorkout: newWorkoutFormSchema,
   newExercise: newExerciseFormSchema,
   smartExerciseSearch: smartExerciseSearchFormSchema,
-  newExerciseSmart: newExerciseSmartFormSchema
+  newExerciseSmart: newExerciseSmartFormSchema,
+  assessments: {
+    newAssessments: newAssessmentsFormSchema,
+    pollock_3: pollock_3FormSchema,
+    pollock_7: pollock_7FormSchema,
+  }
+
 }

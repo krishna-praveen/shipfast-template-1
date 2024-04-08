@@ -8,7 +8,7 @@ export const listWorkoutsRequest = async (): Promise<IWorkoutsResponse> => {
   const session = await useSession();
 
   const { data: workouts } = await apiServer.get<IWorkoutsResponse>(
-    "/workouts",
+    `/workouts`,
     {
       params: { userId: session.user.id },
       headers: {
