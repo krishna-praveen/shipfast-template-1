@@ -7,8 +7,6 @@ import { Controller, useFormContext } from 'react-hook-form'
 
 import { twMerge } from 'tailwind-merge'
 
-import { cn } from "@/libs/utils"
-
 import { Button } from "@/components/ui/Button"
 import {
   Command,
@@ -23,7 +21,7 @@ import {
   PopoverTrigger,
 } from "@/components/ui/Popover"
 
-
+import { cn } from "@/libs/utils"
 type ComboType = {
   value: string
   label: string
