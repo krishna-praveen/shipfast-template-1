@@ -27,5 +27,4 @@ export const useSchema = {
     pollock_3: pollock_3FormSchema,
     pollock_7: pollock_7FormSchema,
   }
-
 }
