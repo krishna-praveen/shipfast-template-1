@@ -4,7 +4,7 @@ import { Controller, useFormContext } from 'react-hook-form';
 
 import { Input } from '@/components/ui/Input';
 
-interface CalendarInputProps {
+interface InputProps {
   name: string;
   placeholder?: string;
   label?: string;
@@ -17,7 +17,7 @@ interface CalendarInputProps {
   useRegex?: RegExp;
 }
 
-export const TextInput: FC<CalendarInputProps> = ({ name, placeholder, className, classNameLabel, useRegex, type = 'text', autoFocus, label, classNameContainer, disabled }) => {
+export const TextInput: FC<InputProps> = ({ name, placeholder, className, classNameLabel, useRegex, type = 'text', autoFocus, label, classNameContainer, disabled }) => {
   const { control, formState: { errors } } = useFormContext();
 
   return (
