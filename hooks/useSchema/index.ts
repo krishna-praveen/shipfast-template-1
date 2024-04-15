@@ -1,6 +1,10 @@
+import { imagesFormSchema } from './schemas/assessments/images';
+import { measurementsGeneralFormSchema } from './schemas/assessments/measurements_general';
+import { measurementsSplitedFormSchema } from './schemas/assessments/measurements_splited';
 import { newAssessmentsFormSchema } from './schemas/assessments/newAssessments';
 import { pollock_3FormSchema } from './schemas/assessments/pollock_3';
 import { pollock_7FormSchema } from './schemas/assessments/pollock_7';
+import { weightHeightFormSchema } from './schemas/assessments/weight_height';
 
 import { newExerciseFormSchema } from './schemas/newExercise';
 import { newExerciseSmartFormSchema } from './schemas/newExerciseSmart';
@@ -26,5 +30,9 @@ export const useSchema = {
     newAssessments: newAssessmentsFormSchema,
     pollock_3: pollock_3FormSchema,
     pollock_7: pollock_7FormSchema,
+    images: imagesFormSchema,
+    weightHeight: weightHeightFormSchema,
+    measurementsSplited: measurementsSplitedFormSchema,
+    measurementsGeneral: measurementsGeneralFormSchema
   }
 }
