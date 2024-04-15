@@ -41,6 +41,7 @@ type NewAssessmentsProps = Required<z.infer<typeof useSchema.assessments.newAsse
 export default function Assessments() {
   const router = useRouter();
   const pathname = usePathname();
+  const page = pathname.split('/').at(-1);
 
   const { updateFlowAssessments } = useFlowAssessmentsContext();
 
@@ -61,7 +62,7 @@ export default function Assessments() {
       studentInfo: listStudents.filter(studentInfo => studentInfo.id === student)[0]
     })
 
-    const flow = useFlowAssessments.getValidFlow({ page: pathname, key: assessmentType, initialFlow: true })
+    const flow = useFlowAssessments.getValidFlow({ page: page, key: assessmentType, initialFlow: true })
 
     router.push('register/' + flow.nextPage)
   }
@@ -161,7 +162,7 @@ export default function Assessments() {
                           selected={field.value as DateRange}
                           onSelect={(e) => field.onChange({ from: e?.from, to: e?.to })}
                           disabled={(date) =>
-                            date < new Date()
+                            date < new Date(`${format(new Date(), 'yyyy-MM-dd')} 00:00:00`)
                           }
                           initialFocus
                         />

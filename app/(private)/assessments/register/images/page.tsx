@@ -1,37 +1,55 @@
 'use client'
 
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useRouter } from 'next/navigation';
-import React from 'react'
+import { ImagePlus } from 'lucide-react';
+import { usePathname, useRouter } from 'next/navigation';
+import React, { useEffect } from 'react'
 
 import { FormProvider, SubmitHandler, useForm } from 'react-hook-form';
 import { z } from 'zod';
 
 import Layout from '@/components/layout/Layout'
 import { Button } from '@/components/ui/Button';
-import { ComboBoxInput } from '@/components/ui/Form/ComboBoxInput'
+import { FileUploadInput } from '@/components/ui/Form/FileUploadInput';
+import { TextInput } from '@/components/ui/Form/TextInput'
+import { StepperAssessments } from '@/components/ui/StepperAssessments';
 import { TopBar } from '@/components/ui/TopBar'
+
 import { ASSESSMENT_TYPE } from '@/constants';
+import { useFlowAssessmentsContext } from '@/contexts/FlowAssessments.context';
+
+import { useFlowAssessments } from '@/hooks/useFlowAssessments/useFlowAssessments';
 import { useSchema } from '@/hooks/useSchema';
-import { useListStudents } from '@/services/hooks/useListStudents';
-
-type NewAssessmentsProps = Required<z.infer<typeof useSchema.newAssessments>>;
 
 
-export default function Assessments() {
+export default function Image() {
   const router = useRouter();
-  const { data: listStudents } = useListStudents({ refetchOnWindowFocus: false });
-  const studentsData = listStudents?.map(student => {
-    return { label: student.name + ' ' + student.surname, value: student.id }
-  }) || [];
+  const pathname = usePathname();
+  const page = pathname.split('/').at(-1);
 
-  const newAssessmentsMethods = useForm<NewAssessmentsProps>({
-    resolver: zodResolver(useSchema.newAssessments),
+
+  const { flowAssessments, updateFlowAssessments } = useFlowAssessmentsContext();
+  console.log('flowAssessments', flowAssessments)
+  useEffect(() => {
+    if (!flowAssessments) {
+      router.push('/assessments/register');
+    }
+  }, [flowAssessments, router]);
+
+  const subTitle = ASSESSMENT_TYPE.find(item => item.value === flowAssessments?.assessmentType)?.label;
+  const flow = useFlowAssessments.getValidFlow({ page: page, key: flowAssessments?.assessmentType });
+
+  const imageIsRequired = flow?.imagesIsRequired;
+  const schemaImage = useSchema.assessments.images(imageIsRequired);
+  type SchemaImageProps = Required<z.infer<typeof schemaImage>>;
+
+  const formImagesMethods = useForm<SchemaImageProps>({
+    resolver: zodResolver(schemaImage),
   });
 
-  const onSubmitAssessment: SubmitHandler<NewAssessmentsProps> = (data) => {
-    console.log(data)
-    router.push('/assessments')
+  const onSubmit: SubmitHandler<SchemaImageProps> = (data) => {
+
+    router.push(flow.nextPage)
   }
 
   return (
@@ -40,43 +58,37 @@ export default function Assessments() {
         <TopBar.Navigation>
           <TopBar.Group>
             <TopBar.Title>
-              Nova Avaliação
+              Avaliação
             </TopBar.Title>
             <TopBar.SubTitle>
-              Passos iniciais
+              {subTitle}
             </TopBar.SubTitle>
           </TopBar.Group>
         </TopBar.Navigation>
       </TopBar.Root>
 
-      <section className='mt-10 flex min-h-[60vh] items-center justify-center'>
-        <form className='flex min-w-[27vw] border-spacing-0.5 flex-col items-center rounded-md border-white bg-zinc-800 shadow-md' onSubmit={newAssessmentsMethods.handleSubmit(onSubmitAssessment)}>
-          <FormProvider {...newAssessmentsMethods}>
-            <header className='flex w-full flex-col p-5'>
-              <b className='font-semibold'>Iniciando nova avaliação</b>
-              <span className='font-light text-zinc-300'>Informe qual tipo de avaliação e aluno o qual deseja avaliar:</span>
-            </header>
-            <div className='grid w-full grid-cols-1 gap-4 px-5'>
-              <ComboBoxInput
-                name='student'
-                label='Aluno'
-                data={studentsData}
-                classNameContainer='col-span-1'
-                placeholder='Selecione uma opção'
-              />
-              <ComboBoxInput
-                name='assessmentType'
-                label='Tipo de Avaliação'
-                data={ASSESSMENT_TYPE}
-                classNameContainer='col-span-1'
-                placeholder='Selecione uma opção'
-              />
-              <div className='col-span-1 mb-4 mt-2 flex justify-end'>
-                <Button variant="secondary" className='flex items-center px-4' type="submit" >Iniciar Avaliação</Button>
+      <section className='mt-10 flex min-h-[60vh] flex-col items-center justify-center'>
+        <form className='flex min-w-[40vw] border-spacing-0.5 flex-col items-center rounded-md border-white bg-zinc-800 shadow-md' onSubmit={formImagesMethods.handleSubmit(onSubmit)}>
+          <FormProvider {...formImagesMethods}>
+            <div className='mb-2 mt-4 flex w-full flex-col items-center justify-center'>
+              <span className='text-xl font-semibold'>Fotos do Aluno</span>
+              <span className='text-sm font-light text-zinc-400'>{flowAssessments?.studentInfo?.name + ' ' + flowAssessments?.studentInfo?.surname}</span>
+            </div>
+            <div className='grid w-full grid-cols-1 gap-4 p-5 md:grid-cols-2 lg:grid-cols-4'>
+
+              <FileUploadInput name="front" placeholder='Adicionar' label='Frente' />
+              <FileUploadInput name="back" placeholder='Adicionar' label='Costas' />
+              <FileUploadInput name="left" placeholder='Adicionar' label='Lado Esquerdo' />
+              <FileUploadInput name="right" placeholder='Adicionar' label='Lado Direito' />
+
+              <div className='col-span-4 mt-2 flex justify-between'>
+                <Button variant="outline_secundary" className='flex items-center bg-zinc-800 px-4' type="button" onClick={() => router.back()} >Voltar</Button>
+                <Button variant="secondary" className='flex items-center px-4' type="submit">Avançar</Button>
               </div>
             </div>
           </FormProvider>
         </form>
+        <StepperAssessments pathname={page} assessmentType={flowAssessments?.assessmentType} className='mt-3' />
       </section>
 
     </Layout>
